@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:weightSum="100"
+    android:orientation="vertical"
+    android:background="@color/main_color"
+    tools:context=".UI.Registeration">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:text="Registration"
+        android:gravity="center"
+        android:textSize="35sp"
+        android:textColor="@color/white"
+        android:layout_height="0dp"
+        android:layout_weight="20"
+        ></TextView>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/registeration_layout_name"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="12"
+        android:layout_margin="20dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        app:hintTextColor="@color/black"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/registeration_edit_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textPersonName"
+            android:background="@drawable/edit_sign_in"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            android:hint="Name"
+            android:textColorLink="@color/black"
+            android:textColorHighlight="@color/black"
+            android:textCursorDrawable="@color/black"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/registeration_layout_email"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="12"
+        android:layout_margin="20dp"
+        app:hintTextColor="@color/black"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black">
+
+        <com.google.android.material.textfield.TextInputEditText
+
+            android:hint="Email"
+            android:id="@+id/registeration_edit_email"
+            android:inputType="textEmailAddress"
+            android:layout_width="match_parent"
+            android:background="@drawable/edit_sign_in"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            android:layout_height="match_parent"
+            android:textCursorDrawable="@color/black"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/registeration_layout_pass"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="12"
+        android:layout_margin="20dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        app:hintTextColor="@color/black"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/registeration_edit_pass"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/edit_sign_in"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            android:inputType="textPassword"
+            android:hint="Password"
+            android:textColorLink="@color/black"
+            android:textColorHighlight="@color/black"
+
+            android:textCursorDrawable="@color/black"
+             />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:entries="@array/spin"
+        android:id="@+id/registeration_spinner"
+        android:layout_weight="12"
+        android:outlineAmbientShadowColor="@color/white"
+        android:background="@drawable/edit_sign_in"
+        android:popupBackground="@color/white"
+        android:outlineSpotShadowColor="@color/white"
+        android:layout_margin="20dp"
+        />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/registeration_layout_detailed"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="12"
+        android:layout_margin="20dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        app:hintTextColor="@color/black"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/registeration_edit_detailed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/edit_sign_in"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            android:hint="detailed address"
+            android:textColorLink="@color/black"
+            android:textColorHighlight="@color/black"
+            android:textCursorDrawable="@color/black"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:id="@+id/registeration_button"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:text="Sign Up"
+        android:background="@drawable/button_sign_in"
+        android:layout_margin="20dp"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:textSize="28sp" />
+
+
+</LinearLayout>

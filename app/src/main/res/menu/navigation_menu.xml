@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+<item
+        android:id="@+id/navigation_books"
+        android:title="your books"
+        android:icon="@drawable/baseline_book_24"
+
+    ></item>
+
+<item
+    android:id="@+id/navigation_home"
+    android:title="home"
+    android:icon="@drawable/baseline_home_24"
+    ></item>
+
+    <item
+        android:id="@+id/navigation_requests"
+        android:title="requests"
+        android:icon="@drawable/baseline_swap_calls_24"
+        ></item>
+</menu>

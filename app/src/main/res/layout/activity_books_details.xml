@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/main_color"
+    android:orientation="vertical"
+    android:weightSum="100">
+
+    <ImageView
+        android:id="@+id/add_book_image"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="50"
+        android:src="@drawable/baseline_image_24"
+        android:layout_margin="16dp"/>
+    <ImageView
+        android:id="@+id/add_book_error"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_gravity="end"
+        android:src="@drawable/baseline_error_24"
+        android:layout_margin="5dp"
+        android:visibility="gone"
+        ></ImageView>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/add_book_layout_name"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="12"
+        android:layout_margin="20dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        app:hintTextColor="@color/black"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/add_book_edit_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textPersonName"
+            android:background="@drawable/edit_sign_in"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            android:hint="Book Name"
+            android:textColorLink="@color/black"
+            android:textColorHighlight="@color/black"
+            android:textCursorDrawable="@color/black"
+            ></com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/add_book_layout_details"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="12"
+        android:layout_margin="20dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        app:hintTextColor="@color/black"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/add_book_edit_details"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textMultiLine"
+            android:background="@drawable/edit_sign_in"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            android:hint="Book Details"
+            android:textColorLink="@color/black"
+            android:textColorHighlight="@color/black"
+            android:textCursorDrawable="@color/black"
+            ></com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/add_book_spinner"
+        android:layout_weight="12"
+        android:outlineAmbientShadowColor="@color/white"
+        android:background="@drawable/edit_sign_in"
+        android:popupBackground="@color/white"
+        android:outlineSpotShadowColor="@color/white"
+        android:layout_margin="20dp"
+        />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:id="@+id/add_book_button"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:text="Add Book"
+        android:background="@drawable/button_sign_in"
+        android:layout_margin="20dp"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:textSize="28sp" />
+
+</LinearLayout>

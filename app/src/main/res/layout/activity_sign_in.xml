@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="100"
+    android:background="@color/main_color"
+    android:orientation="vertical"
+    tools:context=".UI.SignIn">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:src="@drawable/logo"
+        android:layout_weight="50"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/sign_in_layout_email"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:layout_margin="20dp"
+        app:hintTextColor="@color/black"
+        android:textColor="@color/black"
+        android:outlineAmbientShadowColor="@color/black"
+        app:boxBackgroundColor="@color/second_color"
+        android:textColorHint="@color/black">
+
+        <com.google.android.material.textfield.TextInputEditText
+
+            android:hint="Email"
+            android:id="@+id/sign_in_edit_email"
+            android:shadowColor="@color/main_color"
+            android:layout_width="match_parent"
+            android:background="@drawable/edit_sign_in"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            android:layout_height="match_parent"
+            android:textCursorDrawable="@color/black"
+        />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/sign_in_layout_password"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:layout_margin="20dp"
+        android:textColor="@color/black"
+        app:boxBackgroundColor="@color/second_color"
+        android:textColorHint="@color/black"
+        app:hintTextColor="@color/black"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/sign_in_edit_pass"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/edit_sign_in"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            android:hint="Password"
+            android:textColorLink="@color/black"
+            android:textColorHighlight="@color/black"
+
+            android:textCursorDrawable="@color/black"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:id="@+id/sign_in_button"
+        android:layout_gravity="center"
+        android:layout_weight="10"
+        android:layout_height="0dp"
+        android:text="Sign in"
+        android:textSize="25sp"
+        android:textColor="@color/white"
+        android:background="@drawable/button_sign_in"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="10dp"
+
+        android:textAllCaps="false"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/sign_in_text_go_to_register"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:text="Don't have account? Register"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:textSize="22sp"
+        />
+
+</LinearLayout>
