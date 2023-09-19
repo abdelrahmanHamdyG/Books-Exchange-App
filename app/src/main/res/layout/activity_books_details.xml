@@ -3,19 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/main_color"
+    android:background="@color/very_light_green"
     android:orientation="vertical"
     android:weightSum="100">
 
     <ImageView
-        android:id="@+id/add_book_image"
+        android:id="@+id/book_details_image"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="50"
         android:src="@drawable/baseline_image_24"
         android:layout_margin="16dp"/>
     <ImageView
-        android:id="@+id/add_book_error"
+        android:id="@+id/book_details_error"
         android:layout_width="28dp"
         android:layout_height="28dp"
         android:layout_gravity="end"
@@ -26,7 +26,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/add_book_layout_name"
+        android:id="@+id/book_details_layout_name"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="12"
@@ -37,7 +37,7 @@
         >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/add_book_edit_name"
+            android:id="@+id/book_details_edit_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textPersonName"
@@ -48,12 +48,11 @@
             android:hint="Book Name"
             android:textColorLink="@color/black"
             android:textColorHighlight="@color/black"
-            android:textCursorDrawable="@color/black"
-            ></com.google.android.material.textfield.TextInputEditText>
+            android:textCursorDrawable="@color/black" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/add_book_layout_details"
+        android:id="@+id/book_details_layout_details"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="12"
@@ -64,7 +63,7 @@
         >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/add_book_edit_details"
+            android:id="@+id/book_details_edit_details"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textMultiLine"
@@ -81,22 +80,23 @@
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:id="@+id/add_book_spinner"
+        android:entries="@array/catego"
+        android:id="@+id/book_details_spinner"
         android:layout_weight="12"
-        android:outlineAmbientShadowColor="@color/white"
-        android:background="@drawable/edit_sign_in"
-        android:popupBackground="@color/white"
-        android:outlineSpotShadowColor="@color/white"
+        android:outlineAmbientShadowColor="@color/black"
+        android:popupBackground="@color/black"
+        style="@style/CardView.Dark"
+        android:outlineSpotShadowColor="@color/black"
         android:layout_margin="20dp"
         />
 
 
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="match_parent"
-        android:id="@+id/add_book_button"
+        android:id="@+id/books_details_save"
         android:layout_gravity="center"
         android:layout_height="wrap_content"
-        android:text="Add Book"
+        android:text="Save changes"
         android:background="@drawable/button_sign_in"
         android:layout_margin="20dp"
         android:textColor="@color/white"

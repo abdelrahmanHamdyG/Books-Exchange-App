@@ -2,7 +2,7 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/textView"
+    android:id="@+id/spinner_textView"
     android:textSize="18sp"
     android:padding="18dp"
     android:textColor="@color/black"

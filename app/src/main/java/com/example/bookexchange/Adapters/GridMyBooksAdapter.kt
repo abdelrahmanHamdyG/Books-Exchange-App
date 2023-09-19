@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.view.drawToBitmap
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bookexchange.AppUtils
@@ -27,6 +29,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
 
 class GridMyBooksAdapter(var booksList:ArrayList<Book>, var uid:String, var context: Context):RecyclerView.Adapter<GridMyBooksAdapter.viewHolder>() {
 
@@ -109,11 +112,18 @@ class GridMyBooksAdapter(var booksList:ArrayList<Book>, var uid:String, var cont
 
 
 
-            var intent= Intent(context, BooksDetailsActivity::class.java)
+            val imageBitmap = (holder.bookImage.drawable as? BitmapDrawable)?.bitmap
+            val stream = ByteArrayOutputStream()
+            imageBitmap?.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            val byteArray = stream.toByteArray()
+            val intent= Intent(context, BooksDetailsActivity::class.java)
+
+
             Log.i("my_trag", booksList[position].city!!+" hhhhh")
             intent.putExtra("book_name",booksList[position].bookName)
             intent.putExtra("book_details",booksList[position].bookDescription)
-            intent.putExtra("book_image",booksList[position].imageUri)
+            intent.putExtra("image_uri",booksList[position].imageUri)
+            intent.putExtra("image_bitmap",byteArray);
             intent.putExtra("book_key",booksList[position].key)
             intent.putExtra("book_category",booksList[position].category)
             context.startActivity( intent)

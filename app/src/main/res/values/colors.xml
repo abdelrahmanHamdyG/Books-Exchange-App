@@ -10,5 +10,6 @@
     <color name="main_color">#4D7E3E</color>
     <color name="second_color">#31C48D</color>
     <color name="second_color_pressed">#247E66</color>
+    <color name="very_light_green">#A6FF3F</color>
 
 </resources>

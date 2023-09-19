@@ -8,6 +8,12 @@ import androidx.appcompat.app.AlertDialog
 
 object AppUtils {
     const val TAG="my_trag"
+     val categoryMap = mapOf(
+        "Scientific" to 0,
+        "Religious" to 1,
+        "Novels" to 2,
+         "Historic" to 3
+    )
 
     fun showToast(context: Context,string :String){
 
