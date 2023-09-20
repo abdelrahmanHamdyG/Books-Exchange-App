@@ -39,7 +39,6 @@ class AddBookViewModel:ViewModel() {
 
         }
 
-
     }
 
     suspend fun uploadTheBook(book: Book,uid:String):Boolean{
@@ -52,6 +51,7 @@ class AddBookViewModel:ViewModel() {
             book.city=city
 
             val first= uploadToAllBooks(book,uid)
+
 
             book.key=first;
 

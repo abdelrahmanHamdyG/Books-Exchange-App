@@ -12,11 +12,8 @@ import com.example.bookexchange.Models.Book
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 
 class MyBooksViewModel: ViewModel() {
 
@@ -62,6 +59,49 @@ class MyBooksViewModel: ViewModel() {
 
         myBooksList.postValue(_myBooksList)
     }
+    suspend fun removeValue(key:String,uid:String):Boolean{
+
+        val firebaseDataBase = FirebaseDatabase.getInstance().getReference()
+        var theReturn=true;
+
+        val job1= GlobalScope.launch(Dispatchers.IO) {
+
+            try {
+
+
+                firebaseDataBase.child("AllBooks").child(key).removeValue().await()
+            }catch (e:Exception){
+
+                theReturn=false;
+            }
+
+        }
+
+        val job2= GlobalScope.launch(Dispatchers.IO) {
+            try {
+
+
+                val response =
+                    firebaseDataBase.child("All Users").child(uid).child("Books").get().await()
+                for (i in response.children) {
+                    val book = i.getValue(Book::class.java)
+                    if (book!!.key == key) {
+                        firebaseDataBase.child("All Users").child(uid).child("Books").child(i.key!!)
+                            .removeValue().await()
+                    }
+
+                }
+            }catch (e:Exception){
+                theReturn=false;
+
+            }
+        }
+        job1.join()
+        job2.join()
+        return theReturn;
+
+    }
+
 
 
 

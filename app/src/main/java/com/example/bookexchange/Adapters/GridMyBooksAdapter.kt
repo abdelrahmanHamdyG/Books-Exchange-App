@@ -19,6 +19,7 @@ import com.example.bookexchange.AppUtils
 import com.example.bookexchange.Models.Book
 import com.example.bookexchange.R
 import com.example.bookexchange.UI.BooksDetailsActivity
+import com.example.bookexchange.ViewModels.MyBooksViewModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -57,9 +58,10 @@ class GridMyBooksAdapter(var booksList:ArrayList<Book>, var uid:String, var cont
 
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
         Log.i("my_trag","I am in the adapter")
+        var myBooksViewModel=MyBooksViewModel()
 
-
-        val storageReference = FirebaseStorage.getInstance().getReference(booksList[position].imageUri.toString()).downloadUrl.addOnCompleteListener{
+        holder.progress.visibility=View.VISIBLE
+        FirebaseStorage.getInstance().getReference(booksList[position].imageUri.toString()).downloadUrl.addOnCompleteListener{
 
             if(it.isSuccessful) {
                 Glide.with(context)
@@ -69,6 +71,7 @@ class GridMyBooksAdapter(var booksList:ArrayList<Book>, var uid:String, var cont
                 Log.i("my_trag",it.exception?.message.toString())
 
             }
+            holder.progress.visibility=View.GONE
 
         }
 
@@ -84,7 +87,7 @@ class GridMyBooksAdapter(var booksList:ArrayList<Book>, var uid:String, var cont
                 var k=booksList[position].key.toString()
                 GlobalScope.launch(Dispatchers.IO){
 
-                    var returned=removeValue(k)
+                    var returned=myBooksViewModel.removeValue(k,uid)
                     withContext(Dispatchers.Main){
 
                         dialog.dismiss()
@@ -134,48 +137,6 @@ class GridMyBooksAdapter(var booksList:ArrayList<Book>, var uid:String, var cont
 
 
 
-    suspend fun removeValue(key:String):Boolean{
-
-        val firebaseDataBase = FirebaseDatabase.getInstance().getReference()
-        var theReturn=true;
-
-        val job1=GlobalScope.launch(Dispatchers.IO) {
-
-        try {
-
-
-            firebaseDataBase.child("AllBooks").child(key).removeValue().await()
-        }catch (e:Exception){
-
-            theReturn=false;
-        }
-
-        }
-
-        val job2=GlobalScope.launch(Dispatchers.IO) {
-            try {
-
-
-                val response =
-                    firebaseDataBase.child("All Users").child(uid).child("Books").get().await()
-                for (i in response.children) {
-                    val book = i.getValue(Book::class.java)
-                    if (book!!.key == key) {
-                        firebaseDataBase.child("All Users").child(uid).child("Books").child(i.key!!)
-                            .removeValue().await()
-                    }
-
-                }
-            }catch (e:Exception){
-                theReturn=false;
-
-            }
-        }
-        job1.join()
-        job2.join()
-        return theReturn;
-
-     }
 
 
 

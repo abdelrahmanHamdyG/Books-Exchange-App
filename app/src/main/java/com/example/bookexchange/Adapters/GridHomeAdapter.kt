@@ -43,7 +43,9 @@ class GridHomeAdapter(var arrayList:ArrayList<Book>): RecyclerView.Adapter<GridH
 
     override fun onBindViewHolder(holder: viewholder, position: Int) {
 
-        var storageReference = FirebaseStorage.getInstance().reference
+        val storageReference = FirebaseStorage.getInstance().reference
+
+
 
         val imageRef = storageReference.child(arrayList[position].imageUri.toString())
         imageRef.downloadUrl
