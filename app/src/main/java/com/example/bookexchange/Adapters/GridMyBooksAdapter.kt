@@ -87,7 +87,7 @@ class GridMyBooksAdapter(var booksList:ArrayList<Book>, var uid:String, var cont
                 var k=booksList[position].key.toString()
                 GlobalScope.launch(Dispatchers.IO){
 
-                    var returned=myBooksViewModel.removeValue(k,uid)
+                    val returned=myBooksViewModel.removeValue(k,uid,booksList[position].imageUri!!)
                     withContext(Dispatchers.Main){
 
                         dialog.dismiss()

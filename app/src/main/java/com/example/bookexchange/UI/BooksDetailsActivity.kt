@@ -7,22 +7,15 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
-import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.ViewModelProvider
@@ -44,7 +37,7 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
     lateinit var addBookViewModel:AddBookViewModel
     lateinit var dialogg:Dialog
     private var imageChoosen=false;
-    val IMAGE_PICK_REQUEST_CODE=5;
+    private val IMAGE_PICK_REQUEST_CODE=5;
     lateinit var firebaseAuth: FirebaseAuth
     lateinit var editName:TextInputEditText
     lateinit var editDetails:TextInputEditText
@@ -53,7 +46,6 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
     lateinit var bookDetails:String
     lateinit var spinner:Spinner
     lateinit var save:AppCompatButton
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +62,19 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
         spinner=findViewById<Spinner>(R.id.book_details_spinner)
         save=findViewById<AppCompatButton>(R.id.books_details_save)
 
+        spinner.onItemSelectedListener=object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+
+
+                save.isEnabled = editDetails.text.toString()!=bookDetails||editName.text.toString()!=bookName||
+                        spinner.selectedItem.toString()!=bookCategory||imageChoosen
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+
+        }
 
         val bookKey=intent.getStringExtra("book_key")
         bookName= intent.getStringExtra("book_name").toString()
@@ -88,6 +93,7 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
         firebaseAuth=FirebaseAuth.getInstance()
 
         spinner.setSelection(AppUtils.categoryMap[bookCategory]!!)
+
         save.isEnabled=false;
 
         image.setImageBitmap(imageBitmap)
@@ -96,10 +102,6 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
         dialogg = AlertDialog.Builder(this)
             .setView(dialogView)
             .setCancelable(false).create()
-
-
-
-
 
         addBookViewModel.result.observe(this){
 
@@ -113,8 +115,6 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
 
 
         }
-
-
 
 
 
@@ -132,7 +132,7 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
 
                 GlobalScope.launch {
                     val job1 = async {
-                        myBooksViewModel.removeValue(bookKey.toString(), firebaseAuth.currentUser!!.uid);
+                        myBooksViewModel.removeValue(bookKey.toString(), firebaseAuth.currentUser!!.uid,bookImage.toString());
                     }
 
                     if(job1.await()){
@@ -162,9 +162,6 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
             startActivityForResult(intent, IMAGE_PICK_REQUEST_CODE)
         }
 
-
-
-
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -175,6 +172,7 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
             image.setImageURI(selectedImage)
 
             imageChoosen=true;
+            save.isEnabled=true;
 
 
         }
@@ -190,6 +188,8 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
 
         save.isEnabled = editDetails.text.toString()!=bookDetails||editName.text.toString()!=bookName||
                 spinner.selectedItem.toString()!=bookCategory||imageChoosen
+        AppUtils.LOG(spinner.selectedItem.toString()+" "+bookCategory + "   "+imageChoosen)
+
 
 
     }
@@ -197,7 +197,6 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
     override fun afterTextChanged(p0: Editable?) {
 
     }
-
 
 }
 class CustomSpinnerAdapter(

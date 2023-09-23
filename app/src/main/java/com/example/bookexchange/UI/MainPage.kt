@@ -25,7 +25,7 @@ class MainPage : AppCompatActivity() {
 
         bottom.selectedItemId = R.id.navigation_home
         loadFragment(HomeFragment())
-        setSupportActionBar(toolbar)
+//        setSupportActionBar(toolbar)
 
 
 

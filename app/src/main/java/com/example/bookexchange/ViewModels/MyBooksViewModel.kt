@@ -59,7 +59,7 @@ class MyBooksViewModel: ViewModel() {
 
         myBooksList.postValue(_myBooksList)
     }
-    suspend fun removeValue(key:String,uid:String):Boolean{
+    suspend fun removeValue(key:String,uid:String,imageName:String):Boolean{
 
         val firebaseDataBase = FirebaseDatabase.getInstance().getReference()
         var theReturn=true;
@@ -67,8 +67,6 @@ class MyBooksViewModel: ViewModel() {
         val job1= GlobalScope.launch(Dispatchers.IO) {
 
             try {
-
-
                 firebaseDataBase.child("AllBooks").child(key).removeValue().await()
             }catch (e:Exception){
 
@@ -96,8 +94,20 @@ class MyBooksViewModel: ViewModel() {
 
             }
         }
+        val job3=GlobalScope.launch (Dispatchers.IO){
+
+            val firebaseStorage=FirebaseStorage.getInstance().reference
+
+            try {
+                firebaseStorage.child(imageName).delete().await()
+            }catch (e:Exception){
+                theReturn=false;
+            }
+
+        }
         job1.join()
         job2.join()
+        job3.join()
         return theReturn;
 
     }
