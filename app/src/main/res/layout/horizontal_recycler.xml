@@ -1,0 +1,32 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+
+    android:id="@+id/horizontal_grid_layout"
+    android:background="@drawable/categories_borders"
+
+    android:padding="8dp">
+
+    <!-- ImageView for the item -->
+    <ImageView
+        android:id="@+id/horizontal_grid_image"
+        android:layout_width="40dp"
+        android:layout_gravity="center"
+        android:layout_height="40dp"
+        android:src="@drawable/biography"
+        android:scaleType="centerCrop" />
+
+    <!-- TextView below the ImageView -->
+    <TextView
+        android:id="@+id/horizontal_grid_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Item Name"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:paddingTop="4dp" />
+
+</LinearLayout>

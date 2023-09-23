@@ -5,36 +5,68 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UI.MainPage"
-    android:weightSum="100"
+
     android:orientation="vertical">
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/main_page_toolbar"
         android:layout_width="match_parent"
+        app:title=" "
         android:layout_height="0dp"
-        android:layout_weight="10"
+        android:layout_weight="7"
         android:background="@color/second_color"
-        android:theme="@style/MyToolBar"
 
-        ></androidx.appcompat.widget.Toolbar>
+        app:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="15dp"
+            android:orientation="horizontal"
+            >
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_weight="2"
+                android:id="@+id/main_page_back"
+                android:layout_width="0dp"
+                android:background="@drawable/back_drawable"
+                android:drawableStart="@drawable/baseline_arrow_back_24"
+                android:visibility="gone"
+                android:layout_height="match_parent"/>
+
+        <EditText
+            android:layout_weight="18"
+            android:id="@+id/main_page_edit"
+            android:layout_width="0dp"
+            android:textColor="@color/black"
+            android:layout_margin="3dp"
+            android:background="@drawable/edit_sign_in"
+            android:drawableStart="@drawable/baseline_search_24"
+            android:padding="10dp"
+            android:layout_height="match_parent"/>
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+
     <FrameLayout
+        android:id="@+id/main_frame_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:id="@+id/main_frame_layout"
-        android:layout_alignParentTop="true"
         android:layout_above="@id/main_bottom"
-        android:layout_weight="82"
-        ></FrameLayout>
+        android:layout_alignParentTop="true"
+        android:layout_weight="85" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
         android:id="@+id/main_bottom"
         android:layout_height="0dp"
-        android:layout_weight="8"
+
+        android:layout_weight="9"
         app:menu="@menu/navigation_menu"
         app:itemIconTint="@drawable/bottom_navigation"
         app:itemTextColor="@drawable/bottom_navigation"
-        android:background="@color/second_color"
-        android:layout_alignParentBottom="true"
-        ></com.google.android.material.bottomnavigation.BottomNavigationView>
+        android:background="@color/second_color" />
 
 
 

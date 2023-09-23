@@ -5,8 +5,10 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bookexchange.Adapters.GridHomeAdapter
+import com.example.bookexchange.Adapters.SimpleHorizontalRecycler
 import com.example.bookexchange.Models.Book
 import com.example.bookexchange.R
 import com.google.firebase.database.DataSnapshot
@@ -23,8 +25,18 @@ class HomeFragment : Fragment() {
     ): View? {
 
         Log.i("my_trag", "Home Fragment on Create")
-        var view= inflater.inflate(R.layout.fragment_home, container, false)
+        val view= inflater.inflate(R.layout.fragment_home, container, false)
+
         recycler=view.findViewById<RecyclerView>(R.id.fragment_home_recycler)
+
+        val horizontalRecycler=view.findViewById<RecyclerView>(R.id.fragment_home_horizontal_recycler)
+
+        horizontalRecycler.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        horizontalRecycler.adapter = SimpleHorizontalRecycler()
+
+
+
+
 
         var firebaseDatabase= FirebaseDatabase.getInstance().reference
         //firebaseDatabase.child("AllBooks").addValueEventListener(valueEventListener())
@@ -43,16 +55,16 @@ class HomeFragment : Fragment() {
 
     inner class valueEventListener: ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
-        var books= ArrayList<Book>()
+        val books= ArrayList<Book>()
             for(i in snapshot.children){
                 for(j in  i.children){
-                    var bookName=j.child("bookName").getValue(String::class.java)
-                    var bookDescription=j.child("bookDescription").getValue(String::class.java)
-                    var category=j.child("category").getValue(String::class.java)
-                    var imageUri=j.child("imageUri").getValue(String::class.java)
-                    var user=j.child("user").getValue(String::class.java)
-                    var key=j.child("key").getValue(String::class.java)
-                    var city=j.child("city").getValue(String::class.java)
+                    val bookName=j.child("bookName").getValue(String::class.java)
+                    val bookDescription=j.child("bookDescription").getValue(String::class.java)
+                    val category=j.child("category").getValue(String::class.java)
+                    val imageUri=j.child("imageUri").getValue(String::class.java)
+                    val user=j.child("user").getValue(String::class.java)
+                    val key=j.child("key").getValue(String::class.java)
+                    val city=j.child("city").getValue(String::class.java)
 
                     books.add(
                         Book(
@@ -80,8 +92,5 @@ class HomeFragment : Fragment() {
 
 
     }
-
-
-
 
 }

@@ -16,19 +16,24 @@
         tools:targetApi="31">
         <activity
             android:name=".UI.BooksDetailsActivity"
-
+            android:theme="@style/Theme.BookExchange"
             android:exported="false" />
         <activity
             android:name=".UI.AddBookActivity"
+            android:theme="@style/Theme.BookExchange"
             android:exported="false" />
         <activity
             android:name=".UI.SignIn"
+            android:theme="@style/Theme.BookExchange"
             android:exported="false" />
         <activity
             android:name=".UI.Registeration"
+            android:theme="@style/Theme.BookExchange"
             android:exported="false" />
         <activity
             android:name=".UI.MainPage"
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/Theme.BookExchange"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

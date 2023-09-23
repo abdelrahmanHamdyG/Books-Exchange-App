@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    tools:context=".UI.HomeFragment"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    tools:context=".UI.HomeFragment">
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_weight="10"
+        android:id="@+id/fragment_home_horizontal_recycler"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_home_recycler"
+        android:layout_weight="50"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        ></androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="0dp" />
 
 
-</FrameLayout>
+</LinearLayout>
