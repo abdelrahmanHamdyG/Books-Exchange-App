@@ -14,6 +14,17 @@ object AppUtils {
         "Novels" to 2,
          "Historic" to 3
     )
+     val texts = arrayOf(
+        "All",
+        "Religious",
+        "Biography",
+        "Historic",
+        "Dictionary",
+        "Novels",
+        "Scientific",
+
+        )
+
 
     fun showToast(context: Context,string :String){
 

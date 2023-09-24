@@ -35,7 +35,7 @@ class MyBooksViewModel: ViewModel() {
         try {
 
 
-            var snapshot = firebaseDatabase.child("All Users").child(uid).child("Books").get().await()
+            val snapshot = firebaseDatabase.child("All Users").child(uid).child("Books").get().await()
             for (book in snapshot!!.children) {
                 Log.i("my_trag", book.toString())
                 val bookName = book.child("bookName").getValue(String::class.java)

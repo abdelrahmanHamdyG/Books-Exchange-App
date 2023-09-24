@@ -94,6 +94,8 @@ class MyBooksFragment : Fragment() {
         GlobalScope.launch {
             myBooksViewModel.readTexts(firebaseAuth.currentUser!!.uid)
         }
+
+
     }
 
 

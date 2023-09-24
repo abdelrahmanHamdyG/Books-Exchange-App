@@ -32,7 +32,6 @@ class GridHomeAdapter(var arrayList:ArrayList<Book>): RecyclerView.Adapter<GridH
         return viewholder(view)
 
 
-
     }
 
     override fun getItemCount(): Int {

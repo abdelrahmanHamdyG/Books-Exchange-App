@@ -4,9 +4,10 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
 
-    android:id="@+id/horizontal_grid_layout"
-    android:background="@drawable/categories_borders"
+    android:layout_margin="0.5dp"
 
+    android:id="@+id/horizontal_grid_layout"
+    android:background="@color/white"
     android:padding="8dp">
 
     <!-- ImageView for the item -->

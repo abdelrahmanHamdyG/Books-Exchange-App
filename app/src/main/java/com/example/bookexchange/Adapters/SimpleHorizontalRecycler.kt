@@ -1,22 +1,25 @@
 package com.example.bookexchange.Adapters
 
 import android.annotation.SuppressLint
-import android.view.KeyEvent.ACTION_DOWN
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.view.menu.MenuView.ItemView
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bookexchange.AppUtils
+import com.example.bookexchange.AppUtils.texts
 import com.example.bookexchange.R
 
+interface OnItemClickListener {
+    fun onItemClick(mask: Array<Int>)
+}
 class SimpleHorizontalRecycler(): RecyclerView.Adapter<SimpleHorizontalRecycler.viewHolder>() {
+    private var onItemClickListener: OnItemClickListener? = null
 
-    val drawableArray = arrayOf(
+
+    private val drawableArray = arrayOf(
         R.drawable.all_inclusive,
         R.drawable.islamic,
         R.drawable.biography,
@@ -26,17 +29,8 @@ class SimpleHorizontalRecycler(): RecyclerView.Adapter<SimpleHorizontalRecycler.
         R.drawable.science,
         // Add more drawable resource IDs as needed
     )
-    val texts = arrayOf(
-        "All",
-        "Islamic",
-        "Biography",
-        "History",
-        "Dictionary",
-        "Novel",
-        "Science",
 
-    )
-    var pressed = arrayOf(
+    private var pressed = arrayOf(
         1,
         0,
         0,
@@ -45,7 +39,7 @@ class SimpleHorizontalRecycler(): RecyclerView.Adapter<SimpleHorizontalRecycler.
         0,
         0
     );
-    val dr= arrayOf(
+    private val dr= arrayOf(
         R.drawable.categories_borders_pressed,
         R.drawable.categories_borders_enabled
     )
@@ -119,13 +113,19 @@ class SimpleHorizontalRecycler(): RecyclerView.Adapter<SimpleHorizontalRecycler.
                 }else{
                     pressed[position]=pressed[position]*-1+1;
                 }
-
-
             }
+            onItemClickListener!!.onItemClick(pressed)
             notifyDataSetChanged()
+
         }
 
 
+
+    }
+
+    fun setItemClickListener(listener: OnItemClickListener){
+
+        this.onItemClickListener=listener
     }
 
 
