@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bookexchange.Models.Book
@@ -61,6 +62,11 @@ class GridHomeAdapter(var arrayList:ArrayList<Book>): RecyclerView.Adapter<GridH
         holder.bookName.text=arrayList[position].bookName
         holder.bookDetails.text=arrayList[position].bookDescription
 
+
+        holder.button.setOnClickListener {
+
+
+        }
 
     }
 

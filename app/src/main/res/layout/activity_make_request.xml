@@ -1,0 +1,95 @@
+<!-- exchange_layout.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <!-- Your Book Container -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <!-- Your Book Image -->
+        <ImageView
+            android:id="@+id/make_request_my_image"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:src="@drawable/baseline_image_24" />
+
+        <!-- Your Book Details -->
+        <TextView
+            android:id="@+id/make_request_my_book"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your Book Details"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="8dp" />
+
+        <!-- Your User Details -->
+        <TextView
+            android:id="@+id/make_request_my_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your User Details"
+            android:textSize="14sp"
+            android:textColor="@color/second_color"
+            android:layout_marginTop="4dp" />
+
+    </LinearLayout>
+
+    <!-- Swap Icon -->
+    <ImageView
+        android:id="@+id/swap_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/baseline_swap_calls_24"
+        android:layout_gravity="center"
+        android:contentDescription="Swap Icon" />
+
+    <!-- Other User's Book Container -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <!-- Other User's Book Image -->
+        <ImageView
+            android:id="@+id/make_request_his_image"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:src="@drawable/baseline_delete_24" />
+
+        <!-- Other User's Book Details -->
+        <TextView
+            android:id="@+id/make_request_his_book"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Other User's Book Details"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="8dp" />
+
+        <!-- Other User's Details -->
+        <TextView
+            android:id="@+id/make_request_his_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Other User's Details"
+            android:textSize="14sp"
+            android:textColor="@color/second_color"
+            android:layout_marginTop="4dp" />
+
+    </LinearLayout>
+</LinearLayout>
