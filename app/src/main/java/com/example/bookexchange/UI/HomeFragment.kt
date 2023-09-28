@@ -80,7 +80,7 @@ class HomeFragment : Fragment(),OnItemClickListener {
                 recycler.visibility=View.VISIBLE
 
                 AppUtils.LOG("adaaaaaaaapter")
-                val adapter = GridHomeAdapter(it)
+                val adapter = GridHomeAdapter(it,requireContext())
 
                 recycler.adapter = adapter
 

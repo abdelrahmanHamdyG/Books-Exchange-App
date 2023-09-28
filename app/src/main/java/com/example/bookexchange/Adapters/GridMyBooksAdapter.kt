@@ -58,7 +58,7 @@ class GridMyBooksAdapter(var booksList:ArrayList<Book>, var uid:String, var cont
 
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
         Log.i("my_trag","I am in the adapter")
-        var myBooksViewModel=MyBooksViewModel()
+        val myBooksViewModel=MyBooksViewModel()
 
         holder.progress.visibility=View.VISIBLE
         FirebaseStorage.getInstance().getReference(booksList[position].imageUri.toString()).downloadUrl.addOnCompleteListener{

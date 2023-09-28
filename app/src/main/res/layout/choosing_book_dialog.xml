@@ -9,6 +9,7 @@
     <!-- RecyclerView to display data -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/dialog_recycler"
+        android:background="#F6F6F4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"/>
@@ -16,6 +17,7 @@
         android:id="@+id/dialog_button"
         android:background="@drawable/button_sign_in"
         android:layout_margin="15dp"
+        android:enabled="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="OK"/>

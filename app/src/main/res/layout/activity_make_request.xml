@@ -15,33 +15,23 @@
         android:padding="8dp">
 
         <!-- Your Book Image -->
-        <ImageView
-            android:id="@+id/make_request_my_image"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/make_request_my_recycler"
             android:layout_width="match_parent"
             android:layout_height="180dp"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
-            android:src="@drawable/baseline_image_24" />
+            android:background="@drawable/baseline_book_24"
+            />
 
-        <!-- Your Book Details -->
-        <TextView
-            android:id="@+id/make_request_my_book"
-            android:layout_width="match_parent"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/make_request_my_floating"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
             android:layout_height="wrap_content"
-            android:text="Your Book Details"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="8dp" />
-
-        <!-- Your User Details -->
-        <TextView
-            android:id="@+id/make_request_my_details"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Your User Details"
-            android:textSize="14sp"
-            android:textColor="@color/second_color"
-            android:layout_marginTop="4dp" />
+            android:background="@color/second_color"
+            android:tint="@color/second_color"
+            android:src="@drawable/baseline_add_24" />
 
     </LinearLayout>
 
@@ -62,34 +52,24 @@
         android:orientation="vertical"
         android:padding="8dp">
 
-        <!-- Other User's Book Image -->
-        <ImageView
-            android:id="@+id/make_request_his_image"
+        <!-- Your Book Image -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/make_request_his_recycler"
             android:layout_width="match_parent"
             android:layout_height="180dp"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
-            android:src="@drawable/baseline_delete_24" />
+            android:background="@drawable/baseline_image_24"
+            />
 
-        <!-- Other User's Book Details -->
-        <TextView
-            android:id="@+id/make_request_his_book"
-            android:layout_width="match_parent"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/make_request_his_floating"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
             android:layout_height="wrap_content"
-            android:text="Other User's Book Details"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="8dp" />
-
-        <!-- Other User's Details -->
-        <TextView
-            android:id="@+id/make_request_his_details"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Other User's Details"
-            android:textSize="14sp"
-            android:textColor="@color/second_color"
-            android:layout_marginTop="4dp" />
+            android:background="@color/second_color"
+            android:tint="@color/second_color"
+            android:src="@drawable/baseline_add_24" />
 
     </LinearLayout>
 </LinearLayout>
