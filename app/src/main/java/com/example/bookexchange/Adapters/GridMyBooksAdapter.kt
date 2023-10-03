@@ -104,7 +104,7 @@ class GridMyBooksAdapter(var booksList:ArrayList<Book>, var uid:String, var cont
             }
 
 
-            var x=alertDialog.create()
+            val x=alertDialog.create()
             x.show()
 
         }
@@ -129,6 +129,8 @@ class GridMyBooksAdapter(var booksList:ArrayList<Book>, var uid:String, var cont
             intent.putExtra("image_bitmap",byteArray);
             intent.putExtra("book_key",booksList[position].key)
             intent.putExtra("book_category",booksList[position].category)
+            intent.putExtra("city",booksList[position].city)
+
             context.startActivity( intent)
 
         }

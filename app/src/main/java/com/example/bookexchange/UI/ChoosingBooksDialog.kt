@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bookexchange.Adapters.BooksListener
 import com.example.bookexchange.Adapters.DialogFragmentRecycler
 import com.example.bookexchange.Models.Book
+import com.example.bookexchange.Models.SendFromDialogToFragmentModel
 import com.example.bookexchange.R
 import com.example.bookexchange.ViewModels.MyBooksViewModel
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -21,13 +21,16 @@ import kotlinx.coroutines.launch
 
 interface FinishingFragmentListener{
 
-    fun setListener(arr:ArrayList<Book>);
+    fun setListener(
+        arr: ArrayList<Book>,
+        arr2: ArrayList<SendFromDialogToFragmentModel>,
+        uid: String
+    );
 }
-class ChoosingBooksDialog: DialogFragment(),BooksListener {
+class ChoosingBooksDialog(val uid:String): DialogFragment(),BooksListener {
 
     lateinit var button:AppCompatButton
     lateinit var myBooksViewModel: MyBooksViewModel
-    lateinit var firebaseAuth: FirebaseAuth
     lateinit var finishingFragmentListener: FinishingFragmentListener
     lateinit var adapter:DialogFragmentRecycler
     lateinit var books :ArrayList<Book>
@@ -37,7 +40,6 @@ class ChoosingBooksDialog: DialogFragment(),BooksListener {
         val view = inflater.inflate(R.layout.choosing_book_dialog, null)
         val recycler=view.findViewById<RecyclerView>(R.id.dialog_recycler)
 
-        firebaseAuth=FirebaseAuth.getInstance()
         button=view.findViewById(R.id.dialog_button)
 
         builder.setView(view);
@@ -46,7 +48,7 @@ class ChoosingBooksDialog: DialogFragment(),BooksListener {
 
         myBooksViewModel.myBooksList.observe(this){
             books=it
-            adapter=DialogFragmentRecycler(books,firebaseAuth.currentUser!!.uid,requireContext())
+            adapter=DialogFragmentRecycler(books,uid,requireContext())
             adapter.setListener(this)
             recycler.layoutManager= LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
             recycler.adapter=adapter;
@@ -55,9 +57,9 @@ class ChoosingBooksDialog: DialogFragment(),BooksListener {
         button.setOnClickListener {
             val chosenBooks=ArrayList<Book>()
             for (i in adapter.chosenBooks){
-                chosenBooks.add(books[i]);
+                chosenBooks.add(books[i.position!!]);
             }
-            finishingFragmentListener.setListener(chosenBooks)
+            finishingFragmentListener.setListener(chosenBooks,adapter.chosenBooks,uid)
 
 
         }
@@ -67,7 +69,7 @@ class ChoosingBooksDialog: DialogFragment(),BooksListener {
 
         GlobalScope.launch(Dispatchers.IO) {
 
-            myBooksViewModel.readTexts(firebaseAuth.currentUser!!.uid);
+            myBooksViewModel.readTexts(uid);
 
         }
 
@@ -78,7 +80,7 @@ class ChoosingBooksDialog: DialogFragment(),BooksListener {
 
     }
 
-    override fun onItemClick(size: Int) {
-        button.isEnabled = size!=0;
+    override fun onItemClick(arr: ArrayList<SendFromDialogToFragmentModel>) {
+        button.isEnabled = arr.size!=0;
     }
 }

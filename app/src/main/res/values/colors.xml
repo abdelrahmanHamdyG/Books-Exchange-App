@@ -11,5 +11,6 @@
     <color name="second_color">#31C48D</color>
     <color name="second_color_pressed">#247E66</color>
     <color name="very_light_green">#A6FF3F</color>
+    <color name="offwhite">#F6F6F4</color>
 
 </resources>

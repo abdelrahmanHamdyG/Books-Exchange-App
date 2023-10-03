@@ -42,7 +42,7 @@ class MyBooksFragment : Fragment() {
 
         val view= inflater.inflate(R.layout.fragment_my_books, container, false)
         val floating=view.findViewById<FloatingActionButton>(R.id.my_books_floating)
-        grid=view.findViewById<RecyclerView>(R.id.my_books_grid)
+        grid=view.findViewById(R.id.my_books_grid)
 
         val dialogView = layoutInflater.inflate(R.layout.progress_dialog, null)
         dialogg = AlertDialog.Builder(requireActivity())

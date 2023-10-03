@@ -1,75 +1,102 @@
 <!-- exchange_layout.xml -->
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="80"
     android:orientation="horizontal"
-    android:padding="16dp">
+    android:padding="6dp">
 
-    <!-- Your Book Container -->
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:layout_height="match_parent"
+        android:layout_weight="50"
+        android:orientation="vertical">
 
-        <!-- Your Book Image -->
+
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:background="@color/second_color"
             android:id="@+id/make_request_my_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:scaleType="centerCrop"
-            android:adjustViewBounds="true"
-            android:background="@drawable/baseline_book_24"
+            android:layout_height="match_parent"
             />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:id="@+id/make_request_my_floating"
-            android:layout_width="wrap_content"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:background="@color/second_color"
-            android:tint="@color/second_color"
             android:src="@drawable/baseline_add_24" />
 
-    </LinearLayout>
 
-    <!-- Swap Icon -->
-    <ImageView
-        android:id="@+id/swap_icon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/baseline_swap_calls_24"
-        android:layout_gravity="center"
-        android:contentDescription="Swap Icon" />
+    </RelativeLayout>
 
-    <!-- Other User's Book Container -->
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:layout_weight="7" >
 
-        <!-- Your Book Image -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/make_request_his_recycler"
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:scaleType="centerCrop"
-            android:adjustViewBounds="true"
-            android:background="@drawable/baseline_image_24"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_swap_calls_24"
+
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="50"
+        android:orientation="vertical">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:background="@color/second_color"
+            android:id="@+id/make_request_your_recycler"
+            android:layout_height="match_parent"
             />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/make_request_his_floating"
             android:layout_width="wrap_content"
-            android:layout_gravity="center"
             android:layout_height="wrap_content"
-            android:background="@color/second_color"
-            android:tint="@color/second_color"
+            android:layout_margin="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/make_request_your_floating"
             android:src="@drawable/baseline_add_24" />
 
-    </LinearLayout>
+
+    </RelativeLayout>
+
+
+</LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/make_request_button"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:orientation="horizontal"
+        android:layout_margin="8dp"
+        android:background="@drawable/button_sign_in"
+        android:text="Make Request"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:padding="5dp">
+
+</androidx.appcompat.widget.AppCompatButton>
 </LinearLayout>

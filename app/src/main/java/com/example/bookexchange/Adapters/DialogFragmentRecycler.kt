@@ -1,6 +1,8 @@
 package com.example.bookexchange.Adapters
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,19 +16,20 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.example.bookexchange.AppUtils
 import com.example.bookexchange.Models.Book
+import com.example.bookexchange.Models.SendFromDialogToFragmentModel
 import com.example.bookexchange.R
 import com.google.firebase.storage.FirebaseStorage
-import java.util.zip.Inflater
+import java.io.ByteArrayOutputStream
 
 interface BooksListener{
-    fun onItemClick(size:Int)
+    fun onItemClick(size: ArrayList<SendFromDialogToFragmentModel>)
 
 }
 
 class DialogFragmentRecycler(var booksList:ArrayList<Book>, var uid:String, var context: Context): RecyclerView.Adapter<DialogFragmentRecycler.viewHolder>() {
 
 
-    var chosenBooks=ArrayList<Int>()
+    var chosenBooks=ArrayList<SendFromDialogToFragmentModel>()
     lateinit var bookListener:BooksListener
     inner class viewHolder(view:View):ViewHolder(view){
 
@@ -79,14 +82,21 @@ class DialogFragmentRecycler(var booksList:ArrayList<Book>, var uid:String, var 
                 AppUtils.LOG("clicked dialog")
                 holder.deleteButton.visibility = View.VISIBLE
                 holder.layout.setBackgroundResource(R.drawable.item_is_choosen)
-                chosenBooks.add(position)
+
+                val imageBitmap = (holder.bookImage.drawable as? BitmapDrawable)?.bitmap
+                val stream = ByteArrayOutputStream()
+                imageBitmap?.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                val byteArray = stream.toByteArray()
+
+                chosenBooks.add(SendFromDialogToFragmentModel(position,byteArray))
+
             }else{
 
                 holder.deleteButton.visibility = View.INVISIBLE
                 holder.layout.setBackgroundResource(R.color.white)
-                chosenBooks.remove(position)
+                chosenBooks.removeIf { it.position == position}
             }
-            bookListener.onItemClick(chosenBooks.size)
+            bookListener.onItemClick(chosenBooks)
         }
 
     }
