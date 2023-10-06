@@ -46,8 +46,9 @@ class MyBooksViewModel: ViewModel() {
                 val user = book.child("user").getValue(String::class.java)
                 val key = book.child("key").getValue(String::class.java)
                 val city = book.child("city").getValue(String::class.java)
+                val state=book.child("state").getValue(String::class.java)
 
-                _myBooksList.add(Book(bookName!!, bookDescription!!, category!!, imageUri!!, user!!, key!!, city!!))
+                _myBooksList.add(Book(bookName!!, bookDescription!!, category!!, imageUri!!, user!!, key!!, city!!,state!!))
 
             }
 

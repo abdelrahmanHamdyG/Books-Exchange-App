@@ -34,6 +34,7 @@ class HomeFragmentViewModel:ViewModel() {
                 val user = book.child("user").getValue(String::class.java)
                 val key = book.child("key").getValue(String::class.java)
                 val city = book.child("city").getValue(String::class.java)
+                val state= book.child("state").getValue(String::class.java)
 
                 AppUtils.LOG("the book will be added first ")
                 AppUtils.LOG("user is $user uid is $uid")
@@ -50,7 +51,8 @@ class HomeFragmentViewModel:ViewModel() {
                         imageUri!!,
                         user!!,
                         key!!,
-                        city!!
+                        city!!,
+                        state!!
                     )
                 )
             }

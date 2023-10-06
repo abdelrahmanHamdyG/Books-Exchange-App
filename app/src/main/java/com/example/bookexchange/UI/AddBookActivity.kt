@@ -143,7 +143,7 @@ class AddBookActivity : AppCompatActivity() {
 
             val imagename = "${firebaseAuth.currentUser!!.uid.toString()}${System.currentTimeMillis()}"
 
-            var theBook = Book(nameText, detailsText, category, imagename, firebaseAuth.currentUser!!.uid.toString(),"","")
+            val theBook = Book(nameText, detailsText, category, imagename, firebaseAuth.currentUser!!.uid.toString(),"","","Available")
 
             addBookViewModel.uploadBookAndTheImage(firebaseAuth.currentUser!!.uid,theBook,imageByteArray)
 

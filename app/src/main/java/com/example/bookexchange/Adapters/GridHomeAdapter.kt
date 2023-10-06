@@ -82,7 +82,9 @@ class GridHomeAdapter(var arrayList:ArrayList<Book>,var context: Context): Recyc
             intent.putExtra("image_bitmap",byteArray);
             intent.putExtra("book_key",arrayList[position].key)
             intent.putExtra("book_category",arrayList[position].category)
+            intent.putExtra("city",arrayList[position].city)
             intent.putExtra("user",arrayList[position].user)
+            intent.putExtra("state",arrayList[position].state)
 
 
             context.startActivity(intent)

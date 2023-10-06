@@ -45,7 +45,7 @@ class AddBookViewModel:ViewModel() {
 
 
         var f=false;
-        var job=viewModelScope.launch (Dispatchers.IO){
+        val job=viewModelScope.launch (Dispatchers.IO){
             val city=getCityName(uid)
 
             book.city=city

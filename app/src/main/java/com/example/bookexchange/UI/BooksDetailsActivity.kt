@@ -144,8 +144,9 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
 
 
 
+
                         addBookViewModel.uploadBookAndTheImage(firebaseAuth.currentUser!!.uid,
-                            Book(bookNameText,bookDetailsText,spinnerText,imagename,firebaseAuth.currentUser!!.uid," "," "),imageByteArray)
+                            Book(bookNameText,bookDetailsText,spinnerText,imagename,firebaseAuth.currentUser!!.uid," "," ","Available"),imageByteArray)
 
                     }
 
