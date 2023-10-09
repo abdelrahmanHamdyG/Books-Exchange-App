@@ -29,7 +29,6 @@ class MyBooksViewModel: ViewModel() {
     suspend fun readTexts(uid:String){
 
         _myBooksList.clear()
-        AppUtils.LOG("the readTexts current thread is ${Thread.currentThread().name}")
         firebaseDatabase = FirebaseDatabase.getInstance().reference
 
         try {
@@ -49,7 +48,6 @@ class MyBooksViewModel: ViewModel() {
                 val state=book.child("state").getValue(String::class.java)
 
                 _myBooksList.add(Book(bookName!!, bookDescription!!, category!!, imageUri!!, user!!, key!!, city!!,state!!))
-
             }
 
         }catch (e:Exception){

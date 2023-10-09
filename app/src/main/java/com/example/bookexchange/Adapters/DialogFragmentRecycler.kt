@@ -77,9 +77,9 @@ class DialogFragmentRecycler(var booksList:ArrayList<Book>, var uid:String, var 
 
         }
         holder.itemView.setOnClickListener {
-        AppUtils.LOG("clicked dialog")
+
             if(holder.deleteButton.visibility==View.INVISIBLE) {
-                AppUtils.LOG("clicked dialog")
+
                 holder.deleteButton.visibility = View.VISIBLE
                 holder.layout.setBackgroundResource(R.drawable.item_is_choosen)
 

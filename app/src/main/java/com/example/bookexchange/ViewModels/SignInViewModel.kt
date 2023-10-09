@@ -20,7 +20,7 @@ class SignInViewModel:ViewModel() {
             viewModelScope.launch (Dispatchers.IO) {
                 firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                     if (it.isSuccessful) {
-                        AppUtils.LOG("authorization in the viewModel")
+
                         loginResult.value = "Success"
                     } else {
                         loginResult.value = it.exception!!.message

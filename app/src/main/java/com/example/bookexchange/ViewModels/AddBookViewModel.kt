@@ -30,7 +30,7 @@ class AddBookViewModel:ViewModel() {
             val second=async { uploadImage(uid,imageByteArray,book.imageUri!!) }
 
             if(first.await()&&second.await()){
-                AppUtils.LOG("what is happening #win")
+
                 result.postValue(true)
             }else{
                 result.postValue(false)
@@ -58,12 +58,12 @@ class AddBookViewModel:ViewModel() {
             val second=async { uploadToUserBooks(book,uid) }
 
             val resultSecond = second.await()
-            AppUtils.LOG("the first ${book.key} the second $resultSecond")
+
             if(first!="null"&&resultSecond)
                 f=true;
 
         }
-        AppUtils.LOG("upload the book:$f")
+
         job.join()
         return f;
 
@@ -72,7 +72,7 @@ class AddBookViewModel:ViewModel() {
 
 
     suspend fun uploadToAllBooks(book:Book,uid:String):String{
-        AppUtils.LOG("upload the book to AllBooks current thread is ${Thread.currentThread().name}")
+
 
 
             try {
@@ -82,14 +82,14 @@ class AddBookViewModel:ViewModel() {
                 firebaseDatabase.reference.child("AllBooks").child(key.toString()).setValue(book).await()
 
             } catch (e:Exception) {
-                AppUtils.LOG("upload toAllBooks:${e.message}")
+
                 return "null";
             }
         return book.key!!;
 
     }
     suspend fun uploadToUserBooks(book:Book,uid:String):Boolean{
-        AppUtils.LOG("upload the book current thread is ${Thread.currentThread().name}")
+
         val firebaseDatabase = FirebaseDatabase.getInstance().reference
 
         try {
@@ -97,7 +97,7 @@ class AddBookViewModel:ViewModel() {
 
         } catch (e: Exception) {
 
-            AppUtils.LOG("upload toUserBooks:${e.message}")
+
             return false;
         }
         return true;
@@ -109,13 +109,13 @@ class AddBookViewModel:ViewModel() {
 
 
     suspend fun uploadImage(uid:String,imageByteArray: ByteArray,imageName:String):Boolean{
-        AppUtils.LOG("upload the image current thread is ${Thread.currentThread().name}")
+
         val firebaseStorage=FirebaseStorage.getInstance().reference
         try {
             firebaseStorage.child(imageName).putBytes(imageByteArray).await()
 
         }catch (e:Exception){
-            AppUtils.LOG("upload the image problem ${e.message} ")
+
             return false;
         }
 
@@ -142,7 +142,7 @@ class AddBookViewModel:ViewModel() {
 
 
         }
-        AppUtils.LOG(city)
+
         return city;
 
     }

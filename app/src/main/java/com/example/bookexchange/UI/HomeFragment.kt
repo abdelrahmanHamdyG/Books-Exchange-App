@@ -47,7 +47,7 @@ class HomeFragment : Fragment(),OnItemClickListener {
             .setCancelable(false).create()
 
 
-        Log.i("my_trag", "Home Fragment on Create")
+
         val view= inflater.inflate(R.layout.fragment_home, container, false)
 
         recycler=view.findViewById<RecyclerView>(R.id.fragment_home_recycler)
@@ -71,7 +71,7 @@ class HomeFragment : Fragment(),OnItemClickListener {
             dialogg.dismiss()
 
             if(it.size==0){
-                AppUtils.LOG("zerooos")
+
                 recycler.visibility=View.GONE
 
 
@@ -79,7 +79,7 @@ class HomeFragment : Fragment(),OnItemClickListener {
 
                 recycler.visibility=View.VISIBLE
 
-                AppUtils.LOG("adaaaaaaaapter")
+
                 val adapter = GridHomeAdapter(it,requireContext())
 
                 recycler.adapter = adapter
@@ -116,7 +116,7 @@ class HomeFragment : Fragment(),OnItemClickListener {
 
 
         dialogg.show()
-        AppUtils.LOG("On ItemClick")
+
         GlobalScope.launch (Dispatchers.Default){
 
             homeFragmentViewModel.filterByCategory(mask)

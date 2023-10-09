@@ -36,7 +36,6 @@ class MyBooksFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        AppUtils.LOG("OnCreateView:MyBooksFragment")
         firebaseAuth= FirebaseAuth.getInstance()
         myBooksViewModel= ViewModelProvider(this)[MyBooksViewModel::class.java];
 
@@ -78,7 +77,7 @@ class MyBooksFragment : Fragment() {
             dialogg.dismiss()
             if(it.size!=0) {
 
-                AppUtils.LOG("we have observed my brother")
+
                 grid.adapter = GridMyBooksAdapter(
                     myBooksViewModel.myBooksList.value!!,
                     firebaseAuth.currentUser!!.uid,

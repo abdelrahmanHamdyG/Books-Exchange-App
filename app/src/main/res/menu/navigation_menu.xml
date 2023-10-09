@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
 <item
@@ -17,7 +18,8 @@
 
     <item
         android:id="@+id/navigation_requests"
-        android:title="requests"
+        android:title="Requests"
         android:icon="@drawable/baseline_swap_calls_24"
-        ></item>
+
+        />
 </menu>

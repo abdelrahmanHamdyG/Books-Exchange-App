@@ -19,7 +19,7 @@ class RegisterationViewModel: ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
 
             var uid=register(userData.email!!, userData.password!!)
-            AppUtils.LOG("the uid is $uid and the current thread is ${Thread.currentThread().name}")
+
             if(uid!="null"){
                 writeData(uid, userData);
 
@@ -31,7 +31,7 @@ class RegisterationViewModel: ViewModel() {
 
     private suspend fun writeData(uid:String, userData: UserData){
 
-        AppUtils.LOG("Registeration ViewModel:writeData current thread is ${Thread.currentThread().name}")
+
         firebaseDatabase=FirebaseDatabase.getInstance()
         var reference=firebaseDatabase.reference
         reference.child("All Users").child(uid).child("DATA").setValue(userData).addOnCompleteListener {
@@ -51,7 +51,7 @@ class RegisterationViewModel: ViewModel() {
     }
 
      private suspend fun register(email:String, password: String): String {
-         AppUtils.LOG("Registeration ViewModel:register current thread is  ${Thread.currentThread().name}")
+
 
          try {
              firebaseAuth=FirebaseAuth.getInstance()
@@ -63,7 +63,7 @@ class RegisterationViewModel: ViewModel() {
              }
          } catch (e: Exception) {
              // Handle exceptions here
-             AppUtils.LOG("Failed  ${Thread.currentThread().name}")
+
              registerResult.postValue(e.message.toString())
              return "null"
          }

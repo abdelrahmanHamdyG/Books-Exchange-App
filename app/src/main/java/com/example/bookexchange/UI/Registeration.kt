@@ -85,7 +85,7 @@ class Registeration : AppCompatActivity() {
             }
 
             registerationViewModel.registerResult.observe(this){
-                AppUtils.LOG("this is  observer in registeration")
+
                 if(it=="Success"){
                     AppUtils.showToast(this, "Congratulations")
                     startActivity(Intent(this, MainPage::class.java))

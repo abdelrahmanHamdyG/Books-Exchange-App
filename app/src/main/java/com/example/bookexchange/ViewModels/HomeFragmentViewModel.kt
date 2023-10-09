@@ -18,7 +18,6 @@ class HomeFragmentViewModel:ViewModel() {
 
     suspend fun readAllBooks(uid:String){
 
-        AppUtils.LOG("reading AllBooks")
         val firebaseDatabase=FirebaseDatabase.getInstance().reference
 
         try {
@@ -36,13 +35,11 @@ class HomeFragmentViewModel:ViewModel() {
                 val city = book.child("city").getValue(String::class.java)
                 val state= book.child("state").getValue(String::class.java)
 
-                AppUtils.LOG("the book will be added first ")
-                AppUtils.LOG("user is $user uid is $uid")
                 if (user == uid) {
                     continue;
                 }
 
-                AppUtils.LOG("the book will be added second ")
+
                 _myBooksList.add(
                     Book(
                         bookName!!,
@@ -56,12 +53,9 @@ class HomeFragmentViewModel:ViewModel() {
                     )
                 )
             }
-            AppUtils.LOG("size is ${_myBooksList.size}")
             filteredBooksList.postValue(_myBooksList)
         }catch (e:Exception){
 
-
-            AppUtils.LOG("Exception ${e.message}")
         }
 
 
@@ -69,7 +63,6 @@ class HomeFragmentViewModel:ViewModel() {
     }
 
     suspend fun filterByCategory(mask: Array<Int> ){
-        AppUtils.LOG("filter ByCategory")
         if(mask[0]==1) {
             filteredBooksList.postValue(_myBooksList)
             return
@@ -83,7 +76,6 @@ class HomeFragmentViewModel:ViewModel() {
         }
         for (i in _myBooksList){
 
-            AppUtils.LOG("true or false ${i.category}")
             if(textToBooleanMap[i.category] == true){
                 _filteredBooksList.add(i)
             }

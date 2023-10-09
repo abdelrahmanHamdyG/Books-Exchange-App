@@ -41,6 +41,7 @@ class MakeRequestActivity : AppCompatActivity(),FinishingFragmentListener {
 
         firebaseAuth=FirebaseAuth.getInstance()
 
+
         val dialogView = layoutInflater.inflate(R.layout.progress_dialog, null)
         dialogg = AlertDialog.Builder(this)
             .setView(dialogView)
@@ -60,7 +61,6 @@ class MakeRequestActivity : AppCompatActivity(),FinishingFragmentListener {
         val imageBitmap= BitmapFactory.decodeByteArray(bookBitMap,0,bookBitMap!!.size)
         val book=Book(bookName,bookDetails,bookCategory!!,bookImage!!,userKey!!,bookKey!!,city!!,state!!)
         makeRequestButton=findViewById<AppCompatButton>(R.id.make_request_button)
-
 
         makeRequestViewModel=ViewModelProvider(this)[MakeRequestViewModel::class.java]
 
@@ -115,10 +115,7 @@ class MakeRequestActivity : AppCompatActivity(),FinishingFragmentListener {
             makeRequestViewModel.makeRequest(myChosenBooks,hisChosenBooks,firebaseAuth.currentUser!!.uid,userKey)
 
 
-
-        }
-
-
+       }
 
 
     }
@@ -130,7 +127,7 @@ class MakeRequestActivity : AppCompatActivity(),FinishingFragmentListener {
     ) {
 
 
-        AppUtils.LOG("listener checked")
+
         dialog.dismiss()
         val adapter= MakeRequestRecyclerAdapter(arr,arr2)
 

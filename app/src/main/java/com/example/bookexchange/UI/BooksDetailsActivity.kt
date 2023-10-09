@@ -189,7 +189,6 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
 
         save.isEnabled = editDetails.text.toString()!=bookDetails||editName.text.toString()!=bookName||
                 spinner.selectedItem.toString()!=bookCategory||imageChoosen
-        AppUtils.LOG(spinner.selectedItem.toString()+" "+bookCategory + "   "+imageChoosen)
 
 
 
