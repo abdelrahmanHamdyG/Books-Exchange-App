@@ -1,0 +1,61 @@
+<!-- request_item.xml -->
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:elevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <!-- LinearLayout for text views -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <!-- TextView for Request Title -->
+            <TextView
+                android:id="@+id/request_title_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Request Title"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!-- TextView for Request Description -->
+            <TextView
+                android:id="@+id/request_state_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="State: "
+                android:textSize="14sp"
+                android:layout_marginTop="1dp" />
+
+            <TextView
+                android:id="@+id/request_description_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Request Description"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp" />
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button_item"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:background="@drawable/button_sign_in"
+            android:textAllCaps="false"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            android:text="View" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

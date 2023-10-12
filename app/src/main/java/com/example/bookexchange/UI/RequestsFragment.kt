@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.bookexchange.Adapters.RequestsRecyclerAdapter
 import com.example.bookexchange.R
 import com.example.bookexchange.ViewModels.RequestsFragmentViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -22,8 +25,14 @@ class RequestsFragment(val lastCount: Int) : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view= inflater.inflate(R.layout.fragment_requests, container, false)
+
+        val recycler=view.findViewById<RecyclerView>(R.id.requests_fragment_recycler)
+
+
+
+
+
         val firebaseAuth=FirebaseAuth.getInstance()
 
         requestsFragmentViewModel=ViewModelProvider(this)[RequestsFragmentViewModel::class.java]
@@ -32,14 +41,30 @@ class RequestsFragment(val lastCount: Int) : Fragment() {
         GlobalScope.launch(Dispatchers.IO){
 
 
-            requestsFragmentViewModel.makeEveryThingSeen(firebaseAuth.currentUser!!.uid)
+            launch {
+                requestsFragmentViewModel.makeEveryThingSeen(firebaseAuth.currentUser!!.uid)
+            }
+
+            launch {
+
+
+                requestsFragmentViewModel
+            }
 
         }
 
-        if(lastCount>0){
+
+        requestsFragmentViewModel.readRequests(firebaseAuth.currentUser!!.uid)
+
+        recycler.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
+
+
+        requestsFragmentViewModel.requests.observe(requireActivity()){
+
+            recycler.adapter=RequestsRecyclerAdapter(it);
+
 
         }
-
 
         return view;
 
