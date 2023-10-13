@@ -1,12 +1,19 @@
 package com.example.bookexchange.Adapters
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.media.Image
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bookexchange.AppUtils
+import com.example.bookexchange.MakingDecisionActivity
 import com.example.bookexchange.Models.Book
 import com.example.bookexchange.Models.Request
 import com.example.bookexchange.R
@@ -18,16 +25,16 @@ data class itemTexts(val title:String, val state:String,val description: String)
     
 
 
-class RequestsRecyclerAdapter(var arr:ArrayList<Request>): RecyclerView.Adapter<RequestsRecyclerAdapter.viewHolder>() {
+class RequestsRecyclerAdapter(var arr:ArrayList<Request>,var context: Context): RecyclerView.Adapter<RequestsRecyclerAdapter.viewHolder>() {
 
 
     inner class viewHolder(view: View): RecyclerView.ViewHolder(view) {
 
 
-        val title=view.findViewById<TextView>(R.id.request_title_item)
-        val description=view.findViewById<TextView>(R.id.request_description_item)
-        val button=view.findViewById<AppCompatButton>(R.id.button_item)
-        val state=view.findViewById<TextView>(R.id.request_state_item)
+        val title=view.findViewById<TextView>(R.id.request_recycler_title)
+        val time=view.findViewById<TextView>(R.id.request_recycler_time)
+        val image=view.findViewById<ImageView>(R.id.request_recycler_image)
+        val clicked=view.findViewById<ImageView>(R.id.request_recycler_clicked)
 
     }
 
@@ -45,90 +52,62 @@ class RequestsRecyclerAdapter(var arr:ArrayList<Request>): RecyclerView.Adapter<
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
 
-        holder.button.setOnClickListener {
+
+
+        holder.itemView.setOnClickListener {
+
+         Intent(context,MakingDecisionActivity::class.java).apply {
+
+                putExtra("myKey",arr[position].myKey)
+                putExtra("hisKey",arr[position].hisKey)
+                putExtra("fromMe",arr[position].fromMe)
+                context.startActivity(this)
+            }
+
+
 
         }
 
-        val p=getTheSuitableTextAndDescription(arr[position].fromMe!!, arr[position].state.toString(),arr[position].myBooks!!,arr[position].hisBooks!!)
-        holder.title.text=p.title
-        holder.state.text=p.state
-        holder.description.text=p.description
+        if(arr[position].clicked==true)
+            holder.clicked.visibility=View.GONE
 
 
-    }
+        if(arr[position].fromMe==false){
 
-
-    fun getTheSuitableTextAndDescription(fromMe:Boolean, description:String, myBooks:ArrayList<Book>, hisBooks:ArrayList<Book>):itemTexts{
-
-
-
-        var first="Swap ";
-        var second="Waiting Response"
-        var third="sdsdd";
-
-
-        if(description=="Received"){
-
-            second="Decision Required"
-
-            first="Swap Order"
-            third="he wants ("
-            for (i in 0 until myBooks.size-1){
-
-                third+=myBooks[i].bookName
-                third+=", "
-            }
-
-
-            third+=(myBooks[myBooks.size-1].bookName)
-            third+=')'
-
-
-            third="you wants ("
-            for (i in 0 until hisBooks.size-1){
-
-                third+=hisBooks[i].bookName
-                third+=", "
-            }
-
-
-            third+=(hisBooks[hisBooks.size-1].bookName)
-            third+=')'
-
+            holder.title.text="Swap Request Received"
         }else{
-            third="he wants ( "
-            second="Waiting Response"
-            first="Swap Order"
-            for (i in 0 until myBooks.size-1){
 
-                third+=myBooks[i].bookName
-                third+=", "
-            }
+            holder.title.text="Swap Request Sent"
+        }
+
+        holder.time.text=getDifferenceInTime(arr[position].date!!)
 
 
-            third+=(myBooks[myBooks.size-1].bookName)
-            third+=')'
-            third+=" you will take ("
-            for (i in 0 until hisBooks.size-1){
-
-                third+=hisBooks[i].bookName
-                third+=", "
-            }
+    }
 
 
-            third+=(hisBooks[hisBooks.size-1].bookName)
-            third+=')'
+    fun getDifferenceInTime(time:Int):String{
 
+        val timeNow=System.currentTimeMillis()
+        val timeDifferenceInMillis=timeNow-time;
+        var hours = timeDifferenceInMillis / 3600000
 
+        if(hours<24){
+
+            return "$hours hours ago"
+        }else{
+
+            hours /= 24;
+            return "$hours days ago"
         }
 
 
-
-        return itemTexts(first,second,third);
     }
-    
+
+
     
 
 

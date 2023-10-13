@@ -10,12 +10,14 @@ class Request {
     var myBooks:ArrayList<Book>?=null;
     var hisBooks:ArrayList<Book>?=null;
     var state:String?=null;
+    var clicked:Boolean?=null;
+    var date:Int?=null
 
     constructor(){
 
     }
     constructor( myKey:String,hisKey:String,fromMe:Boolean,seen:Boolean,myBooks:ArrayList<Book>,hisBooks:ArrayList<Book>,
-    state:String
+    state:String,clicked:Boolean,date:Int
     ){
        this.myKey=myKey
         this.hisKey=hisKey
@@ -24,6 +26,8 @@ class Request {
         this.myBooks=myBooks
         this.hisBooks=hisBooks
         this.state=state
+        this.clicked=clicked
+        this.date=date;
     }
 
 }

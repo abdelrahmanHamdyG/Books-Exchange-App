@@ -48,7 +48,9 @@ class MakeRequestViewModel: ViewModel() {
         val job=viewModelScope.launch(Dispatchers.IO) {
             val firebaseDatabase = FirebaseDatabase.getInstance().reference
 
-            val request = Request(myKey, hisKey, true, true, myBooks, hisBooks, "Sent");
+
+            val request = Request(myKey, hisKey, true, true, myBooks, hisBooks, "Sent",false,
+                System.currentTimeMillis().toInt() );
 
 
             try {
@@ -72,7 +74,8 @@ class MakeRequestViewModel: ViewModel() {
         val job=viewModelScope.launch(Dispatchers.IO) {
             val firebaseDatabase = FirebaseDatabase.getInstance().reference
 
-            val request = Request( hisKey,myKey, false, false,  hisBooks,myBooks, "Received");
+            val request = Request( hisKey,myKey, false, false,  hisBooks,myBooks, "Received",false,
+                System.currentTimeMillis().toInt() );
 
             try {
                 firebaseDatabase.child("All Users").child(hisKey).child("Requests").child(hisKey + myKey)
