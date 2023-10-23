@@ -56,7 +56,7 @@ class MainPage : AppCompatActivity() {
 
 
         bottom.selectedItemId = R.id.navigation_home
-        loadFragment(HomeFragment())
+        loadFragment(HomeFragment(this))
 
         setSupportActionBar(toolbar)
         val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -105,9 +105,9 @@ class MainPage : AppCompatActivity() {
 
         bottom.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.navigation_home -> loadFragment(HomeFragment())
+                R.id.navigation_home -> loadFragment(HomeFragment(this@MainPage))
 
-                R.id.navigation_books -> loadFragment(MyBooksFragment())
+                R.id.navigation_books -> loadFragment(MyBooksFragment(this@MainPage))
 
                 R.id.navigation_requests ->loadFragment(RequestsFragment(lastCount))
             }

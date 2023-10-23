@@ -3,21 +3,15 @@ package com.example.bookexchange.Adapters
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.media.Image
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bookexchange.AppUtils
-import com.example.bookexchange.MakingDecisionActivity
-import com.example.bookexchange.Models.Book
+import com.example.bookexchange.UI.MakingDecisionActivity
 import com.example.bookexchange.Models.Request
 import com.example.bookexchange.R
-import com.google.android.play.core.integrity.i
 
 
 data class itemTexts(val title:String, val state:String,val description: String)
@@ -59,7 +53,7 @@ class RequestsRecyclerAdapter(var arr:ArrayList<Request>,var context: Context): 
 
         holder.itemView.setOnClickListener {
 
-         Intent(context,MakingDecisionActivity::class.java).apply {
+         Intent(context, MakingDecisionActivity::class.java).apply {
 
                 putExtra("myKey",arr[position].myKey)
                 putExtra("hisKey",arr[position].hisKey)

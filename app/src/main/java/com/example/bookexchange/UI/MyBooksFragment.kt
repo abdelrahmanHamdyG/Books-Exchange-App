@@ -1,5 +1,6 @@
 package com.example.bookexchange.UI
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -23,7 +24,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MyBooksFragment : Fragment() {
+class MyBooksFragment(val context2:Context) : Fragment() {
 
     lateinit var myBooksList:ArrayList<Book>
 
@@ -44,7 +45,7 @@ class MyBooksFragment : Fragment() {
         grid=view.findViewById(R.id.my_books_grid)
 
         val dialogView = layoutInflater.inflate(R.layout.progress_dialog, null)
-        dialogg = AlertDialog.Builder(requireActivity())
+        dialogg = AlertDialog.Builder(context2)
             .setView(dialogView)
             .setCancelable(false).create()
         dialogg.show()
@@ -72,7 +73,7 @@ class MyBooksFragment : Fragment() {
         super.onStart()
 
 
-        myBooksViewModel.myBooksList.observe(requireActivity()) {
+        myBooksViewModel.myBooksList.observe(this) {
 
             dialogg.dismiss()
             if(it.size!=0) {
@@ -81,7 +82,7 @@ class MyBooksFragment : Fragment() {
                 grid.adapter = GridMyBooksAdapter(
                     myBooksViewModel.myBooksList.value!!,
                     firebaseAuth.currentUser!!.uid,
-                    requireActivity())
+                    context2)
 
                 grid.layoutManager = GridLayoutManager(activity, 2)
 

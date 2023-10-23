@@ -1,6 +1,7 @@
 package com.example.bookexchange.UI
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -28,7 +29,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class HomeFragment : Fragment(),OnItemClickListener {
+class HomeFragment(val context2: Context) : Fragment(),OnItemClickListener {
 
     lateinit var recycler: RecyclerView
     lateinit var homeFragmentViewModel:HomeFragmentViewModel
@@ -80,7 +81,7 @@ class HomeFragment : Fragment(),OnItemClickListener {
                 recycler.visibility=View.VISIBLE
 
 
-                val adapter = GridHomeAdapter(it,requireContext())
+                val adapter = GridHomeAdapter(it, context2)
 
                 recycler.adapter = adapter
 

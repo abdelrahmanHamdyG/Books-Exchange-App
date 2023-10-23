@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.bookexchange.AppUtils
 import com.example.bookexchange.Models.Book
 import com.example.bookexchange.Models.SendFromDialogToFragmentModel
 import com.example.bookexchange.R
@@ -35,11 +36,16 @@ class MakeRequestRecyclerAdapter(var books:ArrayList<Book>,var imagesArr:ArrayLi
 
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
 
+
         holder.bookName.text="Book Name: ${books[position].bookName}"
         holder.bookDetails.text="Book Details: ${books[position].bookDescription}"
         holder.bookCategory.text="Book Category: ${books[position].category}"
 
+
         val bookBitMap=imagesArr[position].byteArray
+
+        AppUtils.LOG("the BookName  is ${books[position].bookName}")
+
         val imageBitmap= BitmapFactory.decodeByteArray(bookBitMap,0,bookBitMap!!.size)
         holder.bookImage.setImageBitmap(imageBitmap)
 

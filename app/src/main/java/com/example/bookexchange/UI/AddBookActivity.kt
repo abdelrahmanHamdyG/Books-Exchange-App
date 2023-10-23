@@ -138,7 +138,7 @@ class AddBookActivity : AppCompatActivity() {
 
             val bitmap = (immage.drawable as BitmapDrawable).bitmap
             val byteArrayOutputStream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream)
             val imageByteArray = byteArrayOutputStream.toByteArray()
 
             val imagename = "${firebaseAuth.currentUser!!.uid.toString()}${System.currentTimeMillis()}"

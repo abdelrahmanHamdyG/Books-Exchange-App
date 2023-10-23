@@ -30,4 +30,17 @@ class Request {
         this.date=date;
     }
 
+    constructor( myKey:String,hisKey:String,fromMe:Boolean,seen:Boolean,
+                 state:String,clicked:Boolean,date:Int
+    ){
+        this.myKey=myKey
+        this.hisKey=hisKey
+        this.fromMe=fromMe
+        this.seen=seen
+
+        this.state=state
+        this.clicked=clicked
+        this.date=date;
+    }
+
 }
