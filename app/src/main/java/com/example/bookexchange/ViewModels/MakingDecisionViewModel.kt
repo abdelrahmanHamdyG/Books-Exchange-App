@@ -128,9 +128,14 @@ class MakingDecisionViewModel: ViewModel() {
 
 
             try {
-                firebaseDatabase.child("All Users").child(myKey).child("Requests").child(myKey + hisKey)
-                    .removeValue()
-                    .await()
+                val r=firebaseDatabase.child("All Users").child(myKey).child("Requests").child(myKey + hisKey).get().await()
+
+                val result=r.getValue(Request::class.java)
+                result?.seen=false;
+                result?.state="RefusedByMe"
+
+                r.ref.setValue(result)
+
 
             } catch (e: Exception) {
 
@@ -151,10 +156,13 @@ class MakingDecisionViewModel: ViewModel() {
 
 
             try {
-                firebaseDatabase.child("All Users").child(hisKey).child("Requests").child(hisKey + myKey)
-                    .removeValue()
-                    .await()
+                val r=firebaseDatabase.child("All Users").child(hisKey).child("Requests").child(  hisKey+myKey).get().await()
 
+                val result=r.getValue(Request::class.java)
+                result?.seen=false;
+                result?.state="RefusedByHim"
+
+                r.ref.setValue(result)
             } catch (e: Exception) {
 
                 check=false;

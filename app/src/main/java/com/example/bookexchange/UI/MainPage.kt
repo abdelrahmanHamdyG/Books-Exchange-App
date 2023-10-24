@@ -25,6 +25,7 @@ class MainPage : AppCompatActivity() {
     lateinit var searchBar:EditText
     lateinit var bottom: BottomNavigationView
     lateinit var mainPageViewModel: MainPageViewModel
+    lateinit var auth: FirebaseAuth
     lateinit var backButton:Button
     var lastCount=0;
 
@@ -32,7 +33,7 @@ class MainPage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_page)
 
-        val auth=FirebaseAuth.getInstance()
+        auth=FirebaseAuth.getInstance()
 
 
         if(auth.currentUser==null){
@@ -125,22 +126,27 @@ class MainPage : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
-        //menuInflater.inflate(R.menu.search_menu,menu)
-        var searchButton=menu!!.findItem(R.id.search_menu_search)
+        menuInflater.inflate(R.menu.search_menu,menu)
+        //var searchButton=menu!!.findItem(R.id.search_menu_search)
 
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        /*when(item.itemId){
-            R.id.search_menu_search ->{
+        when(item.itemId){
+            R.id.sign_out->{
 
+                val firebaseAuth=FirebaseAuth.getInstance()
+                firebaseAuth.signOut()
 
+                startActivity(Intent(this@MainPage,SignIn::class.java))
+                finish();
+                true;
             }
 
         }
-        */
+
 
         return super.onOptionsItemSelected(item)
 

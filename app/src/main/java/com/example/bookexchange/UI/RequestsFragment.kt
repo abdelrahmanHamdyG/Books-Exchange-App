@@ -61,7 +61,8 @@ class RequestsFragment(val lastCount: Int) : Fragment() {
 
         requestsFragmentViewModel.requests.observe(requireActivity()){
 
-            recycler.adapter=RequestsRecyclerAdapter(it,requireContext());
+            if(requireContext()!=null)
+                recycler.adapter=RequestsRecyclerAdapter(it,requireContext());
 
 
         }

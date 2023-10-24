@@ -69,13 +69,27 @@ class RequestsRecyclerAdapter(var arr:ArrayList<Request>,var context: Context): 
             holder.clicked.visibility=View.GONE
 
 
-        if(arr[position].fromMe==false){
+        val state=arr[position].state
 
-            holder.title.text="Swap Request Received"
-        }else{
 
-            holder.title.text="Swap Request Sent"
-        }
+            if(state=="RefusedByMe"){
+
+                holder.title.text="you have cancelled the offer"
+                holder.image.setImageResource(R.drawable.baseline_cancel_24)
+            }else{
+
+                if(state=="RefusedByHim") {
+                    holder.title.text = "The offer is refused"
+                    holder.image.setImageResource(R.drawable.baseline_cancel_24)
+
+                }
+                else if(state=="Sent")
+                    holder.title.text="Swap Request is sent"
+                else
+                    holder.title.text="Swap Request is received"
+            }
+
+
 
         holder.time.text=getDifferenceInTime(arr[position].date!!)
 
