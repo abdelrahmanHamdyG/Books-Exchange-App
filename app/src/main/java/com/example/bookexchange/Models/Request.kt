@@ -11,13 +11,20 @@ class Request {
     var hisBooks:ArrayList<Book>?=null;
     var state:String?=null;
     var clicked:Boolean?=null;
-    var date:Int?=null
+    var date:Long?=null
 
     constructor(){
 
     }
-    constructor( myKey:String,hisKey:String,fromMe:Boolean,seen:Boolean,myBooks:ArrayList<Book>,hisBooks:ArrayList<Book>,
-    state:String,clicked:Boolean,date:Int
+    constructor(myKey:String,
+                hisKey:String,
+                fromMe:Boolean,
+                seen:Boolean,
+                myBooks:ArrayList<Book>,
+                hisBooks:ArrayList<Book>,
+                state:String,
+                clicked:Boolean,
+                date: Long
     ){
        this.myKey=myKey
         this.hisKey=hisKey
@@ -31,7 +38,7 @@ class Request {
     }
 
     constructor( myKey:String,hisKey:String,fromMe:Boolean,seen:Boolean,
-                 state:String,clicked:Boolean,date:Int
+                 state:String,clicked:Boolean,date:Long
     ){
         this.myKey=myKey
         this.hisKey=hisKey

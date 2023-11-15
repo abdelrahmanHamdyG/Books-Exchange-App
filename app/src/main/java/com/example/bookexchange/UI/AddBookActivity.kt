@@ -103,9 +103,9 @@ class AddBookActivity : AppCompatActivity() {
 
 
         button.setOnClickListener {
-            var nameText = editName.text.toString().trim()
-            var detailsText = editDetails.text.toString().trim()
-            var category = spinner.selectedItem.toString()
+            val nameText = editName.text.toString().trim()
+            val detailsText = editDetails.text.toString().trim()
+            val category = spinner.selectedItem.toString()
 
 
             if (!imageChoosen || nameText.isEmpty() || detailsText.isEmpty()) {

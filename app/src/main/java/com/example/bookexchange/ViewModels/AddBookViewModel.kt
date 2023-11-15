@@ -88,7 +88,7 @@ class AddBookViewModel:ViewModel() {
         return book.key!!;
 
     }
-    suspend fun uploadToUserBooks(book:Book,uid:String):Boolean{
+    suspend private fun uploadToUserBooks(book:Book,uid:String):Boolean{
 
         val firebaseDatabase = FirebaseDatabase.getInstance().reference
 
@@ -108,7 +108,7 @@ class AddBookViewModel:ViewModel() {
 
 
 
-    suspend fun uploadImage(uid:String,imageByteArray: ByteArray,imageName:String):Boolean{
+    suspend private fun uploadImage(uid:String,imageByteArray: ByteArray,imageName:String):Boolean{
 
         val firebaseStorage=FirebaseStorage.getInstance().reference
         try {
@@ -124,7 +124,7 @@ class AddBookViewModel:ViewModel() {
 
 
 
-    suspend fun getCityName(uid:String): String {
+    suspend private fun  getCityName(uid:String): String {
 
         val firebaseDatabase= FirebaseDatabase.getInstance().reference
 

@@ -57,16 +57,17 @@ class RequestsFragmentViewModel: ViewModel() {
 
 
                 _requests.clear()
-                viewModelScope.launch (Dispatchers.IO){
-                    for(i in snapshot.children){
 
-                        val item=i.getValue(Request::class.java)
+                    for (i in snapshot.children) {
+
+                        val item = i.getValue(Request::class.java)
                         _requests.add(item!!)
                     }
 
-                }
 
-                requests.postValue(_requests)
+
+                    requests.postValue(_requests)
+
             }
 
             override fun onCancelled(error: DatabaseError) {

@@ -57,7 +57,7 @@ class GridMyBooksAdapter(var booksList:ArrayList<Book>, var uid:String, var cont
     }
 
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
-        Log.i("my_trag","I am in the adapter")
+
         val myBooksViewModel=MyBooksViewModel()
 
         holder.progress.visibility=View.VISIBLE

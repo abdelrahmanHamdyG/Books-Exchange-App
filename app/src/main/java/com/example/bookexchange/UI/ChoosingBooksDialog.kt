@@ -16,6 +16,7 @@ import com.example.bookexchange.R
 import com.example.bookexchange.ViewModels.MyBooksViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 
@@ -27,8 +28,10 @@ interface FinishingFragmentListener{
         uid: String
     );
 }
-class ChoosingBooksDialog(val uid:String): DialogFragment(),BooksListener {
 
+class ChoosingBooksDialog   (val uid:String): DialogFragment(),BooksListener {
+
+    lateinit var job1: Job
     lateinit var button:AppCompatButton
     lateinit var myBooksViewModel: MyBooksViewModel
     lateinit var finishingFragmentListener: FinishingFragmentListener
@@ -48,7 +51,7 @@ class ChoosingBooksDialog(val uid:String): DialogFragment(),BooksListener {
 
         myBooksViewModel.myBooksList.observe(this){
             books=it
-            adapter=DialogFragmentRecycler(books,uid,requireContext())
+            adapter=DialogFragmentRecycler(books,requireContext())
             adapter.setListener(this)
             recycler.layoutManager= LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
             recycler.adapter=adapter;
@@ -61,13 +64,12 @@ class ChoosingBooksDialog(val uid:String): DialogFragment(),BooksListener {
             }
             finishingFragmentListener.setListener(chosenBooks,adapter.chosenBooks,uid)
 
-
         }
 
 
 
 
-        GlobalScope.launch(Dispatchers.IO) {
+        job1=GlobalScope.launch(Dispatchers.IO) {
 
             myBooksViewModel.readTexts(uid);
 
@@ -82,5 +84,10 @@ class ChoosingBooksDialog(val uid:String): DialogFragment(),BooksListener {
 
     override fun onItemClick(arr: ArrayList<SendFromDialogToFragmentModel>) {
         button.isEnabled = arr.size!=0;
+    }
+
+    override fun onStop() {
+        super.onStop()
+        job1.cancel()
     }
 }

@@ -26,7 +26,7 @@ interface BooksListener{
 
 }
 
-class DialogFragmentRecycler(var booksList:ArrayList<Book>, var uid:String, var context: Context): RecyclerView.Adapter<DialogFragmentRecycler.viewHolder>() {
+class DialogFragmentRecycler(var booksList:ArrayList<Book>,  var context: Context): RecyclerView.Adapter<DialogFragmentRecycler.viewHolder>() {
 
 
     var chosenBooks=ArrayList<SendFromDialogToFragmentModel>()

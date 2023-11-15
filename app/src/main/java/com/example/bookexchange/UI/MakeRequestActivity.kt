@@ -59,6 +59,7 @@ class MakeRequestActivity : AppCompatActivity(),FinishingFragmentListener {
         val city=intent.getStringExtra("city")
         val state=intent.getStringExtra("state")
         val imageBitmap= BitmapFactory.decodeByteArray(bookBitMap,0,bookBitMap!!.size)
+
         val book=Book(bookName,bookDetails,bookCategory!!,bookImage!!,userKey!!,bookKey!!,city!!,state!!)
         makeRequestButton=findViewById<AppCompatButton>(R.id.make_request_button)
 
@@ -80,6 +81,9 @@ class MakeRequestActivity : AppCompatActivity(),FinishingFragmentListener {
         myBooks.layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
 
         hisBooks.adapter=MakeRequestRecyclerAdapter(hisChosenBooks,tempImagesArr)
+
+
+
         addMy.setOnClickListener {
             val auth=firebaseAuth.currentUser!!.uid
             dialog = ChoosingBooksDialog(auth)
@@ -112,7 +116,7 @@ class MakeRequestActivity : AppCompatActivity(),FinishingFragmentListener {
         makeRequestButton.setOnClickListener {
 
             dialogg.show()
-            makeRequestViewModel.makeRequest(myChosenBooks,hisChosenBooks,firebaseAuth.currentUser!!.uid,userKey)
+            makeRequestViewModel.makeRequest(myChosenBooks,hisChosenBooks,firebaseAuth.currentUser!!.uid,userKey!!)
 
 
        }

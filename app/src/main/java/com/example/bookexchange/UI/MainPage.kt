@@ -110,7 +110,7 @@ class MainPage : AppCompatActivity() {
 
                 R.id.navigation_books -> loadFragment(MyBooksFragment(this@MainPage))
 
-                R.id.navigation_requests ->loadFragment(RequestsFragment(lastCount))
+                R.id.navigation_requests ->loadFragment(RequestsFragment())
             }
             true
         }

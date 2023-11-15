@@ -20,8 +20,7 @@ class MyBooksViewModel: ViewModel() {
 
     lateinit var firebaseDatabase: DatabaseReference
     var myBooksList=MutableLiveData<ArrayList<Book>>()
-    var _myImages=ArrayList<Bitmap>()
-    var myImages=MutableLiveData<ArrayList<Bitmap>>()
+
     private var _myBooksList=ArrayList<Book>()
 
 

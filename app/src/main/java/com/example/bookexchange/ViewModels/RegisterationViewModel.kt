@@ -18,7 +18,7 @@ class RegisterationViewModel: ViewModel() {
      fun registerAndWriteData(userData: UserData){
         viewModelScope.launch(Dispatchers.IO) {
 
-            var uid=register(userData.email!!, userData.password!!)
+            val uid=register(userData.email!!, userData.password!!)
 
             if(uid!="null"){
                 writeData(uid, userData);
@@ -29,7 +29,7 @@ class RegisterationViewModel: ViewModel() {
 
     }
 
-    private suspend fun writeData(uid:String, userData: UserData){
+    private  fun writeData(uid:String, userData: UserData){
 
 
         firebaseDatabase=FirebaseDatabase.getInstance()

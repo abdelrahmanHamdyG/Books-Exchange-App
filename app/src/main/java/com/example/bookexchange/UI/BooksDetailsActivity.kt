@@ -27,6 +27,7 @@ import com.example.bookexchange.ViewModels.MyBooksViewModel
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
@@ -37,6 +38,7 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
     lateinit var addBookViewModel:AddBookViewModel
     lateinit var dialogg:Dialog
     private var imageChoosen=false;
+    lateinit var job1: Job;
     private val IMAGE_PICK_REQUEST_CODE=5;
     lateinit var firebaseAuth: FirebaseAuth
     lateinit var editName:TextInputEditText
@@ -130,7 +132,7 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
 
                 dialogg.show()
 
-                GlobalScope.launch {
+                job1=GlobalScope.launch {
                     val job1 = async {
                         myBooksViewModel.removeValue(bookKey.toString(), firebaseAuth.currentUser!!.uid,bookImage.toString());
                     }
@@ -198,28 +200,10 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
 
     }
 
+    override fun onStop() {
+        super.onStop()
+        job1.cancel()
+    }
+
 }
-class CustomSpinnerAdapter(
-    context: Context,
-    private val items: List<String>
-) : ArrayAdapter<String>(context, 0, items) {
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return createItemView(position, convertView, parent)
-    }
-
-    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return createItemView(position, convertView, parent)
-    }
-
-    private fun createItemView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val item = items[position]
-
-        val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.spinner, parent, false)
-
-        val textImageView = view.findViewById<TextView>(R.id.spinner_textView)
-        textImageView.text = item
-
-        return view
-    }
-}

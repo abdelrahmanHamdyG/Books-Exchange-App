@@ -14,6 +14,7 @@ class Book() :Parcelable{
     var key:String?=null
     var state:String?=null
 
+
     constructor(bookName:String,bookDescription:String,category: String,imageUri: String,user: String,key:String,city:String,state:String) : this() {
         this.bookName=bookName
         this.bookDescription=bookDescription
@@ -23,6 +24,7 @@ class Book() :Parcelable{
         this.key=key
         this.city=city
         this.state=state
+
     }
 
 }

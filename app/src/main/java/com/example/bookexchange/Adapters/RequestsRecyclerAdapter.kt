@@ -9,13 +9,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bookexchange.AppUtils
 import com.example.bookexchange.UI.MakingDecisionActivity
 import com.example.bookexchange.Models.Request
 import com.example.bookexchange.R
 
 
-data class itemTexts(val title:String, val state:String,val description: String)
-    
+
     
 
 
@@ -46,11 +46,11 @@ class RequestsRecyclerAdapter(var arr:ArrayList<Request>,var context: Context): 
 
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint("ClickableViewAccessibility", "SuspiciousIndentation")
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
 
 
-
+        AppUtils.LOG("on bindd View holder")
         holder.itemView.setOnClickListener {
 
          Intent(context, MakingDecisionActivity::class.java).apply {
@@ -97,7 +97,7 @@ class RequestsRecyclerAdapter(var arr:ArrayList<Request>,var context: Context): 
     }
 
 
-    fun getDifferenceInTime(time:Int):String{
+    private fun getDifferenceInTime(time:Long):String{
 
         val timeNow=System.currentTimeMillis()
         val timeDifferenceInMillis=timeNow-time;

@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bookexchange.Adapters.RequestsRecyclerAdapter
+import com.example.bookexchange.AppUtils
 import com.example.bookexchange.R
 import com.example.bookexchange.ViewModels.RequestsFragmentViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -17,7 +18,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class RequestsFragment(val lastCount: Int) : Fragment() {
+class RequestsFragment() : Fragment() {
 
     lateinit var requestsFragmentViewModel:RequestsFragmentViewModel
 
@@ -38,20 +39,12 @@ class RequestsFragment(val lastCount: Int) : Fragment() {
         requestsFragmentViewModel=ViewModelProvider(this)[RequestsFragmentViewModel::class.java]
 
 
-        GlobalScope.launch(Dispatchers.IO){
+        GlobalScope.launch(Dispatchers.IO) {
 
 
-            launch {
-                requestsFragmentViewModel.makeEveryThingSeen(firebaseAuth.currentUser!!.uid)
-            }
-
-            launch {
-
-
-                requestsFragmentViewModel
-            }
-
+            requestsFragmentViewModel.makeEveryThingSeen(firebaseAuth.currentUser!!.uid)
         }
+
 
 
         requestsFragmentViewModel.readRequests(firebaseAuth.currentUser!!.uid)
@@ -61,8 +54,9 @@ class RequestsFragment(val lastCount: Int) : Fragment() {
 
         requestsFragmentViewModel.requests.observe(requireActivity()){
 
-            if(requireContext()!=null)
-                recycler.adapter=RequestsRecyclerAdapter(it,requireContext());
+            AppUtils.LOG("triggered requests ${it.size}")
+
+            recycler.adapter=RequestsRecyclerAdapter(it,requireContext());
 
 
         }

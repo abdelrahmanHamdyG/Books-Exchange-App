@@ -21,13 +21,14 @@ import com.example.bookexchange.ViewModels.MyBooksViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MyBooksFragment(val context2:Context) : Fragment() {
 
     lateinit var myBooksList:ArrayList<Book>
-
+    lateinit var job1: Job
     lateinit var firebaseAuth: FirebaseAuth
     lateinit var grid:RecyclerView
     private lateinit var myBooksViewModel: MyBooksViewModel
@@ -91,11 +92,18 @@ class MyBooksFragment(val context2:Context) : Fragment() {
 
         }
 
-        GlobalScope.launch {
+
+         job1=GlobalScope.launch {
             myBooksViewModel.readTexts(firebaseAuth.currentUser!!.uid)
         }
 
 
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        job1.cancel()
     }
 
 

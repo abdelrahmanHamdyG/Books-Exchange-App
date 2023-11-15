@@ -28,6 +28,7 @@ class MakingDecisionActivity : AppCompatActivity() {
 
     lateinit var makingDecisionViewModel: MakingDecisionViewModel
     lateinit var firebaseAuth:FirebaseAuth;
+    lateinit var job: Job
     var dismissed=false;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +40,7 @@ class MakingDecisionActivity : AppCompatActivity() {
         val requestName=myKey+hisKey
 
         val positiveButton=findViewById<AppCompatButton>(R.id.make_decision_positive_button)
-        var firebaseAuth=FirebaseAuth.getInstance()
+        val firebaseAuth=FirebaseAuth.getInstance()
         val negativeButton=findViewById<AppCompatButton>(R.id.make_decision_negative_button)
         val nBooksText=findViewById<TextView>(R.id.make_decision_nbooks)
         val state=findViewById<TextView>(R.id.make_decision_state)
@@ -53,7 +54,7 @@ class MakingDecisionActivity : AppCompatActivity() {
         makingDecisionViewModel=ViewModelProvider(this)[MakingDecisionViewModel::class.java]
 
 
-        GlobalScope.launch(Dispatchers.IO) {
+        job=GlobalScope.launch(Dispatchers.IO) {
             makingDecisionViewModel.readTheRequest(firebaseAuth.currentUser!!.uid, requestName);
         }
 
@@ -88,7 +89,6 @@ class MakingDecisionActivity : AppCompatActivity() {
             if(it.state=="Sent"){
 
                 state.text="Waiting Response"
-
 
             }else{
 
@@ -182,6 +182,11 @@ class MakingDecisionActivity : AppCompatActivity() {
         if(!dismissed)
             dialogg.dismiss()
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        job.cancel()
     }
 
 }

@@ -27,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class HomeFragment(val context2: Context) : Fragment(),OnItemClickListener {
@@ -35,6 +36,7 @@ class HomeFragment(val context2: Context) : Fragment(),OnItemClickListener {
     lateinit var homeFragmentViewModel:HomeFragmentViewModel
     lateinit var firebaseAuth: FirebaseAuth
     lateinit var dialogg: AlertDialog
+    lateinit var job1: Job;
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,7 +64,7 @@ class HomeFragment(val context2: Context) : Fragment(),OnItemClickListener {
         firebaseAuth=FirebaseAuth.getInstance()
 
 
-        GlobalScope.launch(Dispatchers.IO) {
+        job1=GlobalScope.launch(Dispatchers.IO) {
             homeFragmentViewModel.readAllBooks(firebaseAuth.currentUser!!.uid);
 
         }
@@ -125,6 +127,11 @@ class HomeFragment(val context2: Context) : Fragment(),OnItemClickListener {
         }
 
 
+    }
+
+    override fun onStop() {
+        super.onStop()
+        job1.cancel()
     }
 
 

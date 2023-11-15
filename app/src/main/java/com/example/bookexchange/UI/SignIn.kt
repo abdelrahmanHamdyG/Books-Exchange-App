@@ -77,7 +77,6 @@ class SignIn : AppCompatActivity() {
 
         signInViewModel.loginResult.observe(this) {
 
-
             if(it=="Success"){
                 AppUtils.showToast(this, "Welcome My Friend")
                 startActivity(Intent(this, MainPage::class.java))
