@@ -16,6 +16,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.sql.Types.NULL
+import java.util.TreeSet
 
 class MakingDecisionViewModel: ViewModel() {
 
@@ -112,11 +113,119 @@ class MakingDecisionViewModel: ViewModel() {
                 result.postValue(false);
             }
         }
+    }
 
+
+
+    fun acceptTheRequest(myKey: String,hisKey: String){
+
+
+        val firebase=FirebaseDatabase.getInstance().getReference("All Users");
+
+        try {
+            firebase.child(myKey).child("Requests").child(myKey + hisKey).child("state")
+                .setValue("AcceptedByMe");
+            firebase.child(hisKey).child("Requests").child(hisKey + myKey).child("state")
+                .setValue("AcceptedByHim");
+
+            viewModelScope.launch(Dispatchers.IO) {
+                val books = async(Dispatchers.IO) {
+                    getOurBooks(myKey, hisKey);
+                }
+
+                launch {
+                    removeBooks(myKey, books.await());
+                }
+
+                launch {
+                    removeBooks(hisKey, books.await());
+                }
+
+
+            }
+
+        }catch (e:Exception){
+
+
+        }
+
+    }
+
+    suspend  fun removeBooks(key: String,books:TreeSet<Book>){
+
+        val firebase=FirebaseDatabase.getInstance().getReference("All Users");
+        val bookks=firebase.child(key).child("Books").get().await()
+        for (i in bookks.children){
+            val book=i.getValue(Book::class.java)
+
+            if(books.contains(book)){
+
+                i.ref.removeValue()
+
+            }
+        }
+
+        val requests=firebase.child(key).child("Requests").get().await()
+        for (i in requests.children){
+            val request=i.getValue(Request::class.java)
+            for (book in request?.myBooks!!) {
+
+                if (books.contains(book)) {
+
+                    i.ref.child("state").setValue("RefusedByMe")
+                    cancelRequestsEmbedded(request.hisKey.toString(),request.myKey.toString())
+
+                }
+            }
+        }
 
 
 
     }
+
+
+    private fun cancelRequestsEmbedded(hiskey: String, myKey: String){
+        val firebase=FirebaseDatabase.getInstance().getReference("All Users")
+
+        try {
+
+
+            viewModelScope.launch(Dispatchers.IO) {
+                firebase.child(hiskey).child(hiskey + myKey).child("state").setValue("RefusedByHim")
+                    .await();
+            }
+        }catch (e: Exception){
+
+
+        }
+    }
+    suspend fun getOurBooks(myKey: String,hisKey: String):TreeSet<Book>{
+
+
+
+            val books=TreeSet<Book>();
+            val firebaseDatabase = FirebaseDatabase.getInstance().reference
+
+
+
+            val myBooksr=firebaseDatabase.child("All Users").child(myKey).child("Requests").child(myKey + hisKey).child("myBooks").get().await()
+            val hisBooksr=firebaseDatabase.child("All Users").child(myKey).child("Requests").child(myKey + hisKey).child("myBooks").get().await()
+            for(i in myBooksr.children){
+
+                val book=i.getValue(Book::class.java)
+                books.add(book!!)
+            }
+            for(i in hisBooksr.children){
+
+                val book=i.getValue(Book::class.java)
+                books.add(book!!)
+            }
+
+
+
+        return books;
+    }
+
 
     suspend fun removeToMe(myKey:String, hisKey:String): Boolean {
 
@@ -156,7 +265,7 @@ class MakingDecisionViewModel: ViewModel() {
 
 
             try {
-                val r=firebaseDatabase.child("All Users").child(hisKey).child("Requests").child(  hisKey+myKey).get().await()
+                val r=firebaseDatabase.child("All Users").child(hisKey).child("Books").child(  hisKey+myKey).get().await()
 
                 val result=r.getValue(Request::class.java)
                 result?.seen=false;

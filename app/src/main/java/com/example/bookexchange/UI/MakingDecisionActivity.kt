@@ -1,6 +1,7 @@
 package com.example.bookexchange.UI
 
 import android.app.AlertDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -173,6 +174,44 @@ class MakingDecisionActivity : AppCompatActivity() {
 
         }
 
+
+        positiveButton.setOnClickListener {
+
+
+            val alertDialog = AlertDialog.Builder(this)
+            alertDialog.setTitle("Confirm request?")
+            alertDialog.setMessage("Are you sure you want to Confirm this request?")
+            alertDialog.setPositiveButton("Yes") { dialog, _ ->
+
+                val dialogView = layoutInflater.inflate(R.layout.progress_dialog, null)
+                dialogg = androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setView(dialogView)
+                    .setCancelable(false).create()
+                dialogg.show()
+                val handler = Handler(Looper.getMainLooper())
+                val delayMillis = 10000L
+
+                handler.postDelayed({
+                    dismissProgressDialog()
+                }, delayMillis)
+
+                makingDecisionViewModel.acceptTheRequest(myKey.toString(),hisKey.toString())
+
+            }
+            alertDialog.setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+
+            val x=alertDialog.create()
+            x.show()
+
+
+            Intent(this,InformationOfContactActivity::class.java).apply {
+                intent!!.putExtra("hisKey",hisKey);
+                startActivity(this);
+            }
+        }
 
     }
 
