@@ -54,31 +54,6 @@ class MakingDecisionActivity : AppCompatActivity() {
 
         makingDecisionViewModel=ViewModelProvider(this)[MakingDecisionViewModel::class.java]
 
-
-        job=GlobalScope.launch(Dispatchers.IO) {
-            makingDecisionViewModel.readTheRequest(firebaseAuth.currentUser!!.uid, requestName);
-        }
-
-
-
-
-
-
-        makingDecisionViewModel.result.observe(this){
-
-            dialogg.dismiss()
-
-            dismissed=true;
-            if(it) {
-                AppUtils.showToast(this, "the request is cancelled successfully")
-                finish()
-            }
-            else
-                AppUtils.showToast(this,"Please check your internet connection and try again")
-
-
-        }
-
         makingDecisionViewModel.request.observe(this){
 
             AppUtils.LOG("Observer is triggered");
@@ -115,7 +90,7 @@ class MakingDecisionActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main){
 
                     try {
-                    myRecycler.adapter=MakeRequestRecyclerAdapter(it.myBooks!!,job1.await())
+                        myRecycler.adapter=MakeRequestRecyclerAdapter(it.myBooks!!,job1.await())
 
                         yourRecycler.adapter =
                             MakeRequestRecyclerAdapter(it.hisBooks!!, job2.await())
@@ -129,6 +104,33 @@ class MakingDecisionActivity : AppCompatActivity() {
             }
 
         }
+
+        job=GlobalScope.launch(Dispatchers.IO) {
+            AppUtils.LOG("MakingDecisionActivity: readTheRequests")
+            makingDecisionViewModel.readTheRequest(firebaseAuth.currentUser!!.uid, requestName);
+        }
+
+
+
+
+
+
+        makingDecisionViewModel.result.observe(this){
+
+            dialogg.dismiss()
+
+            dismissed=true;
+            if(it) {
+                AppUtils.showToast(this, "the request is cancelled successfully")
+                finish()
+            }
+            else
+                AppUtils.showToast(this,"Please check your internet connection and try again")
+
+
+        }
+
+
 
 
 
@@ -188,15 +190,14 @@ class MakingDecisionActivity : AppCompatActivity() {
                     .setView(dialogView)
                     .setCancelable(false).create()
                 dialogg.show()
-                val handler = Handler(Looper.getMainLooper())
-                val delayMillis = 10000L
 
-                handler.postDelayed({
-                    dismissProgressDialog()
-                }, delayMillis)
 
                 makingDecisionViewModel.acceptTheRequest(myKey.toString(),hisKey.toString())
-
+                /*Intent(this,InformationOfContactActivity::class.java).apply {
+                    intent!!.putExtra("hisKey",hisKey);
+                    startActivity(this);
+                }
+*/              dialogg.dismiss()
             }
             alertDialog.setNegativeButton("No") { dialog, _ ->
                 dialog.dismiss()
@@ -207,10 +208,7 @@ class MakingDecisionActivity : AppCompatActivity() {
             x.show()
 
 
-            Intent(this,InformationOfContactActivity::class.java).apply {
-                intent!!.putExtra("hisKey",hisKey);
-                startActivity(this);
-            }
+
         }
 
     }

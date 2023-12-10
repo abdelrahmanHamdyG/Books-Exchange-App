@@ -1,6 +1,7 @@
 package com.example.bookexchange.UI
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,8 @@ class RequestsFragment() : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        AppUtils.LOG("RequestsFragment:OnCreate()")
         val view= inflater.inflate(R.layout.fragment_requests, container, false)
 
         val recycler=view.findViewById<RecyclerView>(R.id.requests_fragment_recycler)

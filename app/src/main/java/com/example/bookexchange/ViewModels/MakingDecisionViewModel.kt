@@ -18,6 +18,15 @@ import kotlinx.coroutines.tasks.await
 import java.sql.Types.NULL
 import java.util.TreeSet
 
+
+fun contain(books:ArrayList<Book>, book:Book):Boolean{
+
+    for(i in books) {
+        if (i.bookName==book.bookName &&i.bookDescription==book.bookDescription)
+            return true;
+    }
+    return false;
+}
 class MakingDecisionViewModel: ViewModel() {
 
 
@@ -38,27 +47,18 @@ class MakingDecisionViewModel: ViewModel() {
         var found=false;
 
 
-        val job=viewModelScope.launch(Dispatchers.IO) {
-            try {
-
 
                 val response =
                     firebaseDatabase.child("All Users").child(uid).child("Requests").child(key)
                         .get()
                         .await()
 
-                _request = response.getValue(Request::class.java)!!
+                AppUtils.LOG("MakingDecisionViewModel:readTheRequest:Job:reading response response is:${response.toString()}")
+
+        _request = response.getValue(Request::class.java)!!
                 found=true;
 
-            } catch (e: Exception) {
-
-                AppUtils.LOG("Exception is Found")
-            }
-
-        }
-
-        job.join()
-
+        AppUtils.LOG("MakingDecisionViewModel:readTheRequest:Job after join")
         request.postValue(_request)
 
     }
@@ -120,15 +120,15 @@ class MakingDecisionViewModel: ViewModel() {
     fun acceptTheRequest(myKey: String,hisKey: String){
 
 
+        try {
         val firebase=FirebaseDatabase.getInstance().getReference("All Users");
 
-        try {
             firebase.child(myKey).child("Requests").child(myKey + hisKey).child("state")
                 .setValue("AcceptedByMe");
             firebase.child(hisKey).child("Requests").child(hisKey + myKey).child("state")
                 .setValue("AcceptedByHim");
-
             viewModelScope.launch(Dispatchers.IO) {
+
                 val books = async(Dispatchers.IO) {
                     getOurBooks(myKey, hisKey);
                 }
@@ -146,20 +146,26 @@ class MakingDecisionViewModel: ViewModel() {
 
         }catch (e:Exception){
 
-
+        AppUtils.LOG("accept the request Exception ${e.message.toString()} ")
         }
 
     }
 
-    suspend  fun removeBooks(key: String,books:TreeSet<Book>){
+    suspend  fun removeBooks(key: String,books:ArrayList<Book>){
+
+        for(i in books)
+            AppUtils.LOG("books are ${i.bookName}");
+
+        AppUtils.LOG("remove books is called ${books.size}")
 
         val firebase=FirebaseDatabase.getInstance().getReference("All Users");
         val bookks=firebase.child(key).child("Books").get().await()
+        AppUtils.LOG("bookks size is $bookks and the uid is $key");
         for (i in bookks.children){
             val book=i.getValue(Book::class.java)
-
-            if(books.contains(book)){
-
+            AppUtils.LOG("book is  ${book!!.bookName}");
+            if(contain(books,book)){
+            AppUtils.LOG("yes it is in ")
                 i.ref.removeValue()
 
             }
@@ -199,21 +205,26 @@ class MakingDecisionViewModel: ViewModel() {
 
         }
     }
-    suspend fun getOurBooks(myKey: String,hisKey: String):TreeSet<Book>{
+    suspend fun getOurBooks(myKey: String,hisKey: String):ArrayList<Book>{
 
 
 
-            val books=TreeSet<Book>();
+            val books=ArrayList<Book>();
             val firebaseDatabase = FirebaseDatabase.getInstance().reference
 
 
 
             val myBooksr=firebaseDatabase.child("All Users").child(myKey).child("Requests").child(myKey + hisKey).child("myBooks").get().await()
             val hisBooksr=firebaseDatabase.child("All Users").child(myKey).child("Requests").child(myKey + hisKey).child("myBooks").get().await()
+
             for(i in myBooksr.children){
 
                 val book=i.getValue(Book::class.java)
-                books.add(book!!)
+                AppUtils.LOG("Booksr  = $i")
+                if (book != null) {
+                    AppUtils.LOG("NOT NULL")
+                    books.add(book)
+                }
             }
             for(i in hisBooksr.children){
 
@@ -222,7 +233,7 @@ class MakingDecisionViewModel: ViewModel() {
             }
 
 
-
+        AppUtils.LOG("we have got the books we have ${books.size}")
         return books;
     }
 

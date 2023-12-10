@@ -49,13 +49,14 @@ class RequestsFragmentViewModel: ViewModel() {
 
     fun readRequests(uid:String){
 
+        AppUtils.LOG("RequestsFragmentViewModel:ReadRequests")
         val firebaseDatabase= FirebaseDatabase.getInstance()
         val reference=firebaseDatabase.reference.child("All Users").child(uid).child("Requests")
 
-        reference.addValueEventListener(object:ValueEventListener{
+        reference.addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
 
-
+                AppUtils.LOG("RequestsFragmentViewModel:ReadRequests:OnDataChange triggered")
                 _requests.clear()
 
                     for (i in snapshot.children) {
