@@ -1,6 +1,8 @@
 package com.example.bookexchange.ViewModels
 
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.bookexchange.Models.Request
 import androidx.lifecycle.ViewModel
@@ -117,7 +119,8 @@ class MakingDecisionViewModel: ViewModel() {
 
 
 
-    fun acceptTheRequest(myKey: String,hisKey: String){
+    @SuppressLint("SuspiciousIndentation")
+    fun acceptTheRequest(myKey: String, hisKey: String){
 
 
         try {
@@ -154,7 +157,7 @@ class MakingDecisionViewModel: ViewModel() {
     suspend  fun removeBooks(key: String,books:ArrayList<Book>){
 
         for(i in books)
-            AppUtils.LOG("books are ${i.bookName}");
+            Log.i("see books","books are ${i.bookName}");
 
         AppUtils.LOG("remove books is called ${books.size}")
 
@@ -174,9 +177,12 @@ class MakingDecisionViewModel: ViewModel() {
         val requests=firebase.child(key).child("Requests").get().await()
         for (i in requests.children){
             val request=i.getValue(Request::class.java)
+            if(request?.state=="AcceptedByHim"||request?.state=="AcceptedByMe")
+                continue;
+
             for (book in request?.myBooks!!) {
 
-                if (books.contains(book)) {
+                if (contain(books,book)) {
 
                     i.ref.child("state").setValue("RefusedByMe")
                     cancelRequestsEmbedded(request.hisKey.toString(),request.myKey.toString())
@@ -197,7 +203,7 @@ class MakingDecisionViewModel: ViewModel() {
 
 
             viewModelScope.launch(Dispatchers.IO) {
-                firebase.child(hiskey).child(hiskey + myKey).child("state").setValue("RefusedByHim")
+                firebase.child(hiskey).child("Requests").child(hiskey + myKey).child("state").setValue("RefusedByHim")
                     .await();
             }
         }catch (e: Exception){
@@ -215,7 +221,7 @@ class MakingDecisionViewModel: ViewModel() {
 
 
             val myBooksr=firebaseDatabase.child("All Users").child(myKey).child("Requests").child(myKey + hisKey).child("myBooks").get().await()
-            val hisBooksr=firebaseDatabase.child("All Users").child(myKey).child("Requests").child(myKey + hisKey).child("myBooks").get().await()
+            val hisBooksr=firebaseDatabase.child("All Users").child(myKey).child("Requests").child(myKey + hisKey).child("hisBooks").get().await()
 
             for(i in myBooksr.children){
 

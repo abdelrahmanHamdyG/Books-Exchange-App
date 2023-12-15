@@ -83,10 +83,17 @@ class RequestsRecyclerAdapter(var arr:ArrayList<Request>,var context: Context): 
                     holder.image.setImageResource(R.drawable.baseline_cancel_24)
 
                 }
-                else if(state=="Sent")
-                    holder.title.text="Swap Request is sent"
-                else
-                    holder.title.text="Swap Request is received"
+                else if(state=="Sent") {
+                    holder.title.text = "Swap Request is sent"
+                }
+                else{
+                    if(state=="AcceptedByHim"||state=="AcceptedByMe"){
+
+                        holder.title.text="Done ya basha";
+                    }else {
+                        holder.title.text = "Swap Request is received"
+                    }
+                }
             }
 
 
@@ -101,17 +108,23 @@ class RequestsRecyclerAdapter(var arr:ArrayList<Request>,var context: Context): 
 
         val timeNow=System.currentTimeMillis()
         val timeDifferenceInMillis=timeNow-time;
-        var hours = timeDifferenceInMillis / 3600000
+        AppUtils.LOG("difference in time ")
+        var hours = timeDifferenceInMillis / 1000;
 
-        if(hours<24){
 
-            return "$hours hours ago"
-        }else{
+        if(hours<60*60){
 
-            hours /= 24;
-            return "$hours days ago"
+         return "${hours/60} minutes ago "
+        }else {
+            if (hours < 60*60*24) {
+
+                return "${hours/(60*60)} hours ago"
+            } else {
+
+                hours /= 24;
+                return "${hours/(60*60*24)}days ago"
+            }
         }
-
 
     }
 

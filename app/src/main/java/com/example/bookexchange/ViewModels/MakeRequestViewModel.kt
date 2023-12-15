@@ -19,11 +19,11 @@ class MakeRequestViewModel: ViewModel() {
 
 
     fun makeRequest(myBooks:ArrayList<Book>,hisBooks:ArrayList<Book>,myKey:String,hisKey:String){
-
+        val time=System.currentTimeMillis().toLong()
         viewModelScope.launch(Dispatchers.IO){
 
-            val first=async { uploadToMe(myBooks,hisBooks,myKey,hisKey) }
-            val second=async { uploadToHim(myBooks,hisBooks,myKey,hisKey)  }
+            val first=async { uploadToMe(myBooks,hisBooks,myKey,hisKey,time) }
+            val second=async { uploadToHim(myBooks,hisBooks,myKey,hisKey,time   )  }
 
 
             if(first.await()&&second.await()){
@@ -40,7 +40,7 @@ class MakeRequestViewModel: ViewModel() {
 
 
 
-    suspend fun uploadToMe(myBooks:ArrayList<Book>, hisBooks:ArrayList<Book>, myKey:String, hisKey:String): Boolean {
+    suspend fun uploadToMe(myBooks:ArrayList<Book>, hisBooks:ArrayList<Book>, myKey:String, hisKey:String,time:Long): Boolean {
 
         var  check=true;
         val job=viewModelScope.launch(Dispatchers.IO) {
@@ -48,7 +48,7 @@ class MakeRequestViewModel: ViewModel() {
 
 
             val request = Request(myKey, hisKey, true, true, myBooks, hisBooks, "Sent",false,
-                System.currentTimeMillis().toInt().toLong() );
+                time );
 
 
             try {
@@ -66,14 +66,14 @@ class MakeRequestViewModel: ViewModel() {
         return check
     }
 
-    suspend fun uploadToHim(myBooks:ArrayList<Book>, hisBooks:ArrayList<Book>, myKey:String, hisKey:String): Boolean {
+    suspend fun uploadToHim(myBooks:ArrayList<Book>, hisBooks:ArrayList<Book>, myKey:String, hisKey:String,time:Long): Boolean {
 
         var  check=true;
         val job=viewModelScope.launch(Dispatchers.IO) {
             val firebaseDatabase = FirebaseDatabase.getInstance().reference
 
             val request = Request( hisKey,myKey, false, false,  hisBooks,myBooks, "Received",false,
-                System.currentTimeMillis().toLong() );
+              time);
 
             try {
                 firebaseDatabase.child("All Users").child(hisKey).child("Requests").child(hisKey + myKey)
