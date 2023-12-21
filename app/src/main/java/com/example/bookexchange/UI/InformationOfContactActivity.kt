@@ -9,8 +9,6 @@ class InformationOfContactActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_information_of_contact)
 
-        // I should
-
 
 
     }

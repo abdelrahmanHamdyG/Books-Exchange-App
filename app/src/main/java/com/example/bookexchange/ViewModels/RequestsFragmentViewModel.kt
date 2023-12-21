@@ -21,7 +21,7 @@ class RequestsFragmentViewModel: ViewModel() {
     var _requests=ArrayList<Request>()
     var requests=MutableLiveData<ArrayList<Request>>()
 
-    suspend fun makeEveryThingSeen(uid:String){
+     fun makeEveryThingSeen(uid:String){
         val firebaseDatabase= FirebaseDatabase.getInstance()
         val reference=firebaseDatabase.reference.child("All Users").child(uid).child("Requests")
 
@@ -29,6 +29,7 @@ class RequestsFragmentViewModel: ViewModel() {
 
 
         try {
+            viewModelScope.launch {
             val dataSnapshot = query.get().await()
 
             for (snapshot in dataSnapshot.children) {
@@ -38,7 +39,8 @@ class RequestsFragmentViewModel: ViewModel() {
                     request.seen = true
 
 
-                    snapshot.ref.setValue(request).await()
+                        snapshot.ref.setValue(request).await()
+                    }
                 }
             }
         } catch (e: Exception) {

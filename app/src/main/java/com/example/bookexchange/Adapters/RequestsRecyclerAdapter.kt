@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bookexchange.AppUtils
 import com.example.bookexchange.UI.MakingDecisionActivity
@@ -19,7 +20,7 @@ import com.example.bookexchange.R
     
 
 
-class RequestsRecyclerAdapter(var arr:ArrayList<Request>,var context: Context): RecyclerView.Adapter<RequestsRecyclerAdapter.viewHolder>() {
+class RequestsRecyclerAdapter(var arr:ArrayList<Request>, var context: Context): RecyclerView.Adapter<RequestsRecyclerAdapter.viewHolder>() {
 
 
     inner class viewHolder(view: View): RecyclerView.ViewHolder(view) {
@@ -46,11 +47,11 @@ class RequestsRecyclerAdapter(var arr:ArrayList<Request>,var context: Context): 
 
     }
 
-    @SuppressLint("ClickableViewAccessibility", "SuspiciousIndentation")
+
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
 
 
-        AppUtils.LOG("on bindd View holder")
+        AppUtils.LOG("on bind View holder")
         holder.itemView.setOnClickListener {
 
          Intent(context, MakingDecisionActivity::class.java).apply {

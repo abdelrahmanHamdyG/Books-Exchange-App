@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
+import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -48,12 +49,14 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
     lateinit var bookDetails:String
     lateinit var spinner:Spinner
     lateinit var save:AppCompatButton
+    var flag=false;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_books_details)
 
 
+        val editable=intent.getBooleanExtra("editable",true);
 
         addBookViewModel=ViewModelProvider(this)[AddBookViewModel::class.java]
         myBooksViewModel= MyBooksViewModel()
@@ -76,6 +79,17 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
                 TODO("Not yet implemented")
             }
 
+        }
+
+
+
+        if(!editable){
+
+            editName.isEnabled=false;
+            editDetails.isEnabled=false;
+            spinner.isEnabled=false;
+            image.isEnabled=false;
+            save.visibility=View.GONE;
         }
 
         val bookKey=intent.getStringExtra("book_key")
@@ -132,6 +146,7 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
 
                 dialogg.show()
 
+                flag=true;
                 job1=GlobalScope.launch {
                     val job1 = async {
                         myBooksViewModel.removeValue(bookKey.toString(), firebaseAuth.currentUser!!.uid,bookImage.toString());
@@ -202,7 +217,8 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
 
     override fun onStop() {
         super.onStop()
-        job1.cancel()
+        if(flag)
+            job1.cancel()
     }
 
 }

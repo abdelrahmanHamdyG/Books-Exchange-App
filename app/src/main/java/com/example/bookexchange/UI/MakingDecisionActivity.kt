@@ -90,10 +90,10 @@ class MakingDecisionActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main){
 
                     try {
-                        myRecycler.adapter=MakeRequestRecyclerAdapter(it.myBooks!!,job1.await())
+                        myRecycler.adapter=MakeRequestRecyclerAdapter(this@MakingDecisionActivity,it.myBooks!!,job1.await())
 
                         yourRecycler.adapter =
-                            MakeRequestRecyclerAdapter(it.hisBooks!!, job2.await())
+                            MakeRequestRecyclerAdapter(this@MakingDecisionActivity,it.hisBooks!!, job2.await())
                     }catch (e:Exception){
                         AppUtils.LOG("trying second recycler " +e.message.toString())
                     }
@@ -215,7 +215,7 @@ class MakingDecisionActivity : AppCompatActivity() {
 
     fun dismissProgressDialog(){
 
-    // when I reconnect the internet it cancel the request
+        // when I reconnect the internet it cancel the request
         if(!dismissed)
             dialogg.dismiss()
 

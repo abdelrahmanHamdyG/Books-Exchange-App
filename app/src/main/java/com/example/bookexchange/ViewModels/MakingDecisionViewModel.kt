@@ -50,15 +50,15 @@ class MakingDecisionViewModel: ViewModel() {
 
 
 
-                val response =
-                    firebaseDatabase.child("All Users").child(uid).child("Requests").child(key)
-                        .get()
-                        .await()
+        val response =
+            firebaseDatabase.child("All Users").child(uid).child("Requests").child(key)
+                .get()
+                .await()
 
-                AppUtils.LOG("MakingDecisionViewModel:readTheRequest:Job:reading response response is:${response.toString()}")
+        AppUtils.LOG("MakingDecisionViewModel:readTheRequest:Job:reading response response is:${response.toString()}")
 
         _request = response.getValue(Request::class.java)!!
-                found=true;
+        found=true;
 
         AppUtils.LOG("MakingDecisionViewModel:readTheRequest:Job after join")
         request.postValue(_request)
@@ -124,7 +124,7 @@ class MakingDecisionViewModel: ViewModel() {
 
 
         try {
-        val firebase=FirebaseDatabase.getInstance().getReference("All Users");
+            val firebase=FirebaseDatabase.getInstance().getReference("All Users");
 
             firebase.child(myKey).child("Requests").child(myKey + hisKey).child("state")
                 .setValue("AcceptedByMe");
@@ -149,7 +149,7 @@ class MakingDecisionViewModel: ViewModel() {
 
         }catch (e:Exception){
 
-        AppUtils.LOG("accept the request Exception ${e.message.toString()} ")
+            AppUtils.LOG("accept the request Exception ${e.message.toString()} ")
         }
 
     }
@@ -168,7 +168,7 @@ class MakingDecisionViewModel: ViewModel() {
             val book=i.getValue(Book::class.java)
             AppUtils.LOG("book is  ${book!!.bookName}");
             if(contain(books,book)){
-            AppUtils.LOG("yes it is in ")
+                AppUtils.LOG("yes it is in ")
                 i.ref.removeValue()
 
             }
@@ -215,28 +215,28 @@ class MakingDecisionViewModel: ViewModel() {
 
 
 
-            val books=ArrayList<Book>();
-            val firebaseDatabase = FirebaseDatabase.getInstance().reference
+        val books=ArrayList<Book>();
+        val firebaseDatabase = FirebaseDatabase.getInstance().reference
 
 
 
-            val myBooksr=firebaseDatabase.child("All Users").child(myKey).child("Requests").child(myKey + hisKey).child("myBooks").get().await()
-            val hisBooksr=firebaseDatabase.child("All Users").child(myKey).child("Requests").child(myKey + hisKey).child("hisBooks").get().await()
+        val myBooksr=firebaseDatabase.child("All Users").child(myKey).child("Requests").child(myKey + hisKey).child("myBooks").get().await()
+        val hisBooksr=firebaseDatabase.child("All Users").child(myKey).child("Requests").child(myKey + hisKey).child("hisBooks").get().await()
 
-            for(i in myBooksr.children){
+        for(i in myBooksr.children){
 
-                val book=i.getValue(Book::class.java)
-                AppUtils.LOG("Booksr  = $i")
-                if (book != null) {
-                    AppUtils.LOG("NOT NULL")
-                    books.add(book)
-                }
+            val book=i.getValue(Book::class.java)
+            AppUtils.LOG("Booksr  = $i")
+            if (book != null) {
+                AppUtils.LOG("NOT NULL")
+                books.add(book)
             }
-            for(i in hisBooksr.children){
+        }
+        for(i in hisBooksr.children){
 
-                val book=i.getValue(Book::class.java)
-                books.add(book!!)
-            }
+            val book=i.getValue(Book::class.java)
+            books.add(book!!)
+        }
 
 
         AppUtils.LOG("we have got the books we have ${books.size}")

@@ -14,7 +14,6 @@ import com.example.bookexchange.AppUtils
 import com.example.bookexchange.R
 import com.example.bookexchange.ViewModels.RequestsFragmentViewModel
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -22,32 +21,37 @@ import kotlinx.coroutines.launch
 class RequestsFragment() : Fragment() {
 
     lateinit var requestsFragmentViewModel:RequestsFragmentViewModel
-
+    lateinit var recycler:RecyclerView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
+
         AppUtils.LOG("RequestsFragment:OnCreate()")
         val view= inflater.inflate(R.layout.fragment_requests, container, false)
 
-        val recycler=view.findViewById<RecyclerView>(R.id.requests_fragment_recycler)
+        recycler=view.findViewById<RecyclerView>(R.id.requests_fragment_recycler)
 
 
 
 
+
+
+
+        return view;
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val firebaseAuth=FirebaseAuth.getInstance()
 
         requestsFragmentViewModel=ViewModelProvider(this)[RequestsFragmentViewModel::class.java]
 
 
-        GlobalScope.launch(Dispatchers.IO) {
-
-
-            requestsFragmentViewModel.makeEveryThingSeen(firebaseAuth.currentUser!!.uid)
-        }
-
+        requestsFragmentViewModel.makeEveryThingSeen(firebaseAuth.currentUser!!.uid)
 
 
         requestsFragmentViewModel.readRequests(firebaseAuth.currentUser!!.uid)
@@ -55,18 +59,16 @@ class RequestsFragment() : Fragment() {
         recycler.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
 
 
-        requestsFragmentViewModel.requests.observe(requireActivity()){
+        requestsFragmentViewModel.requests.observe(viewLifecycleOwner){
 
             AppUtils.LOG("triggered requests ${it.size}")
 
-            recycler.adapter=RequestsRecyclerAdapter(it,requireContext());
+            recycler.adapter=RequestsRecyclerAdapter(it,requireActivity());
 
 
         }
-
-        return view;
-
     }
+
 
 
 }

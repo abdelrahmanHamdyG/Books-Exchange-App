@@ -33,6 +33,7 @@ class MainPage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_page)
 
+        Log.i("lllfe","MainOnCreate")
         auth=FirebaseAuth.getInstance()
 
 
@@ -163,5 +164,14 @@ class MainPage : AppCompatActivity() {
 
     }
 
+    override fun onStop() {
+        super.onStop()
+        Log.i("lllfe","MainOnStop")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i("lllfe","MainOnDestroy")
+    }
 
 }

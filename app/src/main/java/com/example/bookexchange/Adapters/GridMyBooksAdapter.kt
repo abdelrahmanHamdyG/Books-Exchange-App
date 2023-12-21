@@ -122,7 +122,7 @@ class GridMyBooksAdapter(var booksList:ArrayList<Book>, var uid:String, var cont
             val intent= Intent(context, BooksDetailsActivity::class.java)
 
 
-
+            intent.putExtra("flag",true);
             intent.putExtra("book_name",booksList[position].bookName)
             intent.putExtra("book_details",booksList[position].bookDescription)
             intent.putExtra("image_uri",booksList[position].imageUri)

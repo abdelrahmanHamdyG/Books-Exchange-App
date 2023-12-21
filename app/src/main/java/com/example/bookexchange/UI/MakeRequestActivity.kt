@@ -80,7 +80,7 @@ class MakeRequestActivity : AppCompatActivity(),FinishingFragmentListener {
         hisBooks.layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         myBooks.layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
 
-        hisBooks.adapter=MakeRequestRecyclerAdapter(hisChosenBooks,tempImagesArr)
+        hisBooks.adapter=MakeRequestRecyclerAdapter(this,hisChosenBooks,tempImagesArr)
 
 
 
@@ -133,7 +133,7 @@ class MakeRequestActivity : AppCompatActivity(),FinishingFragmentListener {
 
 
         dialog.dismiss()
-        val adapter= MakeRequestRecyclerAdapter(arr,arr2)
+        val adapter= MakeRequestRecyclerAdapter(this,arr,arr2)
 
         if(uid==firebaseAuth.currentUser!!.uid) {
 
