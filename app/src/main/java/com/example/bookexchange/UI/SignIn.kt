@@ -9,11 +9,13 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.example.bookexchange.AppUtils
 import com.example.bookexchange.R
 import com.example.bookexchange.ViewModels.SignInViewModel
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.launch
 
 
 class SignIn : AppCompatActivity() {
@@ -71,7 +73,10 @@ class SignIn : AppCompatActivity() {
             }
 
             dialogg.show()
-            signInViewModel.login(emailText,passwordText)
+
+            signInViewModel.viewModelScope.launch {
+                signInViewModel.login(emailText, passwordText)
+            }
 
         }
 
@@ -83,7 +88,12 @@ class SignIn : AppCompatActivity() {
                 finish()
 
             }else{
-                AppUtils.showToast(this, it)
+
+                if(it=="timeout"){
+                    AppUtils.showToast(this, "Please check you internet connection ")
+                }else {
+                    AppUtils.showToast(this, it)
+                }
             }
 
             dialogg.dismiss()

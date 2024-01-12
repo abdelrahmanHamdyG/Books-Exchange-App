@@ -21,11 +21,11 @@ import com.google.firebase.auth.FirebaseAuth
 
 
 class MainPage : AppCompatActivity() {
-    @SuppressLint("MissingInflatedId")
+
     lateinit var searchBar:EditText
     lateinit var bottom: BottomNavigationView
     lateinit var mainPageViewModel: MainPageViewModel
-    lateinit var auth: FirebaseAuth
+
     lateinit var backButton:Button
     var lastCount=0;
 
@@ -34,16 +34,19 @@ class MainPage : AppCompatActivity() {
         setContentView(R.layout.activity_main_page)
 
         Log.i("lllfe","MainOnCreate")
-        auth=FirebaseAuth.getInstance()
+        val auth: FirebaseAuth=FirebaseAuth.getInstance()
 
 
         if(auth.currentUser==null){
             Log.i("my_trag","main_page")
+
             Intent(this, SignIn::class.java).apply {
                 startActivity(this)
 
             }
+
             finish()
+            return
         }
 
         mainPageViewModel=ViewModelProvider(this)[MainPageViewModel::class.java]
@@ -63,6 +66,7 @@ class MainPage : AppCompatActivity() {
         setSupportActionBar(toolbar)
         val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
+        AppUtils.LOG("I am here")
         mainPageViewModel.readSize(auth.currentUser!!.uid)
 
 
