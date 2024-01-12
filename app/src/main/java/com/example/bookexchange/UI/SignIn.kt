@@ -15,6 +15,7 @@ import com.example.bookexchange.R
 import com.example.bookexchange.ViewModels.SignInViewModel
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
@@ -74,7 +75,7 @@ class SignIn : AppCompatActivity() {
 
             dialogg.show()
 
-            signInViewModel.viewModelScope.launch {
+            signInViewModel.viewModelScope.launch(Dispatchers.IO) {
                 signInViewModel.login(emailText, passwordText)
             }
 
@@ -82,6 +83,7 @@ class SignIn : AppCompatActivity() {
 
         signInViewModel.loginResult.observe(this) {
 
+            AppUtils.LOG("it is $it")
             if(it=="Success"){
                 AppUtils.showToast(this, "Welcome My Friend")
                 startActivity(Intent(this, MainPage::class.java))

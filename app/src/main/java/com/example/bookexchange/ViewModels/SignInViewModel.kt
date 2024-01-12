@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bookexchange.AppUtils
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.launch
@@ -18,36 +19,51 @@ class SignInViewModel:ViewModel() {
     lateinit var firebaseAuth: FirebaseAuth
     var loginRunning=false;
 
-    @SuppressLint("SuspiciousIndentation")
+
     suspend fun login(email:String, password:String){
         firebaseAuth=FirebaseAuth.getInstance();
 
         var timeoutEnded=false;
 
          try {
-             withTimeout(5000) {
-                 firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
-                     if (it.isSuccessful) {
+             withTimeout(8000) {
+                 try {
 
-                         if(!timeoutEnded){
 
-                         loginResult.postValue("Success")
-                         }else{
-                             firebaseAuth.signOut()
-                         }
-                     } else {
-                         if(!timeoutEnded)
-                         loginResult.postValue(it.exception!!.message)
-                     }
+                     firebaseAuth.signInWithEmailAndPassword(email, password)
+                         .addOnCompleteListener {
+                             if (it.isSuccessful) {
 
-                 }.await()
 
+                                 if (!timeoutEnded) {
+
+                                     loginResult.postValue("Success")
+                                 } else {
+
+                                     firebaseAuth.signOut()
+                                 }
+                             }
+
+                         }.await()
+                 }catch (e:FirebaseAuthException){
+                        AppUtils.LOG("general exception is ${e.message.toString()} ")
+                        if(!timeoutEnded) {
+                            loginResult.postValue(e.message.toString())
+                        }else{
+
+                        }
+                 }
              }
          }catch (e:TimeoutCancellationException){
-             AppUtils.LOG("somthing is happening")
+
              loginResult.postValue("timeout")
              timeoutEnded=true;
 
          }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        AppUtils.LOG("the signInViewModel is cleared")
     }
 }
