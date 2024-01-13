@@ -2,6 +2,7 @@ package com.example.bookexchange.UI
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -65,11 +66,26 @@ class MakingDecisionActivity : AppCompatActivity() {
             if(it.state=="Sent"){
 
                 state.text="Waiting Response"
-
+                positiveButton.visibility=View.GONE
             }else{
 
                 if(it.state=="Received")
                     state.text="We Are Waiting You :)"
+                else if(it.state=="AcceptedByMe"||it.state=="AcceptedByHim"){
+                    state.text="Done successfully"
+                    negativeButton.visibility=View.GONE
+                    positiveButton.visibility=View.VISIBLE
+                    positiveButton.text="See contact";
+                }else{
+                    if(it.state=="RefusedByMe"||it.state=="RefusedByHim"){
+                        state.text="The request is cancelled :("
+                        negativeButton.visibility=View.GONE
+                        positiveButton.visibility=View.GONE
+                    }
+
+
+                }
+
 
             }
 
@@ -134,10 +150,6 @@ class MakingDecisionActivity : AppCompatActivity() {
 
 
 
-        if(fromMe){
-
-            positiveButton.visibility= View.GONE;
-        }
 
 
         negativeButton.setOnClickListener {
@@ -179,38 +191,45 @@ class MakingDecisionActivity : AppCompatActivity() {
 
         positiveButton.setOnClickListener {
 
+            if (positiveButton.text == "See contact") {
 
-            val alertDialog = AlertDialog.Builder(this)
-            alertDialog.setTitle("Confirm request?")
-            alertDialog.setMessage("Are you sure you want to Confirm this request?")
-            alertDialog.setPositiveButton("Yes") { dialog, _ ->
+            val toContactActivity=Intent(this@MakingDecisionActivity,InformationOfContactActivity::class.java)
+            toContactActivity.putExtra("hisKey",hisKey)
+            startActivity(toContactActivity)
 
-                val dialogView = layoutInflater.inflate(R.layout.progress_dialog, null)
-                dialogg = androidx.appcompat.app.AlertDialog.Builder(this)
-                    .setView(dialogView)
-                    .setCancelable(false).create()
-                dialogg.show()
+            } else {
 
 
-                makingDecisionViewModel.acceptTheRequest(myKey.toString(),hisKey.toString())
-                /*Intent(this,InformationOfContactActivity::class.java).apply {
+                val alertDialog = AlertDialog.Builder(this)
+                alertDialog.setTitle("Confirm request?")
+                alertDialog.setMessage("Are you sure you want to Confirm this request?")
+                alertDialog.setPositiveButton("Yes") { dialog, _ ->
+
+                    val dialogView = layoutInflater.inflate(R.layout.progress_dialog, null)
+                    dialogg = androidx.appcompat.app.AlertDialog.Builder(this)
+                        .setView(dialogView)
+                        .setCancelable(false).create()
+                    dialogg.show()
+
+
+                    makingDecisionViewModel.acceptTheRequest(myKey.toString(), hisKey.toString())
+                    /*Intent(this,InformationOfContactActivity::class.java).apply {
                     intent!!.putExtra("hisKey",hisKey);
                     startActivity(this);
                 }
 */              dialogg.dismiss()
+                }
+                alertDialog.setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
+
+
+                val x = alertDialog.create()
+                x.show()
+
+
             }
-            alertDialog.setNegativeButton("No") { dialog, _ ->
-                dialog.dismiss()
-            }
-
-
-            val x=alertDialog.create()
-            x.show()
-
-
-
         }
-
     }
 
     fun dismissProgressDialog(){

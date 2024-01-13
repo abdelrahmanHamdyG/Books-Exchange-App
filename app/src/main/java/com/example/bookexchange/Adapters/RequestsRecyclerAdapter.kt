@@ -54,11 +54,13 @@ class RequestsRecyclerAdapter(var arr:ArrayList<Request>, var context: Context):
         AppUtils.LOG("on bind View holder")
         holder.itemView.setOnClickListener {
 
-         Intent(context, MakingDecisionActivity::class.java).apply {
 
-                putExtra("myKey",arr[position].myKey)
-                putExtra("hisKey",arr[position].hisKey)
-                putExtra("fromMe",arr[position].fromMe)
+
+            Intent(context, MakingDecisionActivity::class.java).apply {
+
+                putExtra("myKey", arr[position].myKey)
+                putExtra("hisKey", arr[position].hisKey)
+                putExtra("fromMe", arr[position].fromMe)
                 context.startActivity(this)
             }
 
@@ -73,7 +75,7 @@ class RequestsRecyclerAdapter(var arr:ArrayList<Request>, var context: Context):
         val state=arr[position].state
 
 
-            if(state=="RefusedByMe"){
+        if(state=="RefusedByMe"){
 
                 holder.title.text="you have cancelled the offer"
                 holder.image.setImageResource(R.drawable.baseline_cancel_24)

@@ -60,26 +60,30 @@ class MakeRequestRecyclerAdapter(val context:Context,var books:ArrayList<Book>,v
 
         holder.itemView.setOnClickListener {
 
-            val imageBitmap = (holder.bookImage.drawable as? BitmapDrawable)?.bitmap
-            val stream = ByteArrayOutputStream()
-            imageBitmap?.compress(Bitmap.CompressFormat.PNG, 100, stream)
-            val byteArray = stream.toByteArray()
+            try {
 
 
-
-            val i=Intent(context,BooksDetailsActivity::class.java)
-            i.putExtra("editable",false);
-            i.putExtra("book_name",books[position].bookName)
-            i.putExtra("book_details",books[position].bookDescription)
-            i.putExtra("image_uri",books[position].imageUri)
-            i.putExtra("image_bitmap",byteArray);
-            i.putExtra("book_key",books[position].key)
-            i.putExtra("book_category",books[position].category)
-            i.putExtra("city",books[position].city)
-
-            context.startActivity(i);
+                val imageBitmap = (holder.bookImage.drawable as? BitmapDrawable)?.bitmap
+                val stream = ByteArrayOutputStream()
+                imageBitmap?.compress(Bitmap.CompressFormat.PNG, 60, stream)
+                val byteArray = stream.toByteArray()
 
 
+                val i = Intent(context, BooksDetailsActivity::class.java)
+                i.putExtra("editable", false);
+                i.putExtra("book_name", books[position].bookName)
+                i.putExtra("book_details", books[position].bookDescription)
+                i.putExtra("image_uri", books[position].imageUri)
+                i.putExtra("image_bitmap", byteArray);
+                i.putExtra("book_key", books[position].key)
+                i.putExtra("book_category", books[position].category)
+                i.putExtra("city", books[position].city)
+
+                context.startActivity(i);
+
+            }catch (e:Exception){
+                AppUtils.LOG("exception is ${e.message}")
+            }
         }
 
 

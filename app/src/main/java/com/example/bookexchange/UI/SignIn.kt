@@ -50,7 +50,7 @@ class SignIn : AppCompatActivity() {
 
         text_go_to_register.setOnClickListener {
 
-            var intent=Intent(this, Registeration::class.java).apply {
+            Intent(this, Registeration::class.java).apply {
                 startActivity(this@apply)
             }
 
@@ -124,6 +124,9 @@ class SignIn : AppCompatActivity() {
 
 
     }
+
+
+
 
 
 }

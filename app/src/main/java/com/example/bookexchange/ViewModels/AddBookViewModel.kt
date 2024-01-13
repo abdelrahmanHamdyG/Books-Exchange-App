@@ -1,5 +1,6 @@
 package com.example.bookexchange.ViewModels
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,11 +17,14 @@ import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.*
 
 import kotlinx.coroutines.tasks.await
+import java.io.ByteArrayOutputStream
 
 class AddBookViewModel:ViewModel() {
 
 
     var result=MutableLiveData<Boolean>()
+
+
 
 
     fun uploadBookAndTheImage(uid:String,book:Book,imageByteArray: ByteArray){
@@ -131,14 +135,14 @@ class AddBookViewModel:ViewModel() {
         var city="null";
 
         try {
-            var data = firebaseDatabase.child("All Users").child(uid).child("DATA").get().await()
+            val data = firebaseDatabase.child("All Users").child(uid).child("DATA").get().await()
 
             if(data.exists()){
 
                 city=data.getValue(UserData::class.java)!!.governorate!!;
             }
 
-        }catch (e:Exception){
+        }catch (_:Exception){
 
 
         }

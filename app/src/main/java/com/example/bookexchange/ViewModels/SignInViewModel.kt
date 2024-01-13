@@ -1,15 +1,12 @@
 package com.example.bookexchange.ViewModels
 
-import android.annotation.SuppressLint
+
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.bookexchange.AppUtils
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.TimeoutCancellationException
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withTimeout
 
@@ -18,6 +15,7 @@ class SignInViewModel:ViewModel() {
     var loginResult= MutableLiveData<String>();
     lateinit var firebaseAuth: FirebaseAuth
     var loginRunning=false;
+
 
 
     suspend fun login(email:String, password:String){

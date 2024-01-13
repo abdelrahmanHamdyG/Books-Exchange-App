@@ -3,7 +3,6 @@ package com.example.bookexchange.ViewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.bookexchange.AppUtils
 import com.example.bookexchange.Models.UserData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -18,10 +17,13 @@ class RegisterationViewModel: ViewModel() {
      fun registerAndWriteData(userData: UserData){
         viewModelScope.launch(Dispatchers.IO) {
 
-            val uid=register(userData.email!!, userData.password!!)
+            val uid=register(
+                userData.email!!,
+                userData.password!!
+            )
 
             if(uid!="null"){
-                writeData(uid, userData);
+                writeData(uid, userData)
 
             }
 
@@ -33,14 +35,14 @@ class RegisterationViewModel: ViewModel() {
 
 
         firebaseDatabase=FirebaseDatabase.getInstance()
-        var reference=firebaseDatabase.reference
+        val reference=firebaseDatabase.reference
         reference.child("All Users").child(uid).child("DATA").setValue(userData).addOnCompleteListener {
             if(!it.isSuccessful){
 
-                registerResult.value=it.exception!!.message.toString();
+                registerResult.value=it.exception!!.message.toString()
             }else{
 
-                registerResult.value="Success";
+                registerResult.value="Success"
             }
 
 

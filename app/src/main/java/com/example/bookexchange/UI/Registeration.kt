@@ -18,14 +18,14 @@ import com.google.android.material.textfield.TextInputLayout
 class Registeration : AppCompatActivity() {
 
 
-    lateinit var registerationViewModel:RegisterationViewModel
-    @SuppressLint("SuspiciousIndentation")
+    lateinit var registirationViewModel:RegisterationViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registeration)
 
-
-        registerationViewModel = ViewModelProvider(this)[RegisterationViewModel::class.java]
+        //registeration
+        registirationViewModel = ViewModelProvider(this)[RegisterationViewModel::class.java]
 
 
 
@@ -48,9 +48,6 @@ class Registeration : AppCompatActivity() {
         list.add("Gize")
         list.add("Sinaa")
         spinner.adapter=ArrayAdapter(this, R.layout.spinner,list)
-
-
-
 
 
             button.setOnClickListener{
@@ -80,11 +77,11 @@ class Registeration : AppCompatActivity() {
                     return@setOnClickListener
                 }
                 val userData= UserData(nameText,emailText,passwordText,governorate,detailedText)
-                registerationViewModel.registerAndWriteData(userData)
+                registirationViewModel.registerAndWriteData(userData)
 
             }
 
-            registerationViewModel.registerResult.observe(this){
+        registirationViewModel.registerResult.observe(this){
 
                 if(it=="Success"){
                     AppUtils.showToast(this, "Congratulations")

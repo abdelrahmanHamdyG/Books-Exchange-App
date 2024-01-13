@@ -136,9 +136,11 @@ class AddBookActivity : AppCompatActivity() {
             dialogg.show()
 
 
+
+
             val bitmap = (immage.drawable as BitmapDrawable).bitmap
             val byteArrayOutputStream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream)
             val imageByteArray = byteArrayOutputStream.toByteArray()
 
             val imagename = "${firebaseAuth.currentUser!!.uid.toString()}${System.currentTimeMillis()}"
@@ -156,15 +158,20 @@ class AddBookActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode==IMAGE_PICK_REQUEST_CODE&& resultCode == Activity.RESULT_OK){
+        if (requestCode == IMAGE_PICK_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val selectedImage = data!!.data
+            val originalBitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, selectedImage)
 
-            var  selectedImage=data!!.data
-            immage.setImageURI(selectedImage)
+            val resizedBitmap = AppUtils.resizeBitmap(originalBitmap, 600, 400)
 
-            imageChoosen=true;
-            error.visibility=View.GONE
+            immage.setImageBitmap(resizedBitmap)
 
+
+
+            imageChoosen = true
+            error.visibility = View.GONE
         }
+
 
     }
     inner class textWatcher(var editText: TextInputEditText,var TIL: TextInputLayout): TextWatcher {

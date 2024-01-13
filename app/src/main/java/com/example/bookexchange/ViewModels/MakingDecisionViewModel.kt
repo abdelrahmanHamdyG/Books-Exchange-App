@@ -119,7 +119,7 @@ class MakingDecisionViewModel: ViewModel() {
 
 
 
-    @SuppressLint("SuspiciousIndentation")
+
     fun acceptTheRequest(myKey: String, hisKey: String){
 
 
