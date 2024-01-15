@@ -22,6 +22,7 @@ class RequestsFragment() : Fragment() {
 
     lateinit var requestsFragmentViewModel:RequestsFragmentViewModel
     lateinit var recycler:RecyclerView
+    lateinit var firebaseAuth: FirebaseAuth
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,7 +47,7 @@ class RequestsFragment() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val firebaseAuth=FirebaseAuth.getInstance()
+        firebaseAuth=FirebaseAuth.getInstance()
 
         requestsFragmentViewModel=ViewModelProvider(this)[RequestsFragmentViewModel::class.java]
 
@@ -54,7 +55,7 @@ class RequestsFragment() : Fragment() {
         requestsFragmentViewModel.makeEveryThingSeen(firebaseAuth.currentUser!!.uid)
 
 
-        requestsFragmentViewModel.readRequests(firebaseAuth.currentUser!!.uid)
+
 
         recycler.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
 
@@ -65,8 +66,13 @@ class RequestsFragment() : Fragment() {
 
             recycler.adapter=RequestsRecyclerAdapter(it,requireActivity());
 
-
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        requestsFragmentViewModel.readRequests(firebaseAuth.currentUser!!.uid)
+
     }
 
 

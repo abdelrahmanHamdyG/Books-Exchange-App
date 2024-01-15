@@ -4,9 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import com.example.bookexchange.AppUtils
 import com.example.bookexchange.Models.UserData
 import com.example.bookexchange.R
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -29,7 +29,7 @@ class InformationOfContactActivity : AppCompatActivity() {
             .setCancelable(false).create()
 
 
-
+        AppUtils.LOG("To Information Activity")
 
 
 
@@ -37,7 +37,7 @@ class InformationOfContactActivity : AppCompatActivity() {
         val hisKey=intent.extras?.getString("hisKey");
         val databaseReference = FirebaseDatabase.getInstance().getReference("All Users").child(hisKey.toString()).child("DATA")
 
-        databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+        databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     val userData = snapshot.getValue(UserData::class.java)
@@ -46,11 +46,13 @@ class InformationOfContactActivity : AppCompatActivity() {
                     val name = userData?.name
                     val governorate = userData?.governorate
                     val detailed = userData?.detailed
+                    val phone=userData?.phone
 
                     textAddress.text="Address: $governorate, $detailed"
-                    textPhone.text="phone:01061571364"
+                    textPhone.text="phone: $phone"
                     textName.text="name : $name";
 
+                    AppUtils.LOG("text should change")
 
                     dialogg.dismiss()
                 } else {
@@ -61,12 +63,13 @@ class InformationOfContactActivity : AppCompatActivity() {
 
             override fun onCancelled(error: DatabaseError) {
 
+                AppUtils.LOG("text should change: cancelled")
                 dialogg.dismiss()
             }
         })
 
 
-
-
     }
+
+
 }

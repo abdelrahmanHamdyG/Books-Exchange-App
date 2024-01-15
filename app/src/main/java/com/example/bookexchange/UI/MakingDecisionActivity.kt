@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bookexchange.Adapters.MakeRequestRecyclerAdapter
@@ -30,6 +31,7 @@ class MakingDecisionActivity : AppCompatActivity() {
 
     lateinit var makingDecisionViewModel: MakingDecisionViewModel
     lateinit var firebaseAuth:FirebaseAuth;
+    lateinit var requestName:String
     lateinit var job: Job
     var dismissed=false;
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,10 +41,10 @@ class MakingDecisionActivity : AppCompatActivity() {
         val myKey=intent.extras!!.getString("myKey")
         val hisKey=intent.extras!!.getString("hisKey")
         val fromMe=intent.extras!!.getBoolean("fromMe")
-        val requestName=myKey+hisKey
+        requestName=myKey+hisKey
 
         val positiveButton=findViewById<AppCompatButton>(R.id.make_decision_positive_button)
-        val firebaseAuth=FirebaseAuth.getInstance()
+        firebaseAuth=FirebaseAuth.getInstance()
         val negativeButton=findViewById<AppCompatButton>(R.id.make_decision_negative_button)
         val nBooksText=findViewById<TextView>(R.id.make_decision_nbooks)
         val state=findViewById<TextView>(R.id.make_decision_state)
@@ -54,6 +56,8 @@ class MakingDecisionActivity : AppCompatActivity() {
         yourRecycler.layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
 
         makingDecisionViewModel=ViewModelProvider(this)[MakingDecisionViewModel::class.java]
+
+
 
         makingDecisionViewModel.request.observe(this){
 
@@ -90,13 +94,13 @@ class MakingDecisionActivity : AppCompatActivity() {
             }
 
 
-            GlobalScope.launch(Dispatchers.IO) {
-                val job1 = GlobalScope.async {
+            makingDecisionViewModel.viewModelScope.launch(Dispatchers.IO) {
+                val job1 = makingDecisionViewModel.viewModelScope.async {
 
                     makingDecisionViewModel.readTheBooksImages(it.myBooks!!)
 
                 }
-                val job2 = GlobalScope.async {
+                val job2 = makingDecisionViewModel.viewModelScope.async {
 
                     makingDecisionViewModel.readTheBooksImages(it.hisBooks!!)
                 }
@@ -121,10 +125,6 @@ class MakingDecisionActivity : AppCompatActivity() {
 
         }
 
-        job=GlobalScope.launch(Dispatchers.IO) {
-            AppUtils.LOG("MakingDecisionActivity: readTheRequests")
-            makingDecisionViewModel.readTheRequest(firebaseAuth.currentUser!!.uid, requestName);
-        }
 
 
 
@@ -212,12 +212,14 @@ class MakingDecisionActivity : AppCompatActivity() {
                     dialogg.show()
 
 
+
                     makingDecisionViewModel.acceptTheRequest(myKey.toString(), hisKey.toString())
-                    /*Intent(this,InformationOfContactActivity::class.java).apply {
-                    intent!!.putExtra("hisKey",hisKey);
-                    startActivity(this);
-                    }*/
                     dialogg.dismiss()
+                    val intent=Intent(this,InformationOfContactActivity::class.java)
+                    intent.putExtra("hisKey",hisKey);
+                    startActivity(intent)
+
+
                 }
                 alertDialog.setNegativeButton("No") { dialog, _ ->
                     dialog.dismiss()
@@ -242,7 +244,14 @@ class MakingDecisionActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        job.cancel()
+
+
+
+        job=makingDecisionViewModel.viewModelScope.launch(Dispatchers.IO) {
+            AppUtils.LOG("MakingDecisionActivity: readTheRequests")
+            makingDecisionViewModel.readTheRequest(firebaseAuth.currentUser!!.uid, requestName);
+        }
+
     }
 
 }

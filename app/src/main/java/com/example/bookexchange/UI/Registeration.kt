@@ -33,12 +33,14 @@ class Registeration : AppCompatActivity() {
         val button=findViewById<Button>(R.id.registeration_button)
         val spinner=findViewById<Spinner>(R.id.registeration_spinner)
         val edit_pass=findViewById<EditText>(R.id.registeration_edit_pass)
+        val edit_phone=findViewById<EditText>(R.id.registeration_edit_phone)
         val edit_email=findViewById<EditText>(R.id.registeration_edit_email)
         val edit_detailed=findViewById<EditText>(R.id.registeration_edit_detailed)
         val edit_name=findViewById<EditText>(R.id.registeration_edit_name)
         val layout_pass=findViewById<TextInputLayout>(R.id.registeration_layout_pass)
         val layout_email=findViewById<TextInputLayout>(R.id.registeration_layout_email)
         val layout_detailed=findViewById<TextInputLayout>(R.id.registeration_layout_detailed)
+        val layout_phone=findViewById<TextInputLayout>(R.id.registeration_layout_phone)
         val layout_name=findViewById<TextInputLayout>(R.id.registeration_layout_name)
 
         val list: MutableList<String> = ArrayList()
@@ -50,17 +52,21 @@ class Registeration : AppCompatActivity() {
         spinner.adapter=ArrayAdapter(this, R.layout.spinner,list)
 
 
-            button.setOnClickListener{
+        button.setOnClickListener{
 
                 val governorate=spinner.selectedItem.toString()
                 val passwordText=edit_pass.text.toString()
+                val phoneText=edit_phone.text.toString()
                 val nameText=edit_name.text.toString()
                 val emailText=edit_email.text.toString()
                 val detailedText=edit_detailed.text.toString()
-                if(passwordText.isEmpty()||nameText.isEmpty()||emailText.isEmpty()||detailedText.isEmpty()){
+                if(passwordText.isEmpty()||nameText.isEmpty()||emailText.isEmpty()||detailedText.isEmpty()||phoneText.isEmpty()){
 
 
 
+                    if(phoneText.isEmpty())
+                        layout_phone.error="Empty"
+                    
                     if(emailText.isEmpty())
                         layout_email.error="Empty"
 
@@ -76,7 +82,7 @@ class Registeration : AppCompatActivity() {
 
                     return@setOnClickListener
                 }
-                val userData= UserData(nameText,emailText,passwordText,governorate,detailedText)
+                val userData= UserData(nameText,emailText,passwordText,governorate,detailedText,phoneText)
                 registirationViewModel.registerAndWriteData(userData)
 
             }

@@ -119,8 +119,6 @@ class SimpleHorizontalRecycler(): RecyclerView.Adapter<SimpleHorizontalRecycler.
 
         }
 
-
-
     }
 
     fun setItemClickListener(listener: OnItemClickListener){
