@@ -1,7 +1,7 @@
 package com.example.bookexchange.ViewModels
 
-
 import android.annotation.SuppressLint
+import android.appwidget.AppWidgetProvider
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.bookexchange.Models.Request
@@ -10,30 +10,28 @@ import androidx.lifecycle.viewModelScope
 import com.example.bookexchange.AppUtils
 import com.example.bookexchange.Models.Book
 import com.example.bookexchange.Models.SendFromDialogToFragmentModel
-import com.example.bookexchange.UI.RequestsFragment
+
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import java.sql.Types.NULL
-import java.util.TreeSet
 
 
 fun contain(books:ArrayList<Book>, book:Book):Boolean{
 
     for(i in books) {
         if (i.bookName==book.bookName &&i.bookDescription==book.bookDescription)
-            return true;
+            return true
     }
-    return false;
+    return false
 }
 class MakingDecisionViewModel: ViewModel() {
 
 
     var request= MutableLiveData<Request>()
-    var numberOfReadRequest=0;
+    var numberOfReadRequest=0
 
     var result= MutableLiveData<Boolean>()
 
@@ -154,6 +152,20 @@ class MakingDecisionViewModel: ViewModel() {
 
     }
 
+    private fun removeBookFromAllBooks(key:String) {
+        val firebaseDatabase=FirebaseDatabase.getInstance()
+        firebaseDatabase.getReference("AllBooks").child(key).removeValue().addOnCompleteListener {
+            if(it.isSuccessful){
+
+
+            }else{
+                AppUtils.LOG("removing from all books not successful")
+            }
+        }
+
+
+    }
+
     suspend  fun removeBooks(key: String,books:ArrayList<Book>){
 
         for(i in books)
@@ -161,15 +173,16 @@ class MakingDecisionViewModel: ViewModel() {
 
         AppUtils.LOG("remove books is called ${books.size}")
 
-        val firebase=FirebaseDatabase.getInstance().getReference("All Users");
+        val firebase=FirebaseDatabase.getInstance().getReference("All Users")
         val bookks=firebase.child(key).child("Books").get().await()
-        AppUtils.LOG("bookks size is $bookks and the uid is $key");
+        AppUtils.LOG("bookks size is $bookks and the uid is $key")
         for (i in bookks.children){
             val book=i.getValue(Book::class.java)
-            AppUtils.LOG("book is  ${book!!.bookName}");
+            AppUtils.LOG("book is  ${book!!.bookName}")
             if(contain(books,book)){
                 AppUtils.LOG("yes it is in ")
                 i.ref.removeValue()
+                removeBookFromAllBooks(book.key.toString())
 
             }
         }
@@ -178,7 +191,7 @@ class MakingDecisionViewModel: ViewModel() {
         for (i in requests.children){
             val request=i.getValue(Request::class.java)
             if(request?.state=="AcceptedByHim"||request?.state=="AcceptedByMe")
-                continue;
+                continue
 
             for (book in request?.myBooks!!) {
 
@@ -204,9 +217,9 @@ class MakingDecisionViewModel: ViewModel() {
 
             viewModelScope.launch(Dispatchers.IO) {
                 firebase.child(hiskey).child("Requests").child(hiskey + myKey).child("state").setValue("RefusedByHim")
-                    .await();
+                    .await()
             }
-        }catch (e: Exception){
+        }catch (_: Exception){
 
 
         }
@@ -215,7 +228,7 @@ class MakingDecisionViewModel: ViewModel() {
 
 
 
-        val books=ArrayList<Book>();
+        val books=ArrayList<Book>()
         val firebaseDatabase = FirebaseDatabase.getInstance().reference
 
 
@@ -240,7 +253,7 @@ class MakingDecisionViewModel: ViewModel() {
 
 
         AppUtils.LOG("we have got the books we have ${books.size}")
-        return books;
+        return books
     }
 
 
@@ -248,7 +261,7 @@ class MakingDecisionViewModel: ViewModel() {
 
 
 
-        var  check=true;
+        var  check=true
         val job=viewModelScope.launch(Dispatchers.IO) {
             val firebaseDatabase = FirebaseDatabase.getInstance().reference
 
@@ -257,7 +270,7 @@ class MakingDecisionViewModel: ViewModel() {
                 val r=firebaseDatabase.child("All Users").child(myKey).child("Requests").child(myKey + hisKey).get().await()
 
                 val result=r.getValue(Request::class.java)
-                result?.seen=false;
+                result?.seen=false
                 result?.state="RefusedByMe"
 
                 r.ref.setValue(result)
@@ -265,7 +278,7 @@ class MakingDecisionViewModel: ViewModel() {
 
             } catch (e: Exception) {
 
-                check=false;
+                check=false
             }
 
         }
@@ -275,7 +288,7 @@ class MakingDecisionViewModel: ViewModel() {
 
     suspend fun removeToHim(myKey:String, hisKey:String): Boolean {
 
-        var  check=true;
+        var  check=true
         val job=viewModelScope.launch(Dispatchers.IO) {
             val firebaseDatabase = FirebaseDatabase.getInstance().reference
 
@@ -285,7 +298,7 @@ class MakingDecisionViewModel: ViewModel() {
                 val r=firebaseDatabase.child("All Users").child(hisKey).child("Books").child(  hisKey+myKey).get().await()
 
                 val result=r.getValue(Request::class.java)
-                result?.seen=false;
+                result?.seen=false
                 result?.state="RefusedByHim"
 
                 r.ref.setValue(result)

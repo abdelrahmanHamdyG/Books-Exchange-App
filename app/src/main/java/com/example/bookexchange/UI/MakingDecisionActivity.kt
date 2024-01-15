@@ -216,8 +216,8 @@ class MakingDecisionActivity : AppCompatActivity() {
                     /*Intent(this,InformationOfContactActivity::class.java).apply {
                     intent!!.putExtra("hisKey",hisKey);
                     startActivity(this);
-                }
-*/              dialogg.dismiss()
+                    }*/
+                    dialogg.dismiss()
                 }
                 alertDialog.setNegativeButton("No") { dialog, _ ->
                     dialog.dismiss()

@@ -62,7 +62,7 @@ class MyBooksViewModel: ViewModel() {
         val firebaseDataBase = FirebaseDatabase.getInstance().getReference()
         var theReturn=true;
 
-        val job1= GlobalScope.launch(Dispatchers.IO) {
+        val job1=viewModelScope.launch(Dispatchers.IO) {
 
             try {
                 firebaseDataBase.child("AllBooks").child(key).removeValue().await()
@@ -73,7 +73,7 @@ class MyBooksViewModel: ViewModel() {
 
         }
 
-        val job2= GlobalScope.launch(Dispatchers.IO) {
+        val job2= viewModelScope.launch(Dispatchers.IO) {
             try {
 
 
@@ -92,7 +92,7 @@ class MyBooksViewModel: ViewModel() {
 
             }
         }
-        val job3=GlobalScope.launch (Dispatchers.IO){
+        val job3=viewModelScope.launch (Dispatchers.IO){
 
             val firebaseStorage=FirebaseStorage.getInstance().reference
 
