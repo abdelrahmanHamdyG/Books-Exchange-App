@@ -31,6 +31,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import org.w3c.dom.Text
 import java.io.ByteArrayOutputStream
 
 class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
@@ -47,6 +48,7 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
     lateinit var bookName:String
     lateinit var bookCategory:String
     lateinit var bookDetails:String
+    lateinit var textCategory: TextView
     lateinit var spinner:Spinner
     lateinit var save:AppCompatButton
     var flag=false;
@@ -58,10 +60,12 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
 
         val editable=intent.getBooleanExtra("editable",true);
 
+
         addBookViewModel=ViewModelProvider(this)[AddBookViewModel::class.java]
         myBooksViewModel= MyBooksViewModel()
 
         image=findViewById<ImageView>(R.id.book_details_image)
+        textCategory=findViewById<TextView>(R.id.book_details_text_category)
         editName=findViewById<TextInputEditText>(R.id.book_details_edit_name)
         editDetails=findViewById<TextInputEditText>(R.id.book_details_edit_details)
         spinner=findViewById<Spinner>(R.id.book_details_spinner)
@@ -84,10 +88,11 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
 
 
         if(!editable){
+            textCategory.visibility=View.VISIBLE
 
             editName.isEnabled=false;
             editDetails.isEnabled=false;
-            spinner.isEnabled=false;
+            spinner.visibility=View.GONE;
             image.isEnabled=false;
             save.visibility=View.GONE;
         }
@@ -102,7 +107,7 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
 
         editName.setText(bookName)
         editDetails.setText(bookDetails)
-
+        textCategory.text="Category: $bookCategory"
         editName.addTextChangedListener(this)
         editDetails.addTextChangedListener(this)
 

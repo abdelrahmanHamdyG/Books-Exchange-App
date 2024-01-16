@@ -1,11 +1,9 @@
 package com.example.bookexchange.UI
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.TextView
+
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -15,16 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bookexchange.Adapters.GridHomeAdapter
 import com.example.bookexchange.Adapters.OnItemClickListener
 import com.example.bookexchange.Adapters.SimpleHorizontalRecycler
-import com.example.bookexchange.AppUtils
-import com.example.bookexchange.AppUtils.texts
-import com.example.bookexchange.Models.Book
 import com.example.bookexchange.R
 import com.example.bookexchange.ViewModels.HomeFragmentViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -37,7 +29,6 @@ class HomeFragment(val context2: Context) : Fragment(),OnItemClickListener {
     lateinit var firebaseAuth: FirebaseAuth
     lateinit var dialogg: AlertDialog
     lateinit var job1: Job;
-    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

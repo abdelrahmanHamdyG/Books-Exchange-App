@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bookexchange.Models.Book
 import com.example.bookexchange.R
+import com.example.bookexchange.UI.BooksDetailsActivity
 import com.example.bookexchange.UI.MakeRequestActivity
 import com.google.firebase.storage.FirebaseStorage
 import java.io.ByteArrayOutputStream
@@ -51,6 +52,7 @@ class GridHomeAdapter(var arrayList:ArrayList<Book>,var context: Context): Recyc
 
 
 
+
         val imageRef = storageReference.child(arrayList[position].imageUri.toString())
         imageRef.downloadUrl
             .addOnSuccessListener { uri ->
@@ -63,11 +65,40 @@ class GridHomeAdapter(var arrayList:ArrayList<Book>,var context: Context): Recyc
                 Log.i("my_trag", "Error loading image: ${exception.message}")
             }
 
+
+        holder.itemView.setOnClickListener {
+
+
+            val imageBitmap = (holder.image.drawable as? BitmapDrawable)?.bitmap
+            val stream = ByteArrayOutputStream()
+            imageBitmap?.compress(Bitmap.CompressFormat.PNG, 60, stream)
+            val byteArray = stream.toByteArray()
+
+
+            val i = Intent(context, BooksDetailsActivity::class.java)
+            i.putExtra("editable", false);
+            i.putExtra("book_name", arrayList[position].bookName)
+            i.putExtra("book_details", arrayList[position].bookDescription)
+            i.putExtra("image_uri", arrayList[position].imageUri)
+            i.putExtra("image_bitmap", byteArray);
+            i.putExtra("book_key", arrayList[position].key)
+            i.putExtra("book_category", arrayList[position].category)
+            i.putExtra("city", arrayList[position].city)
+
+            context.startActivity(i);
+
+
+
+        }
+
         holder.bookName.text=arrayList[position].bookName
         holder.bookDetails.text=arrayList[position].bookDescription
 
-
         holder.button.setOnClickListener {
+
+
+
+
             val imageBitmap = (holder.image.drawable as? BitmapDrawable)?.bitmap
             val stream = ByteArrayOutputStream()
             imageBitmap?.compress(Bitmap.CompressFormat.PNG, 100, stream)

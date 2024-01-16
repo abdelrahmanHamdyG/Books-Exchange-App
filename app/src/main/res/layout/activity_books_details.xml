@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/very_light_green"
+    android:background="@color/main_color"
     android:orientation="vertical"
     android:weightSum="100">
 
@@ -77,19 +77,38 @@
             android:textCursorDrawable="@color/black"
             ></com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
-    <Spinner
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:entries="@array/catego"
-        android:id="@+id/book_details_spinner"
         android:layout_weight="12"
-        android:outlineAmbientShadowColor="@color/black"
-        android:popupBackground="@color/black"
-        style="@style/CardView.Dark"
-        android:outlineSpotShadowColor="@color/black"
-        android:layout_margin="20dp"
-        />
+        >
 
+        <Spinner
+            android:id="@+id/book_details_spinner"
+            style="@style/CardView.Dark"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:entries="@array/catego"
+            android:outlineAmbientShadowColor="@color/black"
+            android:outlineSpotShadowColor="@color/black"
+            android:popupBackground="@color/black" />
+
+        <TextView
+            android:id="@+id/book_details_text_category"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:layout_marginStart="21dp"
+            android:gravity="center|start"
+            android:text="Category: Scientific"
+            android:textColor="@color/black"
+            android:textSize="18sp">
+
+        </TextView>
+
+    </RelativeLayout>
 
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="match_parent"
