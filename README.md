@@ -1,4 +1,4 @@
-# Book-Exchange Android App (On-going)
+# Book-Exchange Android App
 
 Book-Exchange is an Android app built in Kotlin that simplifies the book exchange process. Users can add books to their collection, propose swap requests, and connect with others for local exchanges.
 
