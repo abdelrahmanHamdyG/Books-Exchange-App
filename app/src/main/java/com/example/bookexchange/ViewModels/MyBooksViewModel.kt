@@ -7,13 +7,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
+import com.example.bookexchange.ApiInterface
 import com.example.bookexchange.AppUtils
 import com.example.bookexchange.Models.Book
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.gson.GsonBuilder
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.*
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 
 class MyBooksViewModel: ViewModel() {
 
@@ -28,6 +35,37 @@ class MyBooksViewModel: ViewModel() {
     suspend fun readTexts(uid:String){
 
         _myBooksList.clear()
+        val gson = GsonBuilder()
+            .setLenient()
+            .create()
+        val logging = HttpLoggingInterceptor()
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+
+        val httpClient = OkHttpClient.Builder()
+        httpClient.addInterceptor(logging)
+
+        val retrofit= Retrofit.Builder().baseUrl("https://database-project-2.onrender.com/api/v1/")
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .client(httpClient.build())
+            .build()
+
+
+        val api =retrofit.create(ApiInterface::class.java)
+
+        try{
+
+            val books=api.getMyBooks(uid).await()
+
+            _myBooksList.addAll(books)
+
+        }catch (e:Exception){
+
+            Log.e("API_CALL", "API call failed: ${e.message}")
+        }
+
+
+        /*
         firebaseDatabase = FirebaseDatabase.getInstance().reference
 
         try {
@@ -46,7 +84,7 @@ class MyBooksViewModel: ViewModel() {
                 val city = book.child("city").getValue(String::class.java)
                 val state=book.child("state").getValue(String::class.java)
 
-                _myBooksList.add(Book(bookName!!, bookDescription!!, category!!, imageUri!!, user!!, key!!, city!!,state!!))
+                _myBooksList.add(Book(bookName!!, bookDescription!!, category!!, imageUri!!, user!!,state!!))
             }
 
         }catch (e:Exception){
@@ -54,6 +92,10 @@ class MyBooksViewModel: ViewModel() {
 
 
         }
+
+
+         */
+
 
         myBooksList.postValue(_myBooksList)
     }
@@ -81,10 +123,10 @@ class MyBooksViewModel: ViewModel() {
                     firebaseDataBase.child("All Users").child(uid).child("Books").get().await()
                 for (i in response.children) {
                     val book = i.getValue(Book::class.java)
-                    if (book!!.key == key) {
+                    //if (book!!.key == key) {
                         firebaseDataBase.child("All Users").child(uid).child("Books").child(i.key!!)
                             .removeValue().await()
-                    }
+                    //}
 
                 }
             }catch (e:Exception){

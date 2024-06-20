@@ -1,15 +1,15 @@
 package com.example.bookexchange.UI
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -17,11 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bookexchange.Adapters.MakeRequestRecyclerAdapter
 import com.example.bookexchange.AppUtils
-import com.example.bookexchange.Models.Request
 import com.example.bookexchange.R
 import com.example.bookexchange.ViewModels.MakingDecisionViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.*
+import java.sql.Types.NULL
 
 class MakingDecisionActivity : AppCompatActivity() {
 
@@ -33,14 +33,18 @@ class MakingDecisionActivity : AppCompatActivity() {
     lateinit var firebaseAuth:FirebaseAuth;
     lateinit var requestName:String
     lateinit var job: Job
+     var rid:Int?=NULL
     var dismissed=false;
+    @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_making_decision)
 
-        val myKey=intent.extras!!.getString("myKey")
-        val hisKey=intent.extras!!.getString("hisKey")
+        val myKey=intent.extras!!.getString("myKey")//uid1
+        val hisKey=intent.extras!!.getString("hisKey")// uid2
         val fromMe=intent.extras!!.getBoolean("fromMe")
+        rid= intent.extras!!.getInt("rid");
+
         requestName=myKey+hisKey
 
         val positiveButton=findViewById<AppCompatButton>(R.id.make_decision_positive_button)
@@ -50,6 +54,7 @@ class MakingDecisionActivity : AppCompatActivity() {
         val state=findViewById<TextView>(R.id.make_decision_state)
         val myRecycler=findViewById<RecyclerView>(R.id.make_decision_my_recycler)
         val yourRecycler=findViewById<RecyclerView>(R.id.make_decision_your_recycler)
+
 
 
         myRecycler.layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
@@ -67,32 +72,45 @@ class MakingDecisionActivity : AppCompatActivity() {
             val nBooksString=it.myBooks?.size.toString() + " Books vs "+it.hisBooks!!.size.toString()+ " Books";
             nBooksText.text= nBooksString
 
-            if(it.state=="Sent"){
+            if(it.state=="pending"&&fromMe){
+
+
 
                 state.text="Waiting Response"
                 positiveButton.visibility=View.GONE
-            }else{
+                negativeButton.visibility=View.GONE
+            }else {
 
-                if(it.state=="Received")
-                    state.text="We Are Waiting You :)"
-                else if(it.state=="AcceptedByMe"||it.state=="AcceptedByHim"){
-                    state.text="Done successfully"
-                    negativeButton.visibility=View.GONE
+                if (it.state == "pending" && !fromMe) {
+
+
+                    state.text="response please"
                     positiveButton.visibility=View.VISIBLE
-                    positiveButton.text="See contact";
-                }else{
-                    if(it.state=="RefusedByMe"||it.state=="RefusedByHim"){
-                        state.text="The request is cancelled :("
-                        negativeButton.visibility=View.GONE
-                        positiveButton.visibility=View.GONE
+                    negativeButton.visibility=View.VISIBLE
+
+                } else {
+
+
+                     if (it.state == "refused") {
+                        state.text = "Cancelled"
+                        negativeButton.visibility = View.GONE
+                        positiveButton.visibility = View.GONE
+                        //positiveButton.text = "See contact";
+                    } else {
+                        if (it.state == "accepted" ) {
+                            state.text = "The request is Completed ^_^"
+                            negativeButton.visibility = View.GONE
+                            positiveButton.visibility = View.VISIBLE
+                            positiveButton.text = "See contact";
+                        }
+
+
                     }
 
 
                 }
 
-
             }
-
 
             makingDecisionViewModel.viewModelScope.launch(Dispatchers.IO) {
                 val job1 = makingDecisionViewModel.viewModelScope.async {
@@ -102,7 +120,7 @@ class MakingDecisionActivity : AppCompatActivity() {
                 }
                 val job2 = makingDecisionViewModel.viewModelScope.async {
 
-                    makingDecisionViewModel.readTheBooksImages(it.hisBooks!!)
+                        makingDecisionViewModel.readTheBooksImages(it.hisBooks!!)
                 }
 
 
@@ -113,7 +131,7 @@ class MakingDecisionActivity : AppCompatActivity() {
                         myRecycler.adapter=MakeRequestRecyclerAdapter(this@MakingDecisionActivity,it.myBooks!!,job1.await())
 
                         yourRecycler.adapter =
-                            MakeRequestRecyclerAdapter(this@MakingDecisionActivity,it.hisBooks!!, job2.await())
+                           MakeRequestRecyclerAdapter(this@MakingDecisionActivity,it.hisBooks!!, job2.await())
                     }catch (e:Exception){
                         AppUtils.LOG("trying second recycler " +e.message.toString())
                     }
@@ -173,7 +191,7 @@ class MakingDecisionActivity : AppCompatActivity() {
                     dismissProgressDialog()
                 }, delayMillis)
 
-                makingDecisionViewModel.cancelRequest(myKey.toString(),hisKey.toString())
+                makingDecisionViewModel.cancelRequest(rid!!)
 
             }
             alertDialog.setNegativeButton("No") { dialog, _ ->
@@ -194,7 +212,16 @@ class MakingDecisionActivity : AppCompatActivity() {
             if (positiveButton.text == "See contact") {
 
             val toContactActivity=Intent(this@MakingDecisionActivity,InformationOfContactActivity::class.java)
-            toContactActivity.putExtra("hisKey",hisKey)
+
+                if(fromMe) {
+                    toContactActivity.putExtra("hisKey", hisKey)
+                    toContactActivity.putExtra("myKey", myKey)
+                }else{
+                    toContactActivity.putExtra("hisKey",myKey)
+                    toContactActivity.putExtra("myKey", hisKey)
+
+                }
+
             startActivity(toContactActivity)
 
             } else {
@@ -213,10 +240,19 @@ class MakingDecisionActivity : AppCompatActivity() {
 
 
 
-                    makingDecisionViewModel.acceptTheRequest(myKey.toString(), hisKey.toString())
+                    Log.i("accepting the request","yes")
+                    makingDecisionViewModel.acceptTheRequest(myKey.toString(), rid!!)
                     dialogg.dismiss()
                     val intent=Intent(this,InformationOfContactActivity::class.java)
-                    intent.putExtra("hisKey",hisKey);
+                    if(fromMe) {
+                        intent.putExtra("hisKey", hisKey)
+                        intent.putExtra("myKey", myKey)
+                    }else{
+                        intent.putExtra("hisKey",myKey)
+                        intent.putExtra("myKey", hisKey)
+
+                    }
+
                     startActivity(intent)
 
 
@@ -246,10 +282,9 @@ class MakingDecisionActivity : AppCompatActivity() {
         super.onStart()
 
 
-
         job=makingDecisionViewModel.viewModelScope.launch(Dispatchers.IO) {
             AppUtils.LOG("MakingDecisionActivity: readTheRequests")
-            makingDecisionViewModel.readTheRequest(firebaseAuth.currentUser!!.uid, requestName);
+            makingDecisionViewModel.readTheRequest(firebaseAuth.currentUser!!.uid, rid!!);
         }
 
     }

@@ -3,6 +3,7 @@ package com.example.bookexchange.UI
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
@@ -50,7 +51,9 @@ class ChoosingBooksDialog   (val uid:String): DialogFragment(),BooksListener {
         myBooksViewModel= ViewModelProvider(this)[MyBooksViewModel::class.java]
 
         myBooksViewModel.myBooksList.observe(this){
+
             books=it
+            //Log.i("my books",books[0].title.toString());
             adapter=DialogFragmentRecycler(books,requireContext())
             adapter.setListener(this)
             recycler.layoutManager= LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)

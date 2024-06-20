@@ -24,6 +24,7 @@ object AppUtils {
         "Dictionary",
         "Novels",
         "Scientific",
+         "Favourites"
 
         )
 

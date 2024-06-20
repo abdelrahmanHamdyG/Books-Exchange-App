@@ -21,7 +21,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.ViewModelProvider
 import com.example.bookexchange.AppUtils
 import com.example.bookexchange.Models.Book
-import com.example.bookexchange.Models.UserData
+
 import com.example.bookexchange.R
 import com.example.bookexchange.ViewModels.AddBookViewModel
 import com.google.android.material.textfield.TextInputEditText
@@ -145,9 +145,9 @@ class AddBookActivity : AppCompatActivity() {
 
             val imagename = "${firebaseAuth.currentUser!!.uid.toString()}${System.currentTimeMillis()}"
 
-            val theBook = Book(nameText, detailsText, category, imagename, firebaseAuth.currentUser!!.uid.toString(),"","","Available")
+            val theBook = Book(nameText, detailsText, category, imagename, "Available",firebaseAuth.currentUser!!.uid)
 
-            addBookViewModel.uploadBookAndTheImage(firebaseAuth.currentUser!!.uid,theBook,imageByteArray)
+            addBookViewModel.uploadBookAndTheImage(firebaseAuth.currentUser!!.uid,theBook,imageByteArray,1)
 
 
         }

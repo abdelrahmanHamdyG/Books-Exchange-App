@@ -6,15 +6,19 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.bookexchange.AppUtils
 import com.example.bookexchange.R
+import com.example.bookexchange.Searchable
 import com.example.bookexchange.ViewModels.MainPageViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -55,6 +59,7 @@ class MainPage : AppCompatActivity() {
         bottom=findViewById<BottomNavigationView>(R.id.main_bottom)
         val frame=findViewById<FrameLayout>(R.id.main_frame_layout)
         backButton=findViewById<Button>(R.id.main_page_back)
+        val searchButton=findViewById<Button>(R.id.search_button)
         val toolbar=findViewById<androidx.appcompat.widget.Toolbar>(R.id.main_page_toolbar)
 
 
@@ -76,7 +81,6 @@ class MainPage : AppCompatActivity() {
             val item=bottom.menu.findItem(R.id.navigation_requests)
             if(count>0){
                 item.title="Requests: $count";
-
             }else{
 
                 item.title="Requests";
@@ -93,6 +97,12 @@ class MainPage : AppCompatActivity() {
             searchBar.clearFocus()
             inputMethodManager.hideSoftInputFromWindow(searchBar    .windowToken, 0)
 
+            val currentFragment = supportFragmentManager.findFragmentById(R.id.main_frame_layout)
+            if (currentFragment is Searchable) {
+                (currentFragment as Searchable).onSearchQuery("none")
+            }
+            searchBar.setText("")
+
         }
         searchBar.setOnFocusChangeListener{view,HasFocus->
 
@@ -108,14 +118,46 @@ class MainPage : AppCompatActivity() {
         }
 
 
+        searchBar.addTextChangedListener {
+
+            if(it!!.isNotEmpty())
+                searchButton.visibility=View.VISIBLE
+            if(it!!.isEmpty())
+                searchButton.visibility=View.GONE
+
+        }
+
+        searchButton.setOnClickListener {
+
+            val query = searchBar.text.toString()
+            val currentFragment = supportFragmentManager.findFragmentById(R.id.main_frame_layout)
+            if (currentFragment is Searchable) {
+                (currentFragment as Searchable).onSearchQuery(query)
+            }
+
+
+        }
+
+
+
 
         bottom.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.navigation_home -> loadFragment(HomeFragment(this@MainPage))
+                R.id.navigation_home -> {
+                    loadFragment(HomeFragment(this@MainPage))
+                    toggleSearchBarVisibility(true)
 
-                R.id.navigation_books -> loadFragment(MyBooksFragment(this@MainPage))
+                }
 
-                R.id.navigation_requests ->loadFragment(RequestsFragment())
+                R.id.navigation_books -> {
+                    loadFragment(MyBooksFragment(this@MainPage))
+                    toggleSearchBarVisibility(false)
+                }
+
+                R.id.navigation_requests -> {
+                    loadFragment(RequestsFragment())
+                    toggleSearchBarVisibility(false)
+                }
             }
             true
         }
@@ -177,5 +219,17 @@ class MainPage : AppCompatActivity() {
         super.onDestroy()
         Log.i("lllfe","MainOnDestroy")
     }
+    private fun toggleSearchBarVisibility(visible: Boolean) {
+        if (visible) {
+            searchBar.visibility = View.VISIBLE
+            backButton.visibility = if (searchBar.isFocused) View.VISIBLE else View.GONE
+        } else {
+            searchBar.visibility = View.GONE
+            backButton.visibility = View.GONE
+        }
+    }
+
+
+
 
 }

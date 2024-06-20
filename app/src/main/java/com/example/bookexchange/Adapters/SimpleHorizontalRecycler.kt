@@ -27,11 +27,13 @@ class SimpleHorizontalRecycler(): RecyclerView.Adapter<SimpleHorizontalRecycler.
         R.drawable.dictionary,
         R.drawable.novel,
         R.drawable.science,
+        R.drawable.baseline_star_24
         // Add more drawable resource IDs as needed
     )
 
     private var pressed = arrayOf(
         1,
+        0,
         0,
         0,
         0,
@@ -60,7 +62,7 @@ class SimpleHorizontalRecycler(): RecyclerView.Adapter<SimpleHorizontalRecycler.
 
     override fun getItemCount(): Int {
 
-        return 7;
+        return 8;
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -93,27 +95,53 @@ class SimpleHorizontalRecycler(): RecyclerView.Adapter<SimpleHorizontalRecycler.
             if(position==0){
                     if(pressed[0]==0){
                         pressed[0]=1;
-                        for (i in 1..6){
+                        for (i in 1..7){
                             pressed[i]=0;
                         }
 
                     }else{
+
+
                         pressed[0]=0;
                         pressed[1]=1;
-
 
                     }
 
             }else{
-                if(pressed[0]==1){
+                if(position==7){
+                    if(pressed[7]==0){
+                        pressed[7]=1
+                        for(i in 0..6)
+                            pressed[i]=0;
 
-                    pressed[0]=0
-                    pressed[position]=pressed[position]*-1+1;
+                    }else{
+                        pressed[7]=0;
+                        pressed[0]=1;
 
-                }else{
-                    pressed[position]=pressed[position]*-1+1;
+                    }
+
+
+                }else {
+                    if (pressed[0] == 1) {
+
+                        pressed[0] = 0
+                        pressed[position] = pressed[position] * -1 + 1;
+
+                    } else {
+                        if(pressed[7]==1){
+                            pressed[7]=0;
+                            pressed[position]=pressed[position]*-1+1
+                        }else {
+
+                            pressed[position] = pressed[position] * -1 + 1;
+                        }
+                    }
                 }
             }
+
+
+
+
             onItemClickListener!!.onItemClick(pressed)
             notifyDataSetChanged()
 

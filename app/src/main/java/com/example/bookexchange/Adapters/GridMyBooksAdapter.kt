@@ -12,24 +12,22 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.core.view.drawToBitmap
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.bookexchange.AppUtils
+import com.example.bookexchange.ApiInterface
 import com.example.bookexchange.Models.Book
 import com.example.bookexchange.R
 import com.example.bookexchange.UI.BooksDetailsActivity
 import com.example.bookexchange.ViewModels.MyBooksViewModel
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.google.gson.GsonBuilder
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
+import okhttp3.internal.notify
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.*
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.io.ByteArrayOutputStream
 
 class GridMyBooksAdapter(var booksList:ArrayList<Book>, var uid:String, var context: Context):RecyclerView.Adapter<GridMyBooksAdapter.viewHolder>() {
@@ -61,7 +59,7 @@ class GridMyBooksAdapter(var booksList:ArrayList<Book>, var uid:String, var cont
         val myBooksViewModel=MyBooksViewModel()
 
         holder.progress.visibility=View.VISIBLE
-        FirebaseStorage.getInstance().getReference(booksList[position].imageUri.toString()).downloadUrl.addOnCompleteListener{
+        FirebaseStorage.getInstance().getReference(booksList[position].image_link.toString()).downloadUrl.addOnCompleteListener{
 
             if(it.isSuccessful) {
                 Glide.with(context)
@@ -76,7 +74,7 @@ class GridMyBooksAdapter(var booksList:ArrayList<Book>, var uid:String, var cont
         }
 
 
-        holder.textView.text=booksList[position].bookName
+        holder.textView.text=booksList[position].title
 
         holder.deleteButton.setOnClickListener {
 
@@ -84,10 +82,11 @@ class GridMyBooksAdapter(var booksList:ArrayList<Book>, var uid:String, var cont
             alertDialog.setTitle("Confirm deletion?")
             alertDialog.setMessage("Are you sure you want to delete this item?")
             alertDialog.setPositiveButton("Yes") { dialog, _ ->
-                var k=booksList[position].key.toString()
+                //var k=booksList[position].key.toString()
+                /*
                 GlobalScope.launch(Dispatchers.IO){
 
-                    val returned=myBooksViewModel.removeValue(k,uid,booksList[position].imageUri!!)
+                    val returned=myBooksViewModel.removeValue(uid,booksList[position].image_link!!)
                     withContext(Dispatchers.Main){
 
                         dialog.dismiss()
@@ -97,6 +96,49 @@ class GridMyBooksAdapter(var booksList:ArrayList<Book>, var uid:String, var cont
                         }
                     }
                 }
+                */
+
+                val gson = GsonBuilder()
+                    .setLenient()
+                    .create()
+                val logging = HttpLoggingInterceptor()
+                logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+
+                val httpClient = OkHttpClient.Builder()
+                httpClient.addInterceptor(logging)
+
+                val retrofit= Retrofit.Builder().baseUrl("https://database-project-2.onrender.com/api/v1/")
+                    .addConverterFactory(ScalarsConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .client(httpClient.build())
+                    .build()
+
+
+                val api =retrofit.create(ApiInterface::class.java)
+                val call=api.deleteBook(booksList[position].bid)
+
+                call.enqueue(object:Callback<String>{
+                    override fun onResponse(call: Call<String>, response: Response<String>) {
+
+                        val firebaseStorage=FirebaseStorage.getInstance().reference
+
+                        try {
+                            firebaseStorage.child(booksList[position].image_link!!).delete()
+                        }catch (e:Exception){
+
+                        }
+                        booksList.removeAt(position);
+                        notifyDataSetChanged();
+                    }
+
+                    override fun onFailure(call: Call<String>, t: Throwable) {
+
+                    }
+                })
+
+
+
+
 
             }
             alertDialog.setNegativeButton("No") { dialog, _ ->
@@ -123,13 +165,14 @@ class GridMyBooksAdapter(var booksList:ArrayList<Book>, var uid:String, var cont
 
 
             intent.putExtra("flag",true);
-            intent.putExtra("book_name",booksList[position].bookName)
-            intent.putExtra("book_details",booksList[position].bookDescription)
-            intent.putExtra("image_uri",booksList[position].imageUri)
+            intent.putExtra("book_name",booksList[position].title)
+            intent.putExtra("book_details",booksList[position].description)
+            intent.putExtra("image_uri",booksList[position].image_link)
+            intent.putExtra("book_bid",booksList[position].bid)
             intent.putExtra("image_bitmap",byteArray);
-            intent.putExtra("book_key",booksList[position].key)
+            //intent.putExtra("book_key",booksList[position].key)
             intent.putExtra("book_category",booksList[position].category)
-            intent.putExtra("city",booksList[position].city)
+            //intent.putExtra("city",booksList[position].city)
 
             context.startActivity( intent)
 

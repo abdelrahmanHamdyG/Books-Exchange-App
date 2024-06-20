@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.bookexchange.ApiInterface
 import com.example.bookexchange.AppUtils
 import com.example.bookexchange.Models.Book
 import com.example.bookexchange.Models.UserData
@@ -14,9 +15,18 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
+import com.google.gson.GsonBuilder
 import kotlinx.coroutines.*
 
 import kotlinx.coroutines.tasks.await
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.io.ByteArrayOutputStream
 
 class AddBookViewModel:ViewModel() {
@@ -27,73 +37,99 @@ class AddBookViewModel:ViewModel() {
 
 
 
-    fun uploadBookAndTheImage(uid:String,book:Book,imageByteArray: ByteArray){
+    fun uploadBookAndTheImage(uid:String,book:Book,imageByteArray: ByteArray,flag:Int){
         viewModelScope.launch(Dispatchers.IO){
 
-            val first=async { uploadTheBook(book,uid) }
-            val second=async { uploadImage(uid,imageByteArray,book.imageUri!!) }
+            Log.i("book is ",book.image_link!!)
+            Log.i("book is ",book.title!!)
 
-            if(first.await()&&second.await()){
+            uploadToUserBooks(book,uid,flag)
+            uploadImage(uid,imageByteArray,book.image_link!!)
 
-                result.postValue(true)
-            }else{
-                result.postValue(false)
-            }
-
+            result.postValue(true)
 
         }
 
     }
 
-    suspend fun uploadTheBook(book: Book,uid:String):Boolean{
+
+     private fun uploadToUserBooks(book:Book,uid:String,flag:Int){
 
 
-        var f=false;
-        val job=viewModelScope.launch (Dispatchers.IO){
-            val city=getCityName(uid)
+        val gson = GsonBuilder()
+            .setLenient()
+            .create()
+         val logging = HttpLoggingInterceptor()
+         logging.setLevel(HttpLoggingInterceptor.Level.BODY)
 
-            book.city=city
+         val httpClient = OkHttpClient.Builder()
+         httpClient.addInterceptor(logging)
 
-            val first= uploadToAllBooks(book,uid)
+         val retrofit= Retrofit.Builder().baseUrl("https://database-project-2.onrender.com/api/v1/")
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+             .client(httpClient.build())
+            .build()
+
+         if(flag==1) {
+             val api = retrofit.create(ApiInterface::class.java)
+
+             val call = api.addBook(book, uid);
+
+             call.enqueue(object : Callback<String> {
+                 override fun onResponse(call: Call<String>, response: Response<String>) {
+                     Log.e("API_CALL", response.toString());
+                     if (response.isSuccessful) {
+                         val message = response.body()
+                         Log.i("API_CALL Success", message.toString())
+
+                     } else {
+
+                         Log.i("API_CALL no Success", response.body().toString())
+
+                     }
+                 }
+
+                 override fun onFailure(call: Call<String>, t: Throwable) {
+                     Log.e("API_CALL", "API call failed: ${t.message}")
+                     Log.e("API_CALL", "it is failed ya 7omar")
+                     // Handle the failure here
+                 }
+             })
+         }else{
 
 
-            book.key=first;
-
-            val second=async { uploadToUserBooks(book,uid) }
-
-            val resultSecond = second.await()
-
-            if(first!="null"&&resultSecond)
-                f=true;
-
-        }
-
-        job.join()
-        return f;
-
-    }
+             Log.i("book is ",book.image_link!!)
+             Log.i("bookbid is ", book.bid!!.toString())
 
 
+             val api = retrofit.create(ApiInterface::class.java)
 
-    suspend fun uploadToAllBooks(book:Book,uid:String):String{
+             val call = api.updateBook(book, book.bid);
 
+             call.enqueue(object : Callback<String> {
+                 override fun onResponse(call: Call<String>, response: Response<String>) {
+                     Log.e("API_CALL", response.toString());
+                     if (response.isSuccessful) {
+                         val message = response.body()
+                         Log.i("API_CALL Success", message.toString())
 
+                     } else {
 
-            try {
-                val firebaseDatabase=FirebaseDatabase.getInstance()
-                val key=firebaseDatabase.reference.child("AllBooks").push().key;
-                book.key=key;
-                firebaseDatabase.reference.child("AllBooks").child(key.toString()).setValue(book).await()
+                         Log.i("API_CALL no Success", response.body().toString())
 
-            } catch (e:Exception) {
+                     }
+                 }
 
-                return "null";
-            }
-        return book.key!!;
+                 override fun onFailure(call: Call<String>, t: Throwable) {
+                     Log.e("API_CALL", "API call failed: ${t.message}")
+                     Log.e("API_CALL", "it is failed ya 7omar")
+                     // Handle the failure here
+                 }
+             })
 
-    }
-    suspend private fun uploadToUserBooks(book:Book,uid:String):Boolean{
-
+         }
+        /*
         val firebaseDatabase = FirebaseDatabase.getInstance().reference
 
         try {
@@ -105,50 +141,20 @@ class AddBookViewModel:ViewModel() {
             return false;
         }
         return true;
-
+        */
 
     }
 
 
 
 
-    suspend private fun uploadImage(uid:String,imageByteArray: ByteArray,imageName:String):Boolean{
-
+    private  fun uploadImage(uid:String, imageByteArray: ByteArray, imageName:String){
         val firebaseStorage=FirebaseStorage.getInstance().reference
-        try {
-            firebaseStorage.child(imageName).putBytes(imageByteArray).await()
-
-        }catch (e:Exception){
-
-            return false;
-        }
-
-        return true;
-    }
-
-
-
-    suspend private fun  getCityName(uid:String): String {
-
-        val firebaseDatabase= FirebaseDatabase.getInstance().reference
-
-        var city="null";
-
-        try {
-            val data = firebaseDatabase.child("All Users").child(uid).child("DATA").get().await()
-
-            if(data.exists()){
-
-                city=data.getValue(UserData::class.java)!!.governorate!!;
-            }
-
-        }catch (_:Exception){
-
-
-        }
-
-        return city;
+        firebaseStorage.child(imageName).putBytes(imageByteArray)
 
     }
+
+
+
 
 }

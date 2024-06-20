@@ -102,6 +102,7 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
         val bookImage=intent.getStringExtra("image_uri")
         val bookBitMap=intent.getByteArrayExtra("image_bitmap")
         bookDetails= intent.getStringExtra("book_details")!!
+        val book_bid=intent.getIntExtra("book_bid",300)
         bookCategory= intent.getStringExtra("book_category")!!
         val imageBitmap=BitmapFactory.decodeByteArray(bookBitMap,0,bookBitMap!!.size)
 
@@ -167,8 +168,9 @@ class BooksDetailsActivity : AppCompatActivity(),TextWatcher {
 
 
 
+
                         addBookViewModel.uploadBookAndTheImage(firebaseAuth.currentUser!!.uid,
-                            Book(bookNameText,bookDetailsText,spinnerText,imagename,firebaseAuth.currentUser!!.uid," "," ","Available"),imageByteArray)
+                            Book(book_bid,bookNameText,bookDetailsText,spinnerText,imagename,firebaseAuth.currentUser!!.uid,"Available"),imageByteArray,2)
 
                     }
 

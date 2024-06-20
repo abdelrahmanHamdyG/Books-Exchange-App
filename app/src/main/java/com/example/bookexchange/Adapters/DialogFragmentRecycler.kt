@@ -58,12 +58,12 @@ class DialogFragmentRecycler(var booksList:ArrayList<Book>,  var context: Contex
     }
 
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
-        holder.textView.text=booksList[position].bookName
+        holder.textView.text=booksList[position].title
         holder.deleteButton.setImageResource(R.drawable.baseline_done_outline_24)
         holder.deleteButton.visibility=View.INVISIBLE
 
         holder.progress.visibility=View.VISIBLE
-        FirebaseStorage.getInstance().getReference(booksList[position].imageUri.toString()).downloadUrl.addOnCompleteListener{
+        FirebaseStorage.getInstance().getReference(booksList[position].image_link.toString()).downloadUrl.addOnCompleteListener{
 
             if(it.isSuccessful) {
                 Glide.with(context)

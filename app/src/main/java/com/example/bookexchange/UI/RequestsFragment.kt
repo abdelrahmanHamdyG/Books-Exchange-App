@@ -52,7 +52,7 @@ class RequestsFragment() : Fragment() {
         requestsFragmentViewModel=ViewModelProvider(this)[RequestsFragmentViewModel::class.java]
 
 
-        requestsFragmentViewModel.makeEveryThingSeen(firebaseAuth.currentUser!!.uid)
+        //requestsFragmentViewModel.makeEveryThingSeen(firebaseAuth.currentUser!!.uid)
 
 
 

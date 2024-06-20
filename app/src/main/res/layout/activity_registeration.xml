@@ -21,7 +21,7 @@
         ></TextView>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/registeration_layout_name"
+        android:id="@+id/registeration_layout_fname"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="12"
@@ -32,7 +32,7 @@
         >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/registeration_edit_name"
+            android:id="@+id/registeration_edit_fname"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textPersonName"
@@ -40,12 +40,40 @@
             android:textColor="@color/black"
             android:textColorHint="@color/black"
             android:textSize="18sp"
-            android:hint="Name"
+            android:hint="first name"
             android:textColorLink="@color/black"
             android:textColorHighlight="@color/black"
             android:textCursorDrawable="@color/black"
             />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/registeration_layout_lname"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="12"
+        android:layout_margin="20dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        app:hintTextColor="@color/black"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/registeration_edit_lname"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textPersonName"
+            android:background="@drawable/edit_sign_in"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            android:hint="last name"
+            android:textColorLink="@color/black"
+            android:textColorHighlight="@color/black"
+            android:textCursorDrawable="@color/black"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
 
 
     <com.google.android.material.textfield.TextInputLayout

@@ -20,6 +20,7 @@ class Registeration : AppCompatActivity() {
 
     lateinit var registirationViewModel:RegisterationViewModel
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registeration)
@@ -36,12 +37,14 @@ class Registeration : AppCompatActivity() {
         val edit_phone=findViewById<EditText>(R.id.registeration_edit_phone)
         val edit_email=findViewById<EditText>(R.id.registeration_edit_email)
         val edit_detailed=findViewById<EditText>(R.id.registeration_edit_detailed)
-        val edit_name=findViewById<EditText>(R.id.registeration_edit_name)
+        val edit_fname=findViewById<EditText>(R.id.registeration_edit_fname)
+        val edit_lname=findViewById<EditText>(R.id.registeration_edit_lname)
         val layout_pass=findViewById<TextInputLayout>(R.id.registeration_layout_pass)
         val layout_email=findViewById<TextInputLayout>(R.id.registeration_layout_email)
         val layout_detailed=findViewById<TextInputLayout>(R.id.registeration_layout_detailed)
         val layout_phone=findViewById<TextInputLayout>(R.id.registeration_layout_phone)
-        val layout_name=findViewById<TextInputLayout>(R.id.registeration_layout_name)
+        val layout_fname=findViewById<TextInputLayout>(R.id.registeration_layout_fname)
+        val layout_lname=findViewById<TextInputLayout>(R.id.registeration_layout_lname)
 
         val list: MutableList<String> = ArrayList()
         list.add("Cairo")
@@ -57,10 +60,11 @@ class Registeration : AppCompatActivity() {
                 val governorate=spinner.selectedItem.toString()
                 val passwordText=edit_pass.text.toString()
                 val phoneText=edit_phone.text.toString()
-                val nameText=edit_name.text.toString()
+                val fnameText=edit_fname.text.toString()
+                val lnameText=edit_lname.text.toString()
                 val emailText=edit_email.text.toString()
                 val detailedText=edit_detailed.text.toString()
-                if(passwordText.isEmpty()||nameText.isEmpty()||emailText.isEmpty()||detailedText.isEmpty()||phoneText.isEmpty()){
+                if(passwordText.isEmpty()||lnameText.isEmpty()||fnameText.isEmpty()||emailText.isEmpty()||detailedText.isEmpty()||phoneText.isEmpty()){
 
 
 
@@ -73,8 +77,11 @@ class Registeration : AppCompatActivity() {
                     if(passwordText.isEmpty())
                         layout_pass.error="Empty"
 
-                    if(nameText.isEmpty())
-                        layout_name.error="Empty"
+                    if(fnameText.isEmpty())
+                        layout_fname.error="Empty"
+
+                    if(lnameText.isEmpty())
+                        layout_lname.error="Empty"
 
                     if(detailedText.isEmpty())
                         layout_detailed.error="Empty"
@@ -82,7 +89,7 @@ class Registeration : AppCompatActivity() {
 
                     return@setOnClickListener
                 }
-                val userData= UserData(nameText,emailText,passwordText,governorate,detailedText,phoneText)
+                val userData= UserData(fnameText,lnameText,emailText,passwordText,governorate,detailedText,phoneText)
                 registirationViewModel.registerAndWriteData(userData)
 
             }

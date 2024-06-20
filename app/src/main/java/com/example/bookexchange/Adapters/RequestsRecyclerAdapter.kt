@@ -14,10 +14,7 @@ import com.example.bookexchange.AppUtils
 import com.example.bookexchange.UI.MakingDecisionActivity
 import com.example.bookexchange.Models.Request
 import com.example.bookexchange.R
-
-
-
-    
+import com.google.firebase.auth.FirebaseAuth
 
 
 class RequestsRecyclerAdapter(var arr:ArrayList<Request>, var context: Context): RecyclerView.Adapter<RequestsRecyclerAdapter.viewHolder>() {
@@ -55,54 +52,56 @@ class RequestsRecyclerAdapter(var arr:ArrayList<Request>, var context: Context):
         holder.itemView.setOnClickListener {
 
 
+            val uiddd=FirebaseAuth.getInstance().currentUser?.uid.toString()
 
             Intent(context, MakingDecisionActivity::class.java).apply {
 
-                putExtra("myKey", arr[position].myKey)
-                putExtra("hisKey", arr[position].hisKey)
-                putExtra("fromMe", arr[position].fromMe)
+                putExtra("rid",arr[position].rid)
+                putExtra("myKey", arr[position].uid1)
+                putExtra("hisKey", arr[position].uid2)
+                putExtra("fromMe", arr[position].uid1==uiddd)
                 context.startActivity(this)
             }
 
-
-
         }
 
+        val uiddd=FirebaseAuth.getInstance().currentUser?.uid.toString()
         if(arr[position].clicked==true)
             holder.clicked.visibility=View.GONE
 
+        val fromMe=arr[position].uid1==uiddd
 
-        val state=arr[position].state
+        val state=arr[position].rstate
 
 
-        if(state=="RefusedByMe"){
+        if(state=="pending"&&fromMe){
 
-                holder.title.text="you have cancelled the offer"
-                holder.image.setImageResource(R.drawable.baseline_cancel_24)
-            }else{
+                holder.title.text="waiting the response"
+                holder.image.setImageResource(R.drawable.baseline_swap_vertical_circle_24)
+            }else {
 
-                if(state=="RefusedByHim") {
-                    holder.title.text = "The offer is refused"
+            if (state == "pending" && !fromMe) {
+
+                holder.title.text="you received a request"
+                holder.image.setImageResource(R.drawable.baseline_subdirectory_arrow_left_24)
+
+            } else {
+                if (state == "accepted") {
+                    holder.title.text = "Completed Request ^_^"
+                    holder.image.setImageResource(R.drawable.baseline_done_outline_24)
+
+                } else if (state == "refused") {
+                    holder.title.text = "A Cancelled Request"
                     holder.image.setImageResource(R.drawable.baseline_cancel_24)
-
-                }
-                else if(state=="Sent") {
-                    holder.title.text = "Swap Request is sent"
-                }
-                else{
-                    if(state=="AcceptedByHim"||state=="AcceptedByMe"){
-
-                        holder.title.text="Done ya basha";
-                    }else {
-                        holder.title.text = "Swap Request is received"
-                    }
                 }
             }
 
+        }
 
 
-        holder.time.text=getDifferenceInTime(arr[position].date!!)
 
+
+        holder.time.text=getDifferenceInTime(arr[position].rdate.toString().toLong())
 
     }
 
@@ -130,9 +129,5 @@ class RequestsRecyclerAdapter(var arr:ArrayList<Request>, var context: Context):
         }
 
     }
-
-
-    
-
 
 }

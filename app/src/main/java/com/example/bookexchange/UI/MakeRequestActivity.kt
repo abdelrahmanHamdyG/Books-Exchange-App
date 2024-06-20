@@ -3,7 +3,6 @@ package com.example.bookexchange.UI
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.ViewModelProvider
@@ -57,10 +56,11 @@ class MakeRequestActivity : AppCompatActivity(),FinishingFragmentListener {
         val bookCategory= intent.getStringExtra("book_category")
         val userKey=intent.getStringExtra("user")
         val city=intent.getStringExtra("city")
+        val bid=intent.getIntExtra("book_bid",400)
         val state=intent.getStringExtra("state")
         val imageBitmap= BitmapFactory.decodeByteArray(bookBitMap,0,bookBitMap!!.size)
 
-        val book=Book(bookName,bookDetails,bookCategory!!,bookImage!!,userKey!!,bookKey!!,city!!,state!!)
+        val book=Book(bid,bookName,bookDetails,bookCategory!!,bookImage!!,userKey!!,state!!)
         makeRequestButton=findViewById<AppCompatButton>(R.id.make_request_button)
 
         makeRequestViewModel=ViewModelProvider(this)[MakeRequestViewModel::class.java]
@@ -75,6 +75,7 @@ class MakeRequestActivity : AppCompatActivity(),FinishingFragmentListener {
         val addYour=findViewById<FloatingActionButton>(R.id.make_request_your_floating)
 
         makeRequestButton.isEnabled=false;
+
 
 
         hisBooks.layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
@@ -115,8 +116,18 @@ class MakeRequestActivity : AppCompatActivity(),FinishingFragmentListener {
 
         makeRequestButton.setOnClickListener {
 
-            dialogg.show()
-            makeRequestViewModel.makeRequest(myChosenBooks,hisChosenBooks,firebaseAuth.currentUser!!.uid,userKey!!)
+            //dialogg.show()
+            var my=ArrayList<Int>()
+            var his=ArrayList<Int>()
+            for(i in myChosenBooks){
+                my.add(i.bid!!)
+            }
+            for(i in hisChosenBooks){
+                his.add(i.bid!!)
+
+            }
+
+            makeRequestViewModel.makeRequest(my,his,firebaseAuth.currentUser!!.uid,userKey!!)
 
 
        }

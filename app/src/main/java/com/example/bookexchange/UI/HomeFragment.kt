@@ -2,6 +2,7 @@ package com.example.bookexchange.UI
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 
 import androidx.appcompat.app.AlertDialog
@@ -13,16 +14,28 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bookexchange.Adapters.GridHomeAdapter
 import com.example.bookexchange.Adapters.OnItemClickListener
 import com.example.bookexchange.Adapters.SimpleHorizontalRecycler
+import com.example.bookexchange.ApiInterface
+import com.example.bookexchange.Models.Book
 import com.example.bookexchange.R
+import com.example.bookexchange.Searchable
 import com.example.bookexchange.ViewModels.HomeFragmentViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.gson.GsonBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 
-class HomeFragment(val context2: Context) : Fragment(),OnItemClickListener {
+class HomeFragment(val context2: Context) : Fragment(),OnItemClickListener,Searchable {
 
     lateinit var recycler: RecyclerView
     lateinit var homeFragmentViewModel:HomeFragmentViewModel
@@ -56,7 +69,7 @@ class HomeFragment(val context2: Context) : Fragment(),OnItemClickListener {
 
 
         job1=GlobalScope.launch(Dispatchers.IO) {
-            homeFragmentViewModel.readAllBooks(firebaseAuth.currentUser!!.uid);
+            homeFragmentViewModel.readAllBooks(firebaseAuth.currentUser!!.uid,1,"");
 
         }
 
@@ -70,10 +83,7 @@ class HomeFragment(val context2: Context) : Fragment(),OnItemClickListener {
 
 
             }else {
-
                 recycler.visibility=View.VISIBLE
-
-
                 val adapter = GridHomeAdapter(it, context2)
 
                 recycler.adapter = adapter
@@ -110,10 +120,23 @@ class HomeFragment(val context2: Context) : Fragment(),OnItemClickListener {
 
 
         dialogg.show()
+        Log.e("mask 7 is ", mask[7]!!.toString())
+        if(mask[7]==0) {
 
-        GlobalScope.launch (Dispatchers.Default){
+            GlobalScope.launch(Dispatchers.Default) {
 
-            homeFragmentViewModel.filterByCategory(mask)
+                homeFragmentViewModel.filterByCategory(mask)
+
+            }
+        }else{
+
+            GlobalScope.launch(Dispatchers.Default) {
+                val uid=FirebaseAuth.getInstance().currentUser!!.uid.toString()
+
+                homeFragmentViewModel.filterByFavourite(uid)
+
+            }
+
 
         }
 
@@ -123,6 +146,22 @@ class HomeFragment(val context2: Context) : Fragment(),OnItemClickListener {
     override fun onStop() {
         super.onStop()
         job1.cancel()
+    }
+
+    override fun onSearchQuery(query: String) {
+        if(query=="none"){
+            job1 = GlobalScope.launch(Dispatchers.IO) {
+                homeFragmentViewModel.readAllBooks(firebaseAuth.currentUser!!.uid, 1, query);
+
+            }
+        }else {
+            job1 = GlobalScope.launch(Dispatchers.IO) {
+                homeFragmentViewModel.readAllBooks(firebaseAuth.currentUser!!.uid, 2, query);
+
+            }
+        }
+
+
     }
 
 

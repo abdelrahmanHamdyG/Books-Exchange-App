@@ -9,22 +9,26 @@ import com.google.firebase.database.ValueEventListener
 
 class UserData {
 
-    var name: String? =null
+    var uid:String?=null
+    var fname: String? =null
+    var lname:String?=null;
     var email: String? =null
-    var password: String? =null
+    var pass: String? =null
     var governorate: String? =null
-    var phone:String?=null
-    var detailed: String? =null
+    var phone_num:String?=null
+    var detailed_address: String? =null
     constructor(){
 
     }
-    constructor(name:String,email:String,password: String,governorate: String,detailed: String,phone: String){
-        this.name=name
+    constructor(fname:String,lname:String,email:String,pass: String,governorate: String,detailed_address: String,phone_num: String){
+        uid="dummy"
+        this.fname=fname
+        this.lname=lname
         this.email=email
-        this.password=password
+        this.pass=pass
         this.governorate=governorate
-        this.detailed=detailed
-        this.phone=phone
+        this.detailed_address=detailed_address
+        this.phone_num=phone_num
 
     }
 

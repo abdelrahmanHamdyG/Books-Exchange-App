@@ -53,7 +53,7 @@ class GridHomeAdapter(var arrayList:ArrayList<Book>,var context: Context): Recyc
 
 
 
-        val imageRef = storageReference.child(arrayList[position].imageUri.toString())
+        val imageRef = storageReference.child(arrayList[position].image_link.toString())
         imageRef.downloadUrl
             .addOnSuccessListener { uri ->
                 Glide.with(holder.itemView.context)
@@ -77,13 +77,13 @@ class GridHomeAdapter(var arrayList:ArrayList<Book>,var context: Context): Recyc
 
             val i = Intent(context, BooksDetailsActivity::class.java)
             i.putExtra("editable", false);
-            i.putExtra("book_name", arrayList[position].bookName)
-            i.putExtra("book_details", arrayList[position].bookDescription)
-            i.putExtra("image_uri", arrayList[position].imageUri)
+            i.putExtra("book_name", arrayList[position].title)
+            i.putExtra("book_details", arrayList[position].description)
+            i.putExtra("image_uri", arrayList[position].image_link)
             i.putExtra("image_bitmap", byteArray);
-            i.putExtra("book_key", arrayList[position].key)
+            //i.putExtra("book_key", arrayList[position].key)
             i.putExtra("book_category", arrayList[position].category)
-            i.putExtra("city", arrayList[position].city)
+            //i.putExtra("city", arrayList[position].city)
 
             context.startActivity(i);
 
@@ -91,8 +91,8 @@ class GridHomeAdapter(var arrayList:ArrayList<Book>,var context: Context): Recyc
 
         }
 
-        holder.bookName.text=arrayList[position].bookName
-        holder.bookDetails.text=arrayList[position].bookDescription
+        holder.bookName.text=arrayList[position].title
+        holder.bookDetails.text=arrayList[position].description
 
         holder.button.setOnClickListener {
 
@@ -107,15 +107,16 @@ class GridHomeAdapter(var arrayList:ArrayList<Book>,var context: Context): Recyc
 
 
             val intent=Intent(context,MakeRequestActivity::class.java)
-            intent.putExtra("book_name",arrayList[position].bookName)
-            intent.putExtra("book_details",arrayList[position].bookDescription)
-            intent.putExtra("image_uri",arrayList[position].imageUri)
+            intent.putExtra("book_name",arrayList[position].title)
+            intent.putExtra("book_details",arrayList[position].description)
+            intent.putExtra("image_uri",arrayList[position].image_link)
             intent.putExtra("image_bitmap",byteArray);
-            intent.putExtra("book_key",arrayList[position].key)
+            //intent.putExtra("book_key",arrayList[position].key)
             intent.putExtra("book_category",arrayList[position].category)
-            intent.putExtra("city",arrayList[position].city)
-            intent.putExtra("user",arrayList[position].user)
-            intent.putExtra("state",arrayList[position].state)
+            intent.putExtra("book_bid",arrayList[position].bid)
+            //intent.putExtra("city",arrayList[position].city)
+            intent.putExtra("user",arrayList[position].uid)
+            intent.putExtra("state",arrayList[position].bstate)
 
 
             context.startActivity(intent)

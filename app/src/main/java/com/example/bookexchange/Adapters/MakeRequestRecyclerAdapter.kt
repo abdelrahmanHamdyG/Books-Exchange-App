@@ -22,7 +22,7 @@ import com.example.bookexchange.R
 import com.example.bookexchange.UI.BooksDetailsActivity
 import java.io.ByteArrayOutputStream
 
-class MakeRequestRecyclerAdapter(val context:Context,var books:ArrayList<Book>,var imagesArr:ArrayList<SendFromDialogToFragmentModel>):RecyclerView.Adapter<MakeRequestRecyclerAdapter.viewHolder>() {
+class MakeRequestRecyclerAdapter(val context:Context, var books: ArrayList<Book>, var imagesArr:ArrayList<SendFromDialogToFragmentModel>):RecyclerView.Adapter<MakeRequestRecyclerAdapter.viewHolder>() {
 
 
     inner class viewHolder(view: View):ViewHolder(view){
@@ -45,14 +45,14 @@ class MakeRequestRecyclerAdapter(val context:Context,var books:ArrayList<Book>,v
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
 
 
-        holder.bookName.text="Book Name: ${books[position].bookName}"
-        holder.bookDetails.text="Book Details: ${books[position].bookDescription}"
+        holder.bookName.text="Book Name: ${books[position].title}"
+        holder.bookDetails.text="Book Details: ${books[position].description}"
         holder.bookCategory.text="Book Category: ${books[position].category}"
 
 
         val bookBitMap=imagesArr[position].byteArray
 
-        AppUtils.LOG("the BookName  is ${books[position].bookName}")
+        AppUtils.LOG("the BookName  is ${books[position].title}")
 
         val imageBitmap= BitmapFactory.decodeByteArray(bookBitMap,0,bookBitMap!!.size)
         holder.bookImage.setImageBitmap(imageBitmap)
@@ -71,13 +71,13 @@ class MakeRequestRecyclerAdapter(val context:Context,var books:ArrayList<Book>,v
 
                 val i = Intent(context, BooksDetailsActivity::class.java)
                 i.putExtra("editable", false);
-                i.putExtra("book_name", books[position].bookName)
-                i.putExtra("book_details", books[position].bookDescription)
-                i.putExtra("image_uri", books[position].imageUri)
+                i.putExtra("book_name", books[position].title)
+                i.putExtra("book_details", books[position].description)
+                i.putExtra("image_uri", books[position].image_link)
                 i.putExtra("image_bitmap", byteArray);
-                i.putExtra("book_key", books[position].key)
+                //i.putExtra("book_key", books[position].key)
                 i.putExtra("book_category", books[position].category)
-                i.putExtra("city", books[position].city)
+                //i.putExtra("city", books[position].city)
 
                 context.startActivity(i);
 

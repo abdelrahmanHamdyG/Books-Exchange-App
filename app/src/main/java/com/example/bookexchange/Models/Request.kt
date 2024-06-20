@@ -2,52 +2,45 @@ package com.example.bookexchange.Models
 
 class Request {
 
-
-    var myKey:String?=null;
-    var hisKey:String?=null;
-    var fromMe:Boolean?=null;
-    var seen:Boolean?=null;
-    var myBooks:ArrayList<Book>?=null;
-    var hisBooks:ArrayList<Book>?=null;
-    var state:String?=null;
+    var rid:Int?=null
+    var uid1:String?=null;
+    var uid2:String?=null;
+    var myBooks:ArrayList<Int>?=null;
+    var hisBooks:ArrayList<Int>?=null;
+    var rstate:String?=null;
     var clicked:Boolean?=null;
-    var date:Long?=null
+    var rdate:String?=null
 
     constructor(){
 
     }
-    constructor(myKey:String,
-                hisKey:String,
-                fromMe:Boolean,
-                seen:Boolean,
-                myBooks:ArrayList<Book>,
-                hisBooks:ArrayList<Book>,
-                state:String,
+        constructor(uid1:String,
+                uid2:String,
+                myBooks:ArrayList<Int>,
+                hisBooks:ArrayList<Int>,
+                rstate:String,
                 clicked:Boolean,
-                date: Long
+                rdate:  String
     ){
-       this.myKey=myKey
-        this.hisKey=hisKey
-        this.fromMe=fromMe
-        this.seen=seen
+        rid=501;
+       this.uid1=uid1
+        this.uid2=uid2
         this.myBooks=myBooks
         this.hisBooks=hisBooks
-        this.state=state
+        this.rstate=rstate
         this.clicked=clicked
-        this.date=date;
+        this.rdate=rdate;
     }
 
-    constructor( myKey:String,hisKey:String,fromMe:Boolean,seen:Boolean,
-                 state:String,clicked:Boolean,date:Long
+    constructor( uid1:String,uid2:String,
+                 rstate:String,clicked:Boolean,rdate:String
     ){
-        this.myKey=myKey
-        this.hisKey=hisKey
-        this.fromMe=fromMe
-        this.seen=seen
+        this.uid1=uid1
+        this.uid2=uid2
 
-        this.state=state
+        this.rstate=rstate
         this.clicked=clicked
-        this.date=date;
+        this.rdate=rdate;
     }
 
 }
